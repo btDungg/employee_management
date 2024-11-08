@@ -1,0 +1,29 @@
+package uni.hcmus.employeemanagement.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * The base class for entities with an ID field.
+ *
+ * @author <a href="mailto:21120439@student.hcmus">Bùi Minh Duy</a>
+ */
+@MappedSuperclass
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MetaData {
+
+    /** The unique identifier for the entity. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    /** The unique identifier of the user change data. */
+    @Column(name = "user_id")
+    private Long userId;
+}
