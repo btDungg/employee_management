@@ -5,8 +5,11 @@ import org.springframework.stereotype.Repository;
 import uni.hcmus.employeemanagement.entity.Employee;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    //Tìm nhân viên theo Id quản lý
+
     List<Employee> findByManagerId(Long managerId);
+    Optional<Employee> findByEmailCompany(String emailCompany);
 }

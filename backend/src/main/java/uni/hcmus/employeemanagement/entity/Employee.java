@@ -5,22 +5,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Represents an employee entity with basic attributes such as name, point, and manager ID.
- *
- * @author <a href="mailto:21120439@student.hcmus">Bùi Minh Duy</a>
  */
-//@MappedSuperclass
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Employee extends MetaData {
+public class Employee extends MetaData implements UserDetails {
+
+    /** The email address of the employee as same as username to login. */
+    @Column(name = "email_company")
+    private String emailCompany;
+
+    /** The password of the employee to login. */
+    private String password;
 
     /** The name of the employee. */
     @Column(name = "employee_name")
@@ -35,4 +41,19 @@ public class Employee extends MetaData {
 
     /** The type of employee. */
     private String type;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return emailCompany;
+    }
 }
