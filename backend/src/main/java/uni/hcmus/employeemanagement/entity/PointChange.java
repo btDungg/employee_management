@@ -24,15 +24,13 @@ import java.util.Date;
 public class PointChange extends MetaData {
 
     /** The amount of points changed. */
-    @Column(name = "amount")
     private Long amount;
 
     /** The date when the change occurred. */
     @Column(name = "change_date")
-    private Date changeDate;
+    private Long changeDate;
 
     /** The reason for the point change. */
-    @Column(name = "reason")
     private String reason;
 
 

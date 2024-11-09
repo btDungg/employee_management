@@ -1,4 +1,4 @@
-package uni.hcmus.employeemanagement.Repository;
+package uni.hcmus.employeemanagement.repository;
 
 import java.util.List;
 

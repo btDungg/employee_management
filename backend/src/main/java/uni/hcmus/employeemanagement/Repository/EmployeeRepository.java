@@ -1,4 +1,4 @@
-package uni.hcmus.employeemanagement.Repository;
+package uni.hcmus.employeemanagement.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

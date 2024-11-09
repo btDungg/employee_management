@@ -27,7 +27,6 @@ public class Employee extends MetaData {
     private String name;
 
     /** The point value associated with the employee. */
-    @Column(name = "point")
     private int point;
 
     /** The ID of the manager for the employee. */
@@ -35,6 +34,5 @@ public class Employee extends MetaData {
     private long managerId;
 
     /** The type of employee. */
-    @Column(name = "type")
     private String type;
 }

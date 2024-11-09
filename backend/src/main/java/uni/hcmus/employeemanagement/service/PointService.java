@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uni.hcmus.employeemanagement.DTO.EmployeePointDto;
-import uni.hcmus.employeemanagement.Repository.EmployeeRepository;
+import uni.hcmus.employeemanagement.dto.EmployeePointDto;
+import uni.hcmus.employeemanagement.repository.EmployeeRepository;
 
-import uni.hcmus.employeemanagement.Repository.ManagerRepository;
+import uni.hcmus.employeemanagement.repository.ManagerRepository;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
-import uni.hcmus.employeemanagement.service.Interface.IPointService;
+import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 
-import uni.hcmus.employeemanagement.Repository.PointChangeRepository;
-import uni.hcmus.employeemanagement.DTO.ManagerPointDto;
+import uni.hcmus.employeemanagement.repository.PointChangeRepository;
+import uni.hcmus.employeemanagement.dto.ManagerPointDto;
 import uni.hcmus.employeemanagement.entity.PointChange;
 
 

@@ -23,7 +23,4 @@ public class MetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** The unique identifier of the user change data. */
-    @Column(name = "user_id")
-    private Long userId;
 }
