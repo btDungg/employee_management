@@ -1,0 +1,23 @@
+/* app.css */
+.app {
+    display: flex;
+    height: 100vh; /* Full height */
+}
+
+.sidebar {
+    width: 200px; /* Sidebar width */
+    background-color: #2f5742;
+    color: white;
+    padding: 10px;
+    position: fixed; /* Sidebar stays fixed on the side */
+    height: 100vh; /* Full height */
+    top: 0;
+    left: 0;
+}
+
+.content {
+    margin-left: 200px; /* Matches sidebar width */
+    padding: 20px; /* Optional padding */
+    flex: 1;
+    overflow-y: auto; /* Optional: Add vertical scrolling if content overflows */
+}
