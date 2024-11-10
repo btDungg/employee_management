@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './StyleSidebar.css';
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
 
   const role = "Nhân viên"; // Replace with actual data
   const TenNV = "Nguyễn Văn A"; // Replace with actual data
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
 
   return (
     <>
