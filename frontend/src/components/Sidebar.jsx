@@ -5,12 +5,13 @@ import '../../public/css/StyleSidebar.css';
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   
-  const role = "Nhân viên"; // Replace with actual data
-  const TenNV = "Nguyễn Văn A"; // Replace with actual data
+  //du lieu mau
+  const role = "Nhân viên"; 
+  const TenNV = "Nguyễn Văn A"; 
 
   return (
     <>
-      {/* Button to toggle sidebar on smaller screens */}
+      {/* Sidebar Button */}
       <button className="menu-button" onClick={toggleSidebar}>
         ☰
       </button>

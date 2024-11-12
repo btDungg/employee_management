@@ -1,4 +1,4 @@
-package uni.hcmus.employeemanagement.dto;
+package uni.hcmus.employeemanagement.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

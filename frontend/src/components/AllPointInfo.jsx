@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getListEmployeesPoints,getEmployeePoints } from "../apis/api";
 import '../../public/css/StylePointInfo.css';
-import { useParams } from 'react-router-dom';
 
 
 
