@@ -1,4 +1,4 @@
-package uni.hcmus.employeemanagement.controller;
+package uni.hcmus.employeemanagement.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,7 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import uni.hcmus.employeemanagement.dto.*;
+import uni.hcmus.employeemanagement.DTO.LoginRequest;
+import uni.hcmus.employeemanagement.DTO.LoginResponse;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;

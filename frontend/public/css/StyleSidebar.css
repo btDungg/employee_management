@@ -1,0 +1,126 @@
+/* Sidebar layout */
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #2f5742;
+    color: white;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%); /* Hide sidebar on smaller screens */
+}
+
+.sidebar.show {
+    transform: translateX(0); /* Show sidebar when toggled */
+}
+
+/* Header container for title and menu button */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+.sidebar-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px;
+    margin-bottom: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.sidebar a:hover {
+    background-color: #86a089;
+}
+
+.sidebar a.active {
+    background-color: #375b4f;
+}
+
+.employee-info {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid #86a089;
+}
+
+.employee-info div {
+    padding: 10px;
+    background-color: #375b4f;
+    margin-bottom: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.logout-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #b31e1e;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.logout-button:hover {
+    background-color: #a01919;
+}
+
+/* Menu button styling */
+.menu-button {
+    background-color: #2f5742;
+    color: white;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1100;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* Hidden by default on small screens */
+    }
+
+    .sidebar.show {
+        transform: translateX(0); /* Slide in when toggled */
+    }
+
+    .menu-button {
+        display: inline; /* Show button only on smaller screens */
+    }
+}

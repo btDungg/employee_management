@@ -1,6 +1,6 @@
-package uni.hcmus.employeemanagement.controller;
+package uni.hcmus.employeemanagement.Controller;
 import org.springframework.http.ResponseEntity;
-import uni.hcmus.employeemanagement.dto.EmployeePointDto;
+import uni.hcmus.employeemanagement.DTO.EmployeePointDto;
 import uni.hcmus.employeemanagement.entity.PointChange;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,7 @@ public class PointController {
         pointService.autoAddPointsToEmployees();
         return ResponseEntity.ok("Points have been added successfully!");
     }
+
     @GetMapping("{id}")
     public ResponseEntity<?> getPoints(@PathVariable("id") Long id) {
         return ResponseEntity.ok(pointService.ViewPoint(id));
