@@ -20,10 +20,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public EmployeeDto getEmployeeProfileByEmail(String email) {
+    public EmployeeDto getEmployeeByEmail(String email) {
+        // Tìm Employee dựa trên email công ty
         Employee employee = employeeRepository.findByEmailCompany(email)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
 
+        // Chuyển đổi đối tượng Employee thành EmployeeDto
         return new EmployeeDto(
                 employee.getId(),
                 employee.getName(),

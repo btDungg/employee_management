@@ -5,5 +5,5 @@ import uni.hcmus.employeemanagement.entity.Employee;
 
 public interface IEmployeeService {
     Employee addEmployee(Employee employee);
-    EmployeeDto getEmployeeProfileByEmail(String email);
+    EmployeeDto getEmployeeByEmail(String email);
 }
