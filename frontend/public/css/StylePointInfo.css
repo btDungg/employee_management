@@ -1,0 +1,85 @@
+.point-info {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.point-info h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.points-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.points-table th,
+.points-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.points-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.points-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.points-table tr:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
+/* Modal Styling */
+.employee-detail-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    max-width: 500px;
+    width: 90%;
+}
+
+.employee-detail-modal h3 {
+    margin-top: 0;
+}
+
+.employee-detail-modal button {
+    margin-top: 20px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.employee-detail-modal button:hover {
+    background-color: #0056b3;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}

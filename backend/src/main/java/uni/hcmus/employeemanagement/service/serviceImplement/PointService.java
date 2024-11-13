@@ -51,8 +51,8 @@ public class PointService implements IPointService {
                 return getEmployeePointsByManagerId(employee.getId());
 
             case "Employee":
-                // Nếu là Employee thì ném ra lỗi truy cập
-                throw new DataNotFoundException("Access denied for employee with email = " + email);
+                // Trả về danh sách điểm chỉ của chính nhân viên đó
+                return List.of(getEmployeePointDetail(employee.getId()));
 
             default:
                 throw new IllegalStateException("Unknown role for employee with email = " + email);

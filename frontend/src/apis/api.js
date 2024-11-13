@@ -12,10 +12,7 @@ export const fetchAllEmployeePoints = async () => {
     return response.data;
 };
 
-export const getEmployeePoints = async (id) => {
-    const response = await axios.get(`${BASE_URL}/${id}`);
-    return response.data;
-};
+
 
 export const getPointChanges = async (id) => {
     const response = await axios.get(`${BASE_URL}/${id}/pointChanges`);
@@ -41,3 +38,52 @@ export const increasePointsByManager = async (managerId, employeePointDto) => {
     const response = await axios.post(`${BASE_URL}/increaseByManager/${managerId}`, employeePointDto);
     return response.data;
 };
+
+
+
+//lấy danh sách employee cho role thích hơp
+export const getEmployeeWithBaseRole = async () => {
+  const token = localStorage.getItem('token'); // Lấy token từ localStorage
+  const response = await axios.get('http://localhost:8080/api/points/employees/point', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Gửi token trong header
+    },
+  });
+  return response.data;
+
+};
+
+//lấy chi tiết cho role thích hợp
+export const getEmployeePoints = async (id) => {
+  const token = localStorage.getItem('token'); // Lấy token từ localStorage
+  const response = await axios.get(`http://localhost:8080/api/points/employee/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Gửi token trong header
+    },
+  });
+  return response.data;
+};
+
+
+export const getEmployeeProfile = async () => {
+  const token = localStorage.getItem('token'); // Lấy token từ localStorage
+  const response = await axios.get('http://localhost:8080/api/employees/me/profile', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Gửi token trong header
+    },
+  });
+  return response.data;
+};
+
+
+
+
+const login = async (email, password) => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/auth/login', { email, password });
+      const token = response.data.token;
+      localStorage.setItem('token', token); // Lưu token vào localStorage
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };

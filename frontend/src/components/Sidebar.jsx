@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './StyleSidebar.css';
+import '../../public/css/StyleSidebar.css';
+import { getEmployeeProfile } from '../apis/api';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
+  
+  // State để lưu thông tin người dùng
+  const [role, setRole] = useState('');
+  const [TenNV, setTenNV] = useState('');
+  
+  // Gọi API để lấy thông tin người dùng
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profileData = await getEmployeeProfile();  // Lấy thông tin người dùng từ API
+        setRole(profileData.type);  // Giả sử trả về role là type
+        setTenNV(profileData.name);  // Giả sử trả về tên là name
+      } catch (error) {
+        console.error('Không thể lấy thông tin người dùng', error);
+      }
+    };
 
-  const role = "Nhân viên"; // Replace with actual data
-  const TenNV = "Nguyễn Văn A"; // Replace with actual data
+    fetchProfile();
+  }, []);  // Chỉ gọi 1 lần khi component được load
+  
+  // //du lieu mau
+  // const role = "Nhân viên"; 
+  // const TenNV = "Nguyễn Văn A"; 
 
   return (
     <>
-      {/* Button to toggle sidebar on smaller screens */}
+      {/* Sidebar Button */}
       <button className="menu-button" onClick={toggleSidebar}>
         ☰
       </button>
