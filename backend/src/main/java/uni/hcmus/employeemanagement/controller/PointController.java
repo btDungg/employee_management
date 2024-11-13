@@ -1,10 +1,11 @@
 package uni.hcmus.employeemanagement.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import uni.hcmus.employeemanagement.dto.EmployeePointDto;
 import uni.hcmus.employeemanagement.entity.PointChange;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,10 +15,27 @@ public class PointController {
     @Autowired
     private IPointService pointService;
 
-    @GetMapping("/employee/{id}")
-    public List<EmployeePointDto> getEmployeePoints(@PathVariable Long id) {
-        return pointService.getEmployeePoints(id);
+
+
+    //Lấy danh sách các nhân viên dựa trên vai trò của người dùng hiện tại.
+    //Trả về danh sách các nhân viên và số điểm của họ.
+    //Đươờng dẫn: /api/points/employees/point
+    @GetMapping("/employees/point")
+    public ResponseEntity<List<EmployeePointDto>> getEmployeeWithBaseRole() {
+        List<EmployeePointDto> employeePoints = pointService.getEmployeePointsBasedOnRole();
+        return ResponseEntity.ok(employeePoints);
     }
+
+    //Lấy thông tin điểm của nhân viên dựa trên id của nhân viên và nguười dùng hiện tại la ai.
+    //Trả về thông tin điểm của nhân viên.
+    //Đường dẫn: /api/points/employee/{id}
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeePointDto> getDetailEmployeePoints(@PathVariable Long id) {
+        EmployeePointDto employeePoint = pointService.getEmployeePointDetailBasedOnRole(id);
+        return ResponseEntity.ok(employeePoint);
+    }
+
+
 
     @GetMapping("/test")
     public List<EmployeePointDto> getAll() {
@@ -29,10 +47,7 @@ public class PointController {
         pointService.autoAddPointsToEmployees();
         return ResponseEntity.ok("Points have been added successfully!");
     }
-    @GetMapping("{id}")
-    public ResponseEntity<?> getPoints(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(pointService.ViewPoint(id));
-    }
+
 
     @GetMapping("/{id}/pointChanges")
     public List<PointChange> getPointChanges(@PathVariable("id") Long id) {

@@ -2,23 +2,21 @@ package uni.hcmus.employeemanagement.service.serviceImplement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uni.hcmus.employeemanagement.dto.EmployeePointDto;
-import uni.hcmus.employeemanagement.repository.EmployeeRepository;
-
-import uni.hcmus.employeemanagement.repository.ManagerRepository;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
+import uni.hcmus.employeemanagement.entity.PointChange;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
+import uni.hcmus.employeemanagement.repository.EmployeeRepository;
+import uni.hcmus.employeemanagement.repository.ManagerRepository;
+import uni.hcmus.employeemanagement.repository.PointChangeRepository;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 
-import uni.hcmus.employeemanagement.repository.PointChangeRepository;
-import uni.hcmus.employeemanagement.dto.ManagerPointDto;
-import uni.hcmus.employeemanagement.entity.PointChange;
-
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +29,93 @@ public class PointService implements IPointService {
 
     @Autowired
     private PointChangeRepository pointChangeRepository;
+
+    @Override
+    public List<EmployeePointDto> getEmployeePointsBasedOnRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // Sửa lại từ wait() thành getName()
+
+        // Lấy Employee dựa trên email
+        Employee employee = employeeRepository.findByEmailCompany(email)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
+
+        String role = employee.getType();
+
+        switch (role) {
+            case "HR":
+                // Trả về toàn bộ danh sách điểm nhân viên cho HR
+                return getAllEmployeePoints();
+
+            case "Manager":
+                // Trả về danh sách điểm của nhân viên được quản lý bởi Manager
+                return getEmployeePointsByManagerId(employee.getId());
+
+            case "Employee":
+                // Nếu là Employee thì ném ra lỗi truy cập
+                throw new DataNotFoundException("Access denied for employee with email = " + email);
+
+            default:
+                throw new IllegalStateException("Unknown role for employee with email = " + email);
+        }
+        // Trường hợp bất khả thi nếu switch đã bao phủ tất cả các vai trò
+    }
+
+    @Override
+    public EmployeePointDto getEmployeePointDetailBasedOnRole(Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        // Lấy thông tin nhân viên dựa trên email
+        Employee employee = employeeRepository.findByEmailCompany(email)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
+
+        String role = employee.getType();
+
+        switch (role) {
+            case "HR":
+                // HR có quyền xem chi tiết điểm của tất cả nhân viên
+                return getEmployeePointDetail(id);
+
+            case "Manager":
+                // Kiểm tra nếu nhân viên có thuộc quyền quản lý của Manager này không
+                List<Employee> managedEmployees = employeeRepository.findByManagerId(employee.getId());
+                boolean isManagedEmployee = managedEmployees.stream()
+                        .anyMatch(emp -> emp.getId().equals(id));
+
+                if (isManagedEmployee) {
+                    return getEmployeePointDetail(id);
+                } else {
+                    throw new DataNotFoundException("Access denied for employee with id = " + id);
+                }
+
+            case "Employee":
+                // Nếu là Employee thì chỉ được xem điểm của chính họ
+                if (employee.getId().equals(id)) {
+                    return getEmployeePointDetail(id);
+                } else {
+                    throw new DataNotFoundException("Access denied for employee with id = " + id);
+                }
+
+            default:
+                throw new IllegalStateException("Unknown role for employee with email = " + email);
+        }
+    }
+
+    private EmployeePointDto getEmployeePointDetail(Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with id = " + employeeId));
+
+        return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId());
+    }
+
+    @Override
+    public List<EmployeePointDto> getEmployeePointsByManagerId(Long managerId) {
+        // Lấy danh sách điểm của các nhân viên do Manager quản lý
+        List<Employee> employees = employeeRepository.findByManagerId(managerId);
+        return employees.stream()
+                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId()))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<EmployeePointDto> getAllEmployeePoints() {
@@ -87,29 +172,7 @@ public class PointService implements IPointService {
     }
 
 
-    @Override
-    public EmployeePointDto ViewPoint(Long Id)
-    {
-    	Optional<Employee> emp = employeeRepository.findById(Id);
-    	Employee employee = emp.get();
 
-        if (employee != null) {
-
-            // Kiểm tra nếu đối tượng là Manager
-            if ("Manager".equals(employee.getType())) {
-                Manager manager = (Manager) employee;
-                return new ManagerPointDto(manager.getId(), manager.getName(), manager.getPoint(), manager.getType(), manager.getManagerId(), manager.getBonusEmployeePoint());
-            }
-            else
-            {
-            	return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId());
-            }
-        }
-        else
-        {
-        	throw new IllegalArgumentException("Invalid ID");
-        }
-    }
     
     @Override
     public List<PointChange> ViewChangePoint(Long Id)
