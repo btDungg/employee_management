@@ -6,11 +6,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import uni.hcmus.employeemanagement.dto.LoginRequest;
 import uni.hcmus.employeemanagement.dto.LoginResponse;
+import uni.hcmus.employeemanagement.dto.Request.UserRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.EmailAlreadyTakenException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
 import uni.hcmus.employeemanagement.utils.JwtTokenUtil;
 
@@ -26,6 +29,8 @@ public class AuthController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
@@ -37,5 +42,30 @@ public class AuthController {
                 .orElseThrow(() -> new DataNotFoundException("Cannot find employee with email company = " + loginRequest.getEmail()));
         String token = jwtTokenUtil.generateToken(employee);
         return ResponseEntity.ok(new LoginResponse(token));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("Logout successfully");
+    }
+
+
+    //Tạo tài khoản mới cho nhân viên
+    //Truyền vào thông tin nhân viên cần tạo. UserRequest gồm có: username, email, password, managerId, type
+    @PostMapping("/register")
+    public ResponseEntity<Employee> register(@RequestBody UserRequest userRequest) {
+        if(employeeRepository.existsByEmailCompany(userRequest.getEmail())) {
+            throw new EmailAlreadyTakenException("Email is already taken! " + userRequest.getEmail());
+        }
+
+        Employee employee = new Employee();
+        employee.setName(userRequest.getUsername());
+        employee.setManagerId(userRequest.getManagerId());
+        employee.setType(userRequest.getType());
+        employee.setEmailCompany(userRequest.getEmail());
+        employee.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        employeeRepository.save(employee);
+        return ResponseEntity.ok(employee);
     }
 }

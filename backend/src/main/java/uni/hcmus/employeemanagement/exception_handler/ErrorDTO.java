@@ -30,6 +30,8 @@ public class ErrorDTO {
      *
      * @param message the error message to add
      */
+
+
     public void addError(String message) {
         errors.add(message);
     }
