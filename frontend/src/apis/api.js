@@ -40,6 +40,8 @@ export const increasePointsByManager = async (managerId, employeePointDto) => {
 };
 
 
+
+
 // Lấy danh sách employee cho role thích hợp
 export const getEmployeeWithBaseRole = async () => {
   const token = localStorage.getItem('token'); // Lấy token từ localStorage
@@ -146,3 +148,13 @@ const login = async (email, password) => {
       console.error("Login error:", error);
     }
   };
+
+  export const logout =  () => {
+    try {
+       axios.post('http://localhost:8080/api/auth/logout');  // Gọi API logout
+      localStorage.removeItem('token');  // Xóa token khỏi localStorage
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../../public/css/StyleSidebar.css';
-import { getEmployeeProfile } from '../apis/api';
+import { getEmployeeProfile,logout } from '../apis/api';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -24,6 +24,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     fetchProfile();
   }, []);  // Chỉ gọi 1 lần khi component được load
+
+
+   // Hàm xử lý logout
+   const handleLogout = async () => {
+    try {
+      // Gửi yêu cầu đến API logout
+       logout();
+    } catch (error) {
+      console.error('Đăng xuất thất bại', error);
+    }
+  };
   
   // //du lieu mau
   // const role = "Nhân viên"; 
@@ -58,7 +69,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <div>{role}</div>
           <div>{TenNV}</div>
         </div>
-        <button className="logout-button">Đăng xuất</button>
+        <button className="logout-button" onClick={handleLogout}>Đăng xuất</button>
       </div>
     </>
   );
