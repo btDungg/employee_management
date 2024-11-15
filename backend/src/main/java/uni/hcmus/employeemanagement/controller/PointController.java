@@ -49,6 +49,14 @@ public class PointController {
 
     @GetMapping
     public ResponseEntity<?> getMyPoints(@RequestHeader("Authorization") String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+        }
+        String token = authorizationHeader.substring(7);
+        String email = jwtTokenUtil.extractUserIdentifier(token);
+        return ResponseEntity.ok(pointService.ViewMyPoint(email));
+    }
+
 
 
     //Lấy danh sách các nhân viên dựa trên vai trò của người dùng hiện tại.
@@ -68,8 +76,6 @@ public class PointController {
         List<EmployeePointDto> employeePoints = pointService.getEmployeePointsBasedOnRole(token);
         return ResponseEntity.ok(employeePoints);
     }
-
-
 
     //Lấy thông tin điểm của nhân viên dựa trên id của nhân viên và nguười dùng hiện tại la ai.
     //Trả về thông tin điểm của nhân viên.
@@ -150,6 +156,6 @@ public class PointController {
         }
     }
 
-*/
+    */
 
 }

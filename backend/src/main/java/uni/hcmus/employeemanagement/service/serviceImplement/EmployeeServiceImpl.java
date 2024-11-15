@@ -56,7 +56,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
         }
         existedEmployee.get().setPassword(passwordEncoder.encode(password));
         employeeRepository.save(existedEmployee.get());
-
+    }
+    
     public EmployeeDto getEmployeeByEmail(String email) {
         // Tìm Employee dựa trên email công ty
         Employee employee = employeeRepository.findByEmailCompany(email)
