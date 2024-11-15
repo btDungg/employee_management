@@ -26,21 +26,21 @@ public class PointController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @GetMapping("/employee/{id}")
-    public List<EmployeePointDto> getEmployeePoints(@PathVariable Long id) {
-        return pointService.getEmployeePoints(id);
-    }
-
-    @GetMapping("/test")
-    public List<EmployeePointDto> getAll() {
-        return pointService.getAllEmployeePoints();
-    }
-
-    @PostMapping("/test/auto-add-points")
-    public ResponseEntity<String> testAutoAddPoints() {
-        pointService.autoAddPointsToEmployees();
-        return ResponseEntity.ok("Points have been added successfully!");
-    }
+//    @GetMapping("/employee/{id}")
+//    public List<EmployeePointDto> getEmployeePoints(@PathVariable Long id) {
+//        return pointService.getEmployeePoints(id);
+//    }
+//
+//    @GetMapping("/test")
+//    public List<EmployeePointDto> getAll() {
+//        return pointService.getAllEmployeePoints();
+//    }
+//
+//    @PostMapping("/test/auto-add-points")
+//    public ResponseEntity<String> testAutoAddPoints() {
+//        pointService.autoAddPointsToEmployees();
+//        return ResponseEntity.ok("Points have been added successfully!");
+//    }
 
     @GetMapping
     public ResponseEntity<?> getMyPoints(@RequestHeader("Authorization") String authorizationHeader) {

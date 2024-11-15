@@ -1,50 +1,58 @@
-import { useState } from 'react';
-import '../../public/LoginPage.css';
+import { useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../apis/api';
+import '../../public/css/LoginPage.css';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!email || !password) {
-            setErrorMessage('Both email and password are required.');
-            return;
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/'); // Redirect to the home page if already logged in
         }
-        // Handle login logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
-        setErrorMessage(''); // Clear error message on successful submission
+    }, [navigate]);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            await login(email, password);
+            navigate('/'); // Redirect to the home page or another page
+        } catch (err) {
+            setError('Invalid email or password');
+        }
     };
 
     return (
         <div className="login-container">
-            <form className="login-form" onSubmit={handleSubmit}>
+            <div className="login-form">
                 <h2>Login</h2>
-                {errorMessage && <div className="error-message">{errorMessage}</div>}
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit" className="login-button">Login</button>
-            </form>
+                <form onSubmit={handleLogin}>
+                    <div className="form-group">
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    {error && <p className="error-message">{error}</p>}
+                    <button type="submit" className="login-button">Login</button>
+                </form>
+            </div>
         </div>
     );
 };
