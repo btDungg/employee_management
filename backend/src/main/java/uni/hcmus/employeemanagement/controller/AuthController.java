@@ -9,13 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-<<<<<<< HEAD
 import uni.hcmus.employeemanagement.dto.*;
-=======
 import uni.hcmus.employeemanagement.dto.LoginRequest;
 import uni.hcmus.employeemanagement.dto.LoginResponse;
 import uni.hcmus.employeemanagement.dto.Request.UserRequest;
->>>>>>> origin/feature/viewPoint
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.EmailAlreadyTakenException;

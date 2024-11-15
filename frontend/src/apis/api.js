@@ -94,9 +94,9 @@ export const login = async (email, password) => {
     }
 };
 
-export const logout = async () => {
+export const logout =  () => {
     try {
-        await axios.post(`${AUTH_URL}/logout`);
+        //  axios.post(`${AUTH_URL}/logout`);
         localStorage.removeItem('token');
     } catch (error) {
         console.error('Logout error:', error);

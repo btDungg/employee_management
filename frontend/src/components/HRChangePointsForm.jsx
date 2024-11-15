@@ -27,6 +27,7 @@ const HRChangePointsForm = ({ onCommit }) => {
 
     return (
         <div className="change-points-form">
+            <h2>Form thay đổi điểm</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group search-group">
                     <label htmlFor="employeeId">Employee ID</label>

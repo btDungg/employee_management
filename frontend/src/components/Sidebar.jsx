@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,useNavigate } from 'react-router-dom';
 import '../../public/css/StyleSidebar.css';
 import { getEmployeeProfile,logout } from '../apis/api';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   
   // State để lưu thông tin người dùng
   const [role, setRole] = useState('');
@@ -26,15 +27,21 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   }, []);  // Chỉ gọi 1 lần khi component được load
 
 
+  
    // Hàm xử lý logout
-   const handleLogout = async () => {
+   const handleLogout =  () => {
+    
     try {
-      // Gửi yêu cầu đến API logout
-       logout();
+         logout();
+         toggleSidebar();
+         navigate('/login', { replace: true });
+         // Chuyển hướng ngay lập tức
     } catch (error) {
-      console.error('Đăng xuất thất bại', error);
+        console.error('Đăng xuất thất bại:', error);
     }
+    
   };
+
   
   // //du lieu mau
   // const role = "Nhân viên"; 

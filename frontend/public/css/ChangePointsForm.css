@@ -1,15 +1,31 @@
 .change-points-form {
+
+   
     background-color: white;
     color: black;
-    padding: 20px;
+    padding: 20px 80px 40px 80px; /* Increase padding */
     border-radius: 5px;
     width: 100%; /* Set the width to 100% of the parent container */
-    max-width: 800px; /* Set a maximum width for the form */
+    max-width: 1000px; /* Increase the maximum width */
     margin: 0 auto;
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 2px solid #86a089; /* Add border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better visibility */
 }
+
+.change-points-form h2 {
+    margin-bottom:  30px; /* Add some space below the title */
+    font-size: 24px; /* Increase font size */
+    color: #333; /* Change color if needed */
+}
+
+.change-points-form form{
+    width: 100%;
+}
+
 
 .change-points-form .form-group {
     display: flex;
@@ -23,26 +39,28 @@
 .change-points-form label {
     margin-right: 10px;
     flex: 1;
+    font-size: 18px; /* Increase font size */
 }
 
 .change-points-form select,
 .change-points-form input,
 .change-points-form textarea {
     flex: 2;
-    padding: 8px;
+    padding: 12px; /* Increase padding */
     border: 1px solid #86a089;
     border-radius: 3px;
     background-color: #d3d3d3; /* Gray background color */
     color: black;
+    font-size: 16px; /* Increase font size */
 }
 
 .btn {
-    padding: 10px;
+    padding: 15px 30px; /* Increase padding */
+    font-size: 18px; /* Increase font size */
     background-color: #2f5742;
     border: none;
     border-radius: 4px;
     color: #fff;
-    font-size: 16px;
     cursor: pointer;
     margin-left: 10px;
 }
