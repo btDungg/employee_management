@@ -1,0 +1,32 @@
+.topnavbarpoint {
+    background-color: #2f5742;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    top: 20px;
+    width: 40%;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.topnavbarpoint.sidebar-open {
+    left: calc(50% + 100px); /* Adjust this value based on half the sidebar width */
+}
+
+.topnavbarpoint a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.topnavbarpoint a:hover {
+    background-color: #86a089;
+}
+
+.topnavbarpoint a.active {
+    background-color: #375b4f;
+}

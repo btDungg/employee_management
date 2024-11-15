@@ -1,6 +1,6 @@
 package uni.hcmus.employeemanagement.service.interfaceService;
 
-import uni.hcmus.employeemanagement.DTO.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.EmployeePointDto;
 import uni.hcmus.employeemanagement.entity.PointChange;
 
 import java.util.List;

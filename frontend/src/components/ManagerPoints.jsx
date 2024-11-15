@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { getListEmployeesPoints, getManagerBonusPointsById } from '../apis/api';
 import PropTypes from "prop-types";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import IncreasePointsPopupManager from './IncreasePointsPopupManager';
 
 const ManagerPoints = ({ employeeId }) => {
     const [employeesPoints, setEmployeesPoints] = useState([]);

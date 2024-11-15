@@ -1,6 +1,7 @@
-package uni.hcmus.employeemanagement.Controller;
+package uni.hcmus.employeemanagement.controller;
+
 import org.springframework.http.ResponseEntity;
-import uni.hcmus.employeemanagement.DTO.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.EmployeePointDto;
 import uni.hcmus.employeemanagement.entity.PointChange;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 import org.springframework.beans.factory.annotation.Autowired;
