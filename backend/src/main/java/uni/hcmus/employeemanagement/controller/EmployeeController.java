@@ -1,4 +1,4 @@
-package uni.hcmus.employeemanagement.Controller;
+package uni.hcmus.employeemanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
