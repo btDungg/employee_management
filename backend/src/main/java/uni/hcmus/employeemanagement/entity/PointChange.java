@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -24,11 +25,11 @@ import java.util.Date;
 public class PointChange extends MetaData {
 
     /** The amount of points changed. */
-    private Long amount;
+    private int amount;
 
     /** The date when the change occurred. */
     @Column(name = "change_date")
-    private Long changeDate;
+    private LocalDate changeDate;
 
     /** The reason for the point change. */
     private String reason;

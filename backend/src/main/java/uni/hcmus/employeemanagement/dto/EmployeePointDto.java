@@ -12,6 +12,7 @@ public class EmployeePointDto {
     private String type;
     private Long managerId;
 
+
     // Constructor
     public EmployeePointDto(long id, String name, int point, String type, Long managerId) {
         this.id = id;

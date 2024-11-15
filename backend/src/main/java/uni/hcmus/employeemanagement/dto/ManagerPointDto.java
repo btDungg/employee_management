@@ -13,5 +13,7 @@ public class ManagerPointDto extends EmployeePointDto {
         super(id, name, point, type, managerId);  // Gọi constructor của EmployeePointDto
         this.bonusEmployeePoint = bonusEmployeePoint;
     }
+    
+    
 }
 

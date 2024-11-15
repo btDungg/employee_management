@@ -40,6 +40,7 @@ public class AuthController {
         Employee employee = employeeRepository.findByEmailCompany(loginRequest.getEmail())
                 .orElseThrow(() -> new DataNotFoundException("Cannot find employee with email company = " + loginRequest.getEmail()));
         String token = jwtTokenUtil.generateToken(employee);
+        System.out.println("Generated Token: " + token);
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
