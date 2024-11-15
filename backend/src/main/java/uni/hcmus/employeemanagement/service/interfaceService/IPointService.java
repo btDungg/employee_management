@@ -8,9 +8,6 @@ import uni.hcmus.employeemanagement.entity.PointChange;
 import java.util.List;
 
 public interface IPointService {
-    List<EmployeePointDto> getAllEmployeePoints();
-    void autoAddPointsToEmployees();
-    List<EmployeePointDto> getEmployeePoints(Long id);
     EmployeePointDto ViewMyPoint(String email);
     List<PointChange> ViewMyChangePoint(String email);
     String getEmployeeRoleById(Long id);

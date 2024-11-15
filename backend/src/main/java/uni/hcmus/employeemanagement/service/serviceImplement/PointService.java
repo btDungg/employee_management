@@ -36,60 +36,6 @@ public class PointService implements IPointService {
     private PointChangeRepository pointChangeRepository;
 
     @Override
-    public List<EmployeePointDto> getAllEmployeePoints() {
-        List<Employee> employees = employeeRepository.findAll();
-        return employees.stream()
-                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<EmployeePointDto> getEmployeePoints(Long id) {
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
-
-        List<Employee> employees;
-        if ("HR".equalsIgnoreCase(employee.getType())) {
-            // Nếu là HR, lấy tất cả nhân viên
-            employees = employeeRepository.findAll();
-        } else if ("Manager".equalsIgnoreCase(employee.getType())) {
-            // Nếu là Manager, chỉ lấy các nhân viên do họ quản lý
-            employees = employeeRepository.findByManagerId(employee.getId());
-        } else {
-            throw new IllegalArgumentException("Employee does not have access");
-        }
-        return employees.stream()
-                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId()))
-                .collect(Collectors.toList());
-    }
-
-
-
-    @Override
-    @Scheduled(cron = "0 1 0 25 * ?") // Chạy vào lúc 00:01:00 ngày 25 hàng tháng
-    @Transactional //đảm bảo chạy full data
-    public void autoAddPointsToEmployees() {
-
-            List<Employee> employees = employeeRepository.findAll();
-            List<Manager> managers = managerRepository.findAll();
-            for (Employee employee : employees) {
-                System.out.println("Debug: " + employee.getType());
-                int point = switch (employee.getType().toUpperCase()) {
-                    case "MANAGER" -> 20;
-                    case "EMPLOYEE", "HR" -> 10;
-                    default -> 1;
-                };
-                employee.setPoint(employee.getPoint() + point);
-            }
-            for (Manager manager : managers) {
-                manager.setBonusEmployeePoint(10);
-            }
-            employeeRepository.saveAll(employees);
-            managerRepository.saveAll(managers);
-
-    }
-
-    @Override
     public EmployeePointDto ViewMyPoint(String email)
     {
     	Employee employee = employeeRepository.findByEmailCompany(email).orElse(null);
