@@ -13,6 +13,7 @@ import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import '../public/css/app.css';
+import PointInfo from './components/AllPointInfo.jsx';
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

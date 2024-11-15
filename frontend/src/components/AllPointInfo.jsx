@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getListEmployeesPoints,getEmployeePoints } from "../apis/api";
+import { getEmployeeWithBaseRole,getEmployeePoints } from "../apis/api";
 import '../../public/css/StylePointInfo.css';
 
 
@@ -12,7 +12,7 @@ const PointInfo = () => {
   useEffect(() => {
     const fetchEmployeesPoints = async () => {
       try {
-        const data = await getListEmployeesPoints(1);
+        const data = await getEmployeeWithBaseRole();
         setEmployeesPoints(data);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách điểm:", error);

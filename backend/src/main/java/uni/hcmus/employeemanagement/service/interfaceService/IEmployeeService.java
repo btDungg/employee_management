@@ -1,5 +1,6 @@
 package uni.hcmus.employeemanagement.service.interfaceService;
 
+import uni.hcmus.employeemanagement.dto.EmployeeDto;
 import uni.hcmus.employeemanagement.entity.Employee;
 
 public interface IEmployeeService {
@@ -7,4 +8,5 @@ public interface IEmployeeService {
     void sendOTP(String email) throws Exception;
     boolean verifyOTP(String otp, String email) throws Exception;
     void resetPassword(String email, String password) throws Exception;
+    EmployeeDto getEmployeeByEmail(String email);
 }

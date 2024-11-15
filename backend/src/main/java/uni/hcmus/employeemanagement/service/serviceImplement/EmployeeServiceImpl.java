@@ -3,6 +3,7 @@ package uni.hcmus.employeemanagement.service.serviceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uni.hcmus.employeemanagement.dto.EmployeeDto;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
@@ -55,5 +56,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
         }
         existedEmployee.get().setPassword(passwordEncoder.encode(password));
         employeeRepository.save(existedEmployee.get());
+
+    public EmployeeDto getEmployeeByEmail(String email) {
+        // Tìm Employee dựa trên email công ty
+        Employee employee = employeeRepository.findByEmailCompany(email)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
+
+        // Chuyển đổi đối tượng Employee thành EmployeeDto
+        return new EmployeeDto(
+                employee.getId(),
+                employee.getName(),
+                employee.getPoint(),
+                employee.getType(),
+                employee.getManagerId()
+        );
     }
 }

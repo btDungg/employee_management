@@ -5,13 +5,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 
 import java.util.Date;
 
+@ControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
@@ -66,6 +69,20 @@ public class GlobalExceptionHandler {
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.addError(ex.getMessage());
         LOGGER.error("Invalid Key: {}", ex.getMessage(), ex);
+        return error;
+    }
+
+
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorDTO handleAccessDeniedException(HttpServletRequest request, AccessDeniedException ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setPath(request.getServletPath());
+        error.setStatus(HttpStatus.FORBIDDEN.value());
+        error.addError(ex.getMessage());
+        LOGGER.error("Access Denied: {}", ex.getMessage(), ex);
         return error;
     }
 }

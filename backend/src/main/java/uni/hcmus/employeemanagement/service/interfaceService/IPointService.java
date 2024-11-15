@@ -16,4 +16,12 @@ public interface IPointService {
     int getManagerBonusPointsById(Long id);
     String increasePointsByManager(Employee employee, ModifyPointRequest modifyPoint);
     String decreasePoints(Employee employee, ModifyPointRequest modifyPoint);
+    //Lấy danh sách điểm của nhân viên theo chức vụ hiêện tại của người xem
+    List<EmployeePointDto> getEmployeePointsBasedOnRole(String token);
+
+    EmployeePointDto getEmployeePointDetailBasedOnRole(Long id,String token);
+    // lay tat ca diem cua nhan vien
+    List<EmployeePointDto> getAllEmployeePoints();
+
+    void autoAddPointsToEmployees();
 }
