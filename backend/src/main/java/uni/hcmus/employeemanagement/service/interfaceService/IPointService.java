@@ -3,6 +3,7 @@ package uni.hcmus.employeemanagement.service.interfaceService;
 import uni.hcmus.employeemanagement.dto.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.EmployeePointDto;
 import uni.hcmus.employeemanagement.dto.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.PointChange;
 
@@ -13,7 +14,7 @@ public interface IPointService {
     List<PointChange> ViewMyChangePoint(String email);
     String getEmployeeRoleById(Long id);
     //Tìm kiếm nhân viên
-    EmployeeDto getEmployeeById (String myEmail, Long employeeId);
+    EmployeeDto getEmployeeById (String myEmail, SearchEmployeeRequest searchRequest);
     String modifyPoints(String email, ModifyPointRequest modifyPoint);
     String increasePoints(Employee employee, ModifyPointRequest modifyPoint);
     int getManagerBonusPointsById(Long id);
