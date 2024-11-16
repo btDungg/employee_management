@@ -178,6 +178,24 @@ public class PointService implements IPointService {
     }
 
     @Override
+        public EmployeeDto getEmployeeById(String myEmail, Long employeeId)
+        {
+            Employee emp = employeeRepository.findById(employeeId)
+                    .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + employeeId));;
+            Employee myInfo = employeeRepository.findByEmailCompany(myEmail)
+                    .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + myEmail));
+            if ("Manager".equals(myInfo.getType()) && emp.getManagerId() != myInfo.getId())
+            {
+                throw new AccessDeniedException("You do not have permission to modify this employee's points.");
+            }
+            else
+            {
+                return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId());
+            }
+            
+        }
+
+    @Override
     public String modifyPoints(String email, ModifyPointRequest modifyPoint)
     {
     	Employee emp = employeeRepository.findByEmailCompany(email)
