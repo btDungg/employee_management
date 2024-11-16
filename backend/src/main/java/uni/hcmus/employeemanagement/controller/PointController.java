@@ -117,6 +117,18 @@ public class PointController {
         }
     }
 
+    //URL: /search?employeeId=...
+    @PostMapping("/search")
+	public ResponseEntity<EmployeeDto> searchEmployeeById(@RequestHeader("Authorization") String authorizationHeader, Long employeeId)
+	{
+		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+        }
+		String token = authorizationHeader.substring(7);
+		String email = jwtTokenUtil.extractUserIdentifier(token);
+		return ResponseEntity.ok(pointService.getEmployeeById(email, employeeId));
+	}
+    
     /*@PostMapping("/increase")
     public ResponseEntity<String> increasePoints(@PathVariable Long myId, @RequestBody EmployeePointDto employeePointDto) {
     	String result = pointService.increasePoints(myId, employeePointDto);
