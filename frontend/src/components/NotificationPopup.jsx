@@ -7,7 +7,7 @@ const NotificationPopup = ({ message, onClose }) => {
         <div className="popup-overlay">
             <div className="popup-content">
                 <p>{message}</p>
-                <button className="btn" onClick={onClose}>Close</button>
+                <button className="btn" onClick={onClose}>Đóng</button>
             </div>
         </div>
     );

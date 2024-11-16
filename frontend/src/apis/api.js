@@ -17,9 +17,16 @@ export const getListEmployeesPoints = async (employeeId) => {
     return response.data;
 };
 
-export const fetchAllEmployeePoints = async () => {
-    const response = await axios.get(`${BASE_URL}/test`);
-    return response.data;
+export const modifyPoints = async (modifyPoint) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/modify-points`, modifyPoint, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error modifying points:', error);
+        throw error;
+    }
 };
 
 export const getPointChanges = async (id) => {
@@ -32,20 +39,27 @@ export const getEmployeeRoleById = async (id) => {
     return response.data;
 };
 
-export const increaseEmployeePoints = async (employeePointDto) => {
-    const response = await axios.post(`${BASE_URL}/increase`, employeePointDto);
-    return response.data;
+export const getManagerBonusPointsById = async () => {
+    try {
+        // Fetch the employee profile
+        const profile = await getEmployeeProfile();
+
+        // Check if the employee is a manager
+        if (profile.type.toLowerCase() === 'manager') {
+            // Fetch the manager's bonus points
+            const response = await axios.get(`${EMPLOYEE_URL}/${profile.id}/bonus`, {
+                headers: getAuthHeaders(),
+            });
+            return response.data;
+        } else {
+            throw new Error('Access denied: Only managers can access bonus points.');
+        }
+    } catch (error) {
+        console.error('Error fetching manager bonus points:', error);
+        throw error;
+    }
 };
 
-export const getManagerBonusPointsById = async (id) => {
-    const response = await axios.get(`${EMPLOYEE_URL}/${id}/bonus`);
-    return response.data;
-};
-
-export const increasePointsByManager = async (managerId, employeePointDto) => {
-    const response = await axios.post(`${BASE_URL}/increaseByManager/${managerId}`, employeePointDto);
-    return response.data;
-};
 
 export const getEmployeeWithBaseRole = async () => {
     try {
@@ -103,3 +117,14 @@ export const logout =  () => {
         throw error;
     }
 };
+
+export const getEmployeeById = async (id) => {
+    try {
+        const response = await axios.get(`${EMPLOYEE_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching employee data:', error);
+        throw error;
+    }
+};
+

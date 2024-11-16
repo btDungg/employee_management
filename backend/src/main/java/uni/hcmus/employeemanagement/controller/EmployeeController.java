@@ -31,6 +31,23 @@ public class EmployeeController {
         return ResponseEntity.ok(bonusPoints);
     }
 
+    @GetMapping("/me/bonus")
+    public ResponseEntity<Integer> getMyBonusPointsIfManager(Principal principal) {
+        // Lấy email của người dùng từ Principal
+        String email = principal.getName();
+
+        // Lấy thông tin nhân viên từ service bằng email
+        EmployeeDto employeeDto = employeeService.getEmployeeByEmail(email);
+
+        // Kiểm tra nếu nhân viên là manager
+        if ("manager".equalsIgnoreCase(employeeDto.getType())) {
+            int bonusPoints = pointService.getManagerBonusPointsById(employeeDto.getId());
+            return ResponseEntity.ok(bonusPoints);
+        } else {
+            return ResponseEntity.status(403).body(null);
+        }
+    }
+
     //Lay thong tin cua nhan vien dang dang nhap
     //Tra ve thong tin cua nhan vien dang dang nhap là
     //int: id, string:name, int point, string type, string managerId
