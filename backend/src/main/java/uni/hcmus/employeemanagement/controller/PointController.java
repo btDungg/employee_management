@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uni.hcmus.employeemanagement.dto.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 
 import java.util.List;
 
@@ -119,14 +120,14 @@ public class PointController {
 
     //URL: /search?employeeId=...
     @PostMapping("/search")
-	public ResponseEntity<EmployeeDto> searchEmployeeById(@RequestHeader("Authorization") String authorizationHeader, Long employeeId)
+	public ResponseEntity<EmployeeDto> searchEmployeeById(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchEmployeeRequest searchRequest)
 	{
 		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is missing or invalid.");
         }
 		String token = authorizationHeader.substring(7);
 		String email = jwtTokenUtil.extractUserIdentifier(token);
-		return ResponseEntity.ok(pointService.getEmployeeById(email, employeeId));
+		return ResponseEntity.ok(pointService.getEmployeeById(email, searchRequest));
 	}
     
     /*@PostMapping("/increase")

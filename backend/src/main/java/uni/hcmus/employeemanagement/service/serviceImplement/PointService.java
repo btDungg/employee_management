@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import uni.hcmus.employeemanagement.dto.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.EmployeePointDto;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
@@ -15,6 +17,7 @@ import uni.hcmus.employeemanagement.repository.PointChangeRepository;
 
 import uni.hcmus.employeemanagement.dto.ManagerPointDto;
 import uni.hcmus.employeemanagement.dto.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.entity.PointChange;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
@@ -178,22 +181,22 @@ public class PointService implements IPointService {
     }
 
     @Override
-        public EmployeeDto getEmployeeById(String myEmail, Long employeeId)
+    public EmployeeDto getEmployeeById(String myEmail, SearchEmployeeRequest searchRequest)
+    {
+        Employee emp = employeeRepository.findById(searchRequest.getEmployeeId())
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + searchRequest.getEmployeeId()));
+        Employee myInfo = employeeRepository.findByEmailCompany(myEmail)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + myEmail));
+        if ("Manager".equals(myInfo.getType()) && emp.getManagerId() != myInfo.getId())
         {
-            Employee emp = employeeRepository.findById(employeeId)
-                    .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + employeeId));;
-            Employee myInfo = employeeRepository.findByEmailCompany(myEmail)
-                    .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + myEmail));
-            if ("Manager".equals(myInfo.getType()) && emp.getManagerId() != myInfo.getId())
-            {
-                throw new AccessDeniedException("You do not have permission to modify this employee's points.");
-            }
-            else
-            {
-                return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId());
-            }
-            
+            throw new AccessDeniedException("You do not have permission to modify this employee's points.");
         }
+        else
+        {
+            return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId());
+        }
+        
+    }
 
     @Override
     public String modifyPoints(String email, ModifyPointRequest modifyPoint)
