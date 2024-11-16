@@ -11,6 +11,8 @@ public interface IPointService {
     EmployeePointDto ViewMyPoint(String email);
     List<PointChange> ViewMyChangePoint(String email);
     String getEmployeeRoleById(Long id);
+    //Tìm kiếm nhân viên
+    EmployeeDto getEmployeeById (String myEmail, Long employeeId);
     String modifyPoints(String email, ModifyPointRequest modifyPoint);
     String increasePoints(Employee employee, ModifyPointRequest modifyPoint);
     int getManagerBonusPointsById(Long id);
