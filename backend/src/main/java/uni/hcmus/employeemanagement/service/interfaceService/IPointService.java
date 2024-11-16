@@ -1,5 +1,6 @@
 package uni.hcmus.employeemanagement.service.interfaceService;
 
+import uni.hcmus.employeemanagement.dto.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.EmployeePointDto;
 import uni.hcmus.employeemanagement.dto.ModifyPointRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
