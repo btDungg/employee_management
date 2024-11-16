@@ -17,6 +17,7 @@ import uni.hcmus.employeemanagement.repository.PointChangeRepository;
 
 import uni.hcmus.employeemanagement.dto.ManagerPointDto;
 import uni.hcmus.employeemanagement.dto.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.PointChangeDto;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.entity.PointChange;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
@@ -166,12 +167,26 @@ public class PointService implements IPointService {
     }
     
     @Override
-    public List<PointChange> ViewMyChangePoint(String email)
+    public List<PointChangeDto> ViewMyChangePoint(String email)
     {
     	Employee emp = employeeRepository.findByEmailCompany(email)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
     	Long myId = emp.getId();
-    	return pointChangeRepository.findByEmployeeIdOrderByChangeDateDesc(myId);
+    	List<PointChange> listPointChanges = pointChangeRepository.findByReceivedIdOrderByChangeDateDesc(myId);
+    	return listPointChanges.stream()
+                .map(pointChange -> {
+                    String changerName = employeeRepository.findById(pointChange.getEmployee().getId())
+                            .map(Employee::getName)
+                            .orElse("Unknown"); // Tên người thay đổi hoặc "Unknown" nếu không tìm thấy
+                    return new PointChangeDto(
+                            pointChange.getAmount(),
+                            pointChange.getChangeDate(), // Chuyển đổi Date sang LocalDate
+                            pointChange.getReason(),
+                            changerName
+                    );
+                })
+                .collect(Collectors.toList());
+    	
     }
 
     @Override
