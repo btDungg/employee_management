@@ -11,15 +11,25 @@ const ManagerChangePointsForm = ({ onCommit }) => {
     const [changePoints, setChangePoints] = useState(0);
     const [changeType, setChangeType] = useState('');
     const [reason, setReason] = useState('');
-    const [warning, setWarning] = useState('');
+    const [searchWarning, setSearchWarning] = useState('');
+    const [submitWarning, setSubmitWarning] = useState('');
 
     const handleSearch = async () => {
         try {
+            // Reset employee-related state variables
+            setEmployeeName('');
+            setCurrentPoints(0);
+            setChangePoints(0);
+            setChangeType('');
+            setReason('');
+            setSearchWarning('');
+
             const employeeData = await getEmployeeById(employeeId);
             setEmployeeName(employeeData.name);
-            setCurrentPoints(employeeData.currentPoints);
+            setCurrentPoints(employeeData.point);
         } catch (error) {
             console.error('Error fetching employee data:', error);
+            setSearchWarning('Bạn không có quyền xem điểm nhân viên này.');
         }
     };
 
@@ -39,10 +49,10 @@ const ManagerChangePointsForm = ({ onCommit }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (changeType === 'increase' && changePoints > bonusPoints) {
-            setWarning('Số điểm tặng lớn hơn số điểm tặng của bạn.');
+            setSubmitWarning('Số điểm tặng lớn hơn số điểm tặng của bạn.');
             return;
         }
-        setWarning('');
+        setSubmitWarning('');
         onCommit({
             employeeId,
             employeeName,
@@ -56,6 +66,7 @@ const ManagerChangePointsForm = ({ onCommit }) => {
 
     return (
         <div className="change-points-form">
+            <h2>Thay đổi điểm</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group search-group">
                     <label htmlFor="employeeId">ID nhân viên</label>
@@ -68,6 +79,7 @@ const ManagerChangePointsForm = ({ onCommit }) => {
                     />
                     <button className="btn" type="button" onClick={handleSearch}>Tìm kiếm</button>
                 </div>
+                {searchWarning && <div className="search-warning">{searchWarning}</div>}
                 <div className="form-group">
                     <label>Tên nhân viên</label>
                     <div>{employeeName}</div>
@@ -112,7 +124,7 @@ const ManagerChangePointsForm = ({ onCommit }) => {
                         required
                     />
                 </div>
-                {warning && <div className="warning">{warning}</div>}
+                {submitWarning && <div className="submit-warning">{submitWarning}</div>}
                 <button className="btn" type="submit">Xác nhận</button>
             </form>
         </div>

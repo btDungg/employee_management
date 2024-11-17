@@ -2,3 +2,13 @@
     color: red;
     text-align: center;
 }
+
+.search-warning {
+    color: red;
+    margin-top: 10px;
+}
+
+.submit-warning {
+    color: red;
+    margin-top: 10px;
+}

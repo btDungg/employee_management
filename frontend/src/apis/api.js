@@ -129,7 +129,11 @@ export const logout =  () => {
 
 export const getEmployeeById = async (id) => {
     try {
-        const response = await axios.get(`${EMPLOYEE_URL}/${id}`);
+        const response = await axios.post(
+            `${BASE_URL}/search`,
+            { employeeId: id },
+            { headers: getAuthHeaders() }
+        );
         return response.data;
     } catch (error) {
         console.error('Error fetching employee data:', error);

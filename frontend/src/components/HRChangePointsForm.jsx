@@ -9,14 +9,24 @@ const HRChangePointsForm = ({ onCommit }) => {
     const [changePoints, setChangePoints] = useState(0);
     const [changeType, setChangeType] = useState('');
     const [reason, setReason] = useState('');
+    const [searchWarning, setSearchWarning] = useState('');
 
     const handleSearch = async () => {
         try {
+            // Reset employee-related state variables
+            setEmployeeName('');
+            setCurrentPoints(0);
+            setChangePoints(0);
+            setChangeType('');
+            setReason('');
+            setSearchWarning('');
+
             const employeeData = await getEmployeeById(employeeId);
             setEmployeeName(employeeData.name);
-            setCurrentPoints(employeeData.currentPoints);
+            setCurrentPoints(employeeData.point);
         } catch (error) {
             console.error('Error fetching employee data:', error);
+            setSearchWarning('Nhân viên này không tồn tại.');
         }
     };
 
@@ -34,7 +44,7 @@ const HRChangePointsForm = ({ onCommit }) => {
 
     return (
         <div className="change-points-form">
-            <h2>Form thay đổi điểm</h2>
+            <h2 >Thay đổi điểm</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group search-group">
                     <label htmlFor="employeeId">ID nhân viên</label>
@@ -47,6 +57,7 @@ const HRChangePointsForm = ({ onCommit }) => {
                     />
                     <button className="btn" type="button" onClick={handleSearch}>Tìm kiếm</button>
                 </div>
+                {searchWarning && <div className="search-warning">{searchWarning}</div>}
                 <div className="form-group">
                     <label>Tên nhân viên</label>
                     <div>{employeeName}</div>

@@ -5,8 +5,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import uni.hcmus.employeemanagement.dto.EmployeeDto;
-import uni.hcmus.employeemanagement.dto.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.*;
+import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
@@ -15,8 +15,6 @@ import uni.hcmus.employeemanagement.repository.EmployeeRepository;
 import uni.hcmus.employeemanagement.repository.ManagerRepository;
 import uni.hcmus.employeemanagement.repository.PointChangeRepository;
 
-import uni.hcmus.employeemanagement.dto.ManagerPointDto;
-import uni.hcmus.employeemanagement.dto.ModifyPointRequest;
 import uni.hcmus.employeemanagement.entity.PointChange;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
@@ -216,7 +214,7 @@ public class PointService implements IPointService {
     {
     	Employee emp = employeeRepository.findByEmailCompany(email)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
-    	if (!"HR".equals(emp.getType()) || !"Manager".equals(emp.getType()))
+    	if (!"HR".equals(emp.getType()) && !"Manager".equals(emp.getType()))
     	{
     		throw new AccessDeniedException("You do not have permission to modify employee's points.");
     	}
