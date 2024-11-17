@@ -29,7 +29,11 @@ const ManagerChangePointsForm = ({ onCommit }) => {
             setCurrentPoints(employeeData.point);
         } catch (error) {
             console.error('Error fetching employee data:', error);
-            setSearchWarning('Bạn không có quyền xem điểm nhân viên này.');
+			if (error.response && error.response.status === 403) {
+							setSearchWarning('Bạn không có quyền xem điểm nhân viên này.');
+						} else if (error.response && error.response.status === 404) {
+							setSearchWarning('Nhân viên không tồn tại.');
+						}
         }
     };
 
