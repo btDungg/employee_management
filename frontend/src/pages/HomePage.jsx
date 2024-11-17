@@ -23,7 +23,7 @@ const HomePage = () => {
     };
 
     return (
-        <div className="container mt-5">
+        /*<div className="container mt-5">
             <div>123444</div>
             <h1 className="text-center mb-4">Home Page</h1>
             <div className="row justify-content-center">
@@ -41,7 +41,7 @@ const HomePage = () => {
                 </div>
             </div>
         </div>
-    );
+    );*/
 };
 
 export default HomePage;
