@@ -93,7 +93,7 @@ public class PointController {
 
 
     @GetMapping("pointChanges")
-    public List<PointChange> getMyPointChanges(@RequestHeader("Authorization") String authorizationHeader) {
+    public List<PointChangeDto> getMyPointChanges(@RequestHeader("Authorization") String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Authorization header is missing or invalid.");
         }
@@ -118,6 +118,7 @@ public class PointController {
         }
     }
 
+   
     @PostMapping("/search")
 	public ResponseEntity<EmployeeDto> searchEmployeeById(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchEmployeeRequest searchRequest)
 	{

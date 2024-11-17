@@ -29,8 +29,17 @@ export const modifyPoints = async (modifyPoint) => {
     }
 };
 
-export const getPointChanges = async (id) => {
-    const response = await axios.get(`${BASE_URL}/${id}/pointChanges`);
+export const getMyPoint = async () => {
+    const response = await axios.get(`${BASE_URL}`, {
+	            headers: getAuthHeaders(),
+	        });
+    return response.data;
+};
+
+export const getPointChanges = async () => {
+    const response = await axios.get(`${BASE_URL}/pointChanges`, {
+		            headers: getAuthHeaders(),
+		        });
     return response.data;
 };
 

@@ -8,5 +8,5 @@ import uni.hcmus.employeemanagement.entity.PointChange;
 
 
 public interface PointChangeRepository extends JpaRepository<PointChange, Long> {
-	List<PointChange> findByEmployeeIdOrderByChangeDateDesc(Long id);
+	List<PointChange> findByReceivedIdOrderByChangeDateDesc(Long id);
 }
