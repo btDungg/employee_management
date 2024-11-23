@@ -9,6 +9,7 @@ import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundExc
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
 import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,5 +72,23 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 employee.getType(),
                 employee.getManagerId()
         );
+    }
+
+    @Override
+    public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
+        List<Employee> employees = employeeRepository.findByManagerId(id);
+        if (employees.isEmpty()) {
+            return Optional.empty();
+        }
+        List<EmployeeDto> employeeDtos = employees.stream()
+                .map(employee -> new EmployeeDto(
+                        employee.getId(),
+                        employee.getName(),
+                        employee.getPoint(),
+                        employee.getType(),
+                        employee.getManagerId()
+                ))
+                .toList();
+        return Optional.of(employeeDtos);
     }
 }
