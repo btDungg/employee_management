@@ -33,7 +33,7 @@ build-frontend:
 
 build-backend:
   stage: build-backend
-  image: maven:3.8.6-jdk17
+  image: maven:3.8-openjdk-11
   script:
     - echo "Starting backend build"
     - cd backend
