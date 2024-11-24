@@ -10,6 +10,7 @@ services:
       MYSQL_DATABASE: employee_management_db
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
 
 variables:
   DB_URL_EM: ${DB_URL_EM}
@@ -35,7 +36,7 @@ build-frontend:
 
 build-backend:
   stage: build-backend
-  image: maven:3.9.9-openjdk-17
+  image: maven:3.9.4-openjdk-17
   before_script:
     - echo "Waiting for MySQL to be ready..."
     - until mysqladmin ping -h mysql --silent; do echo "Waiting for MySQL..."; sleep 2; done
