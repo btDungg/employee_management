@@ -17,24 +17,31 @@ build-frontend:
   stage: build-frontend
   image: node:20.17
   script:
-    - echo "Start build frontend"
+    - echo "Starting frontend build"
     - cd frontend
     - echo "Installing dependencies"
     - npm install
     - echo "Building frontend"
     - npm run build
-#   artifacts:
-#     paths:
-#       - frontend/build/
+  artifacts:
+    paths:
+      - frontend/build/
+    expire_in: 1 week
 
 build-backend:
   stage: build-backend
   image: maven:4.0.0-openjdk-17
+  before_script:
+    - echo "Waiting for MySQL to be ready..."
+    - until mysqladmin ping -h mysql --silent; do echo "Waiting for MySQL..."; sleep 2; done
+    - echo "MySQL is ready. Checking database connection..."
+    - mysql -hmysql -uroot -p123 -e "SHOW DATABASES;"
   script:
-    - echo "Start build frontbackend"
+    - echo "Starting backend build"
     - cd backend
-    - echo "Building backend"
+    - echo "Building backend application"
     - mvn clean package -DskipTests
-#   artifacts:
-#     paths:
-#       - backend/target/*.jar
+  artifacts:
+    paths:
+      - backend/target/*.jar
+    expire_in: 1 week
