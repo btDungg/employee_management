@@ -3,7 +3,7 @@ package uni.hcmus.employeemanagement.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uni.hcmus.employeemanagement.dto.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;

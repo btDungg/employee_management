@@ -9,9 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import uni.hcmus.employeemanagement.dto.*;
-import uni.hcmus.employeemanagement.dto.LoginRequest;
-import uni.hcmus.employeemanagement.dto.LoginResponse;
+import uni.hcmus.employeemanagement.dto.Response.*;
 import uni.hcmus.employeemanagement.dto.Request.UserRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
@@ -82,12 +80,6 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<String> logout() {
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.ok("Logout successfully");
     }
 
 

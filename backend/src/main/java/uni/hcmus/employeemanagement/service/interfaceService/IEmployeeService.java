@@ -1,6 +1,6 @@
 package uni.hcmus.employeemanagement.service.interfaceService;
 
-import uni.hcmus.employeemanagement.dto.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.entity.Employee;
 
 import java.util.List;

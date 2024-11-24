@@ -1,6 +1,6 @@
-package uni.hcmus.employeemanagement.dto;
+package uni.hcmus.employeemanagement.dto.Response;
 
-    import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResetPasswordDTO {
+public class VerifyOtpDTO {
+    String otp;
     String email;
-    String password;
 }

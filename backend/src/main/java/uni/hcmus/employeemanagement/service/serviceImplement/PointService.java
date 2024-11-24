@@ -5,8 +5,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import uni.hcmus.employeemanagement.dto.*;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
+import uni.hcmus.employeemanagement.dto.Response.*;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
@@ -16,8 +16,6 @@ import uni.hcmus.employeemanagement.repository.ManagerRepository;
 import uni.hcmus.employeemanagement.repository.PointChangeRepository;
 
 import uni.hcmus.employeemanagement.entity.PointChange;
-import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
-import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 
 import java.time.LocalDate;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
@@ -218,6 +216,7 @@ public class PointService implements IPointService {
     	{
     		throw new AccessDeniedException("You do not have permission to modify employee's points.");
     	}
+
     	String type = modifyPoint.getModifyType();
     	switch (type)
     	{
@@ -226,8 +225,7 @@ public class PointService implements IPointService {
     		{
     			return increasePoints(emp, modifyPoint);
     		}
-    		else
-    		{
+    		else {
     			return increasePointsByManager(emp, modifyPoint);
     		}
     	case "decrease":
@@ -244,7 +242,8 @@ public class PointService implements IPointService {
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + modifyPoint.getReceive_id()));
         receiveEmployee.setPoint(receiveEmployee.getPoint() + modifyPoint.getAmount());
 		employeeRepository.save(receiveEmployee);
-		PointChange pointChange = new PointChange(modifyPoint.getAmount(), LocalDate.now(), modifyPoint.getReason(), modifyPoint.getReceive_id(), currentEmployee);
+
+		PointChange pointChange = new PointChange(modifyPoint.getAmount(), LocalDate.now(), modifyPoint.getReason(), receiveEmployee, currentEmployee);
 		pointChangeRepository.save(pointChange);
 		return "Points have been increased successfully!";
     }
@@ -257,34 +256,42 @@ public class PointService implements IPointService {
 
     @Override
     public String increasePointsByManager(Employee currentEmployee, ModifyPointRequest modifyPoint) {
-        Manager manager = managerRepository.findById(currentEmployee.getId()).orElseThrow(() -> new IllegalArgumentException("This employee is not manager!"));
-        if (manager.getBonusEmployeePoint() >= modifyPoint.getAmount()) {
-        	Employee receiveEmployee = employeeRepository.findById(modifyPoint.getReceive_id())
-                    .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + modifyPoint.getReceive_id()));
-            receiveEmployee.setPoint(receiveEmployee.getPoint() + modifyPoint.getAmount());
-            manager.setBonusEmployeePoint(manager.getBonusEmployeePoint() - modifyPoint.getAmount());
-            employeeRepository.save(receiveEmployee);
-            managerRepository.save(manager);
-            PointChange pointChange = new PointChange(modifyPoint.getAmount(), LocalDate.now(), modifyPoint.getReason() , modifyPoint.getReceive_id(), currentEmployee);
-            pointChangeRepository.save(pointChange);
-            return "Points have been increased successfully!";
-        } else {
+        Manager manager = managerRepository.findById(currentEmployee.getId())
+                .orElseThrow(() -> new IllegalArgumentException("This employee is not manager!"));
+        if (manager.getBonusEmployeePoint() < modifyPoint.getAmount()) {
             return "Manager does not have enough bonus points";
         }
+
+        Employee receiveEmployee = employeeRepository.findById(modifyPoint.getReceive_id())
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + modifyPoint.getReceive_id()));
+
+        receiveEmployee.setPoint(receiveEmployee.getPoint() + modifyPoint.getAmount());
+        manager.setBonusEmployeePoint(manager.getBonusEmployeePoint() - modifyPoint.getAmount());
+
+        employeeRepository.save(receiveEmployee);
+        managerRepository.save(manager);
+
+        PointChange pointChange = new PointChange(modifyPoint.getAmount(), LocalDate.now(), modifyPoint.getReason(), receiveEmployee, currentEmployee);
+        pointChangeRepository.save(pointChange);
+
+        return "Points have been increased successfully!";
     }
     
     @Override
     public String decreasePoints(Employee currentEmployee, ModifyPointRequest modifyPoint) {
-        if (currentEmployee.getPoint() >= modifyPoint.getAmount()) {
-        	Employee receiveEmployee = employeeRepository.findById(modifyPoint.getReceive_id())
-                    .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + modifyPoint.getReceive_id()));
-            receiveEmployee.setPoint(receiveEmployee.getPoint() - modifyPoint.getAmount());
-            employeeRepository.save(receiveEmployee);
-            PointChange pointChange = new PointChange((modifyPoint.getAmount()) * (-1), LocalDate.now(), modifyPoint.getReason() , modifyPoint.getReceive_id(), currentEmployee);
-            pointChangeRepository.save(pointChange);
-            return "Points have been decreased successfully!";
-        } else {
-            return "Employee does not have enough points to decrease!";
-        }
+    Employee receiveEmployee = employeeRepository.findById(modifyPoint.getReceive_id())
+            .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + modifyPoint.getReceive_id()));
+
+    if (receiveEmployee.getPoint() < modifyPoint.getAmount()) {
+        return "Employee does not have enough points to decrease!";
+    }
+
+    receiveEmployee.setPoint(receiveEmployee.getPoint() - modifyPoint.getAmount());
+    employeeRepository.save(receiveEmployee);
+
+    PointChange pointChange = new PointChange(-modifyPoint.getAmount(), LocalDate.now(), modifyPoint.getReason(), receiveEmployee, currentEmployee);
+    pointChangeRepository.save(pointChange);
+
+    return "Points have been decreased successfully!";
     }
 }

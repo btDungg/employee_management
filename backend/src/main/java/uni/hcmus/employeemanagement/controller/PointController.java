@@ -1,23 +1,20 @@
 package uni.hcmus.employeemanagement.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import uni.hcmus.employeemanagement.dto.*;
-import uni.hcmus.employeemanagement.entity.PointChange;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Response.PointChangeDto;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 import uni.hcmus.employeemanagement.utils.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import uni.hcmus.employeemanagement.dto.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -103,13 +100,10 @@ public class PointController {
     }
 
     @PostMapping("/modify-points")
-    public ResponseEntity<String> modifyPoint(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ModifyPointRequest modifyPoint) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
-        }
-        String token = authorizationHeader.substring(7);
-        String email = jwtTokenUtil.extractUserIdentifier(token);
+    public ResponseEntity<String> modifyPoint(Principal principal, @RequestBody ModifyPointRequest modifyPoint) {
+        String email = principal.getName();
         String result = pointService.modifyPoints(email, modifyPoint);
+
         if (result != null) {
             return ResponseEntity.ok(result);
         }
