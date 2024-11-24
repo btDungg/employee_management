@@ -1,0 +1,40 @@
+stages:
+  - build-frontend
+  - build-backend
+
+services:
+  - name: mysql:latest
+    alias: mysql
+
+variables:
+  DB_URL_EM: ${DB_URL_EM}
+  DB_USERNAME: ${DB_USERNAME}
+  DB_PASSWORD: ${DB_PASSWORD}
+  EXPIRATION: ${EXPIRATION}
+  SECRET_KEY: ${SECRET_KEY}
+
+build-frontend:
+  stage: build-frontend
+  image: node:20.17
+  script:
+    - echo "Start build frontend"
+    - cd frontend
+    - echo "Installing dependencies"
+    - npm install
+    - echo "Building frontend"
+    - npm run build
+#   artifacts:
+#     paths:
+#       - frontend/build/
+
+build-backend:
+  stage: build-backend
+  image: maven:4.0.0-openjdk-17
+  script:
+    - echo "Start build frontbackend"
+    - cd backend
+    - echo "Building backend"
+    - mvn clean package -DskipTests
+#   artifacts:
+#     paths:
+#       - backend/target/*.jar
