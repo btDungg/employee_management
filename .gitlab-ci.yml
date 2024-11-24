@@ -5,6 +5,11 @@ stages:
 services:
   - name: mysql:latest
     alias: mysql
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    variables:
+      MYSQL_DATABASE: employee_management_db
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
 
 variables:
   DB_URL_EM: ${DB_URL_EM}
@@ -30,12 +35,12 @@ build-frontend:
 
 build-backend:
   stage: build-backend
-  image: maven:4.0.0-openjdk-17
+  image: maven:3.9.9-openjdk-17
   before_script:
     - echo "Waiting for MySQL to be ready..."
     - until mysqladmin ping -h mysql --silent; do echo "Waiting for MySQL..."; sleep 2; done
     - echo "MySQL is ready. Checking database connection..."
-    - mysql -hmysql -uroot -p123 -e "SHOW DATABASES;"
+    - mysql -hmysql -uroot -p${DB_PASSWORD} -e "SHOW DATABASES;"
   script:
     - echo "Starting backend build"
     - cd backend
