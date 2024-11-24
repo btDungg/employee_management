@@ -39,13 +39,12 @@ public class PointService implements IPointService {
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public List<EmployeePointDto> getEmployeePointsBasedOnRole(String token) {
-        // Giải mã token để lấy email
-        String email = jwtTokenUtil.extractUserIdentifier(token);
+    public List<EmployeePointDto> getEmployeePointsBasedOnRole(String userEmail) {
+
 
         // Lấy Employee dựa trên email
-        Employee employee = employeeRepository.findByEmailCompany(email)
-                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
+        Employee employee = employeeRepository.findByEmailCompany(userEmail)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + userEmail));
 
         String role = employee.getType();
 
@@ -59,10 +58,10 @@ public class PointService implements IPointService {
                 return getEmployeePointsByManagerId(employee.getId());
 
             case "Employee":
-                return List.of(new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId()));
+                return List.of(new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getOrganization().getId()));
 
             default:
-                throw new IllegalStateException("Unknown role for employee with email = " + email);
+                throw new IllegalStateException("Unknown role for employee with email = " + userEmail);
         }
     }
     
@@ -84,19 +83,19 @@ public class PointService implements IPointService {
     switch (currentRole) {
         case "HR":
             // HR có quyền xem thông tin điểm của tất cả nhân viên
-            return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId());
+            return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getOrganization().getId());
         case "Manager":
             // Manager chỉ có thể xem thông tin điểm của nhân viên dưới quyền
-            if (!currentEmployee.getId().equals(employee.getManagerId())) {
+            if (!currentEmployee.getId().equals(employee.getOrganization().getId())) {
                 throw new AccessDeniedException("You do not have permission to view this employee's points.");
             }
-            return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId());
+            return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getOrganization().getId());
         case "Employee":
             // Employee chỉ có thể xem thông tin điểm của chính mình
             if (!currentId.equals(employeeId)) {
                 throw new AccessDeniedException("You do not have permission to view this employee's points.");
             }
-            return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId());
+            return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getOrganization().getId());
         default:
             throw new IllegalStateException("Unknown role for employee with email = " + email);
     }
@@ -104,8 +103,11 @@ public class PointService implements IPointService {
     private List<EmployeePointDto> getEmployeePointsByManagerId(Long managerId) {
         // Lấy danh sách điểm của các nhân viên do Manager quản lý
         List<Employee> employees = employeeRepository.findByManagerId(managerId);
+        if(employees.isEmpty()) {
+            throw new DataNotFoundException("Employees not found with managerID = " + managerId);
+        }
         return employees.stream()
-                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId()))
+                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getOrganization().getId()))
                 .collect(Collectors.toList());
     }
 
@@ -118,11 +120,11 @@ public class PointService implements IPointService {
             // Kiểm tra nếu đối tượng là Manager
             if ("Manager".equals(employee.getType())) {
                 Manager manager = (Manager) employee;
-                return new ManagerPointDto(manager.getId(), manager.getName(), manager.getPoint(), manager.getType(), manager.getManagerId(), manager.getBonusEmployeePoint());
+                return new ManagerPointDto(manager.getId(), manager.getName(), manager.getPoint(), manager.getType(), manager.getOrganization().getId(), manager.getBonusEmployeePoint());
             }
             else
             {
-            	return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getManagerId());
+            	return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getOrganization().getId());
             }
         }
         else
@@ -134,31 +136,31 @@ public class PointService implements IPointService {
     public List<EmployeePointDto> getAllEmployeePoints() {
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream()
-                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId()))
+                .map(emp -> new EmployeePointDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getOrganization().getId()))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    @Scheduled(cron = "0 1 0 25 * ?") // Chạy vào lúc 00:01:00 ngày 25 hàng tháng
-    @Transactional //đảm bảo chạy full data
-    public void autoAddPointsToEmployees() {
-        List<Employee> employees = employeeRepository.findAll();
-        List<Manager> managers = managerRepository.findAll();
-        for (Employee employee : employees) {
-            System.out.println("Debug: " + employee.getType());
-            int point = switch (employee.getType().toUpperCase()) {
-                case "MANAGER" -> 20;
-                case "EMPLOYEE", "HR" -> 10;
-                default -> 1;
-            };
-            employee.setPoint(employee.getPoint() + point);
-        }
-        for (Manager manager : managers) {
-            manager.setBonusEmployeePoint(10);
-        }
-        employeeRepository.saveAll(employees);
-        managerRepository.saveAll(managers);
-    }
+//    @Override
+//    @Scheduled(cron = "0 1 0 25 * ?") // Chạy vào lúc 00:01:00 ngày 25 hàng tháng
+//    @Transactional //đảm bảo chạy full data
+//    public void autoAddPointsToEmployees() {
+//        List<Employee> employees = employeeRepository.findAll();
+//        List<Manager> managers = managerRepository.findAll();
+//        for (Employee employee : employees) {
+//            System.out.println("Debug: " + employee.getType());
+//            int point = switch (employee.getType().toUpperCase()) {
+//                case "MANAGER" -> 20;
+//                case "EMPLOYEE", "HR" -> 10;
+//                default -> 1;
+//            };
+//            employee.setPoint(employee.getPoint() + point);
+//        }
+//        for (Manager manager : managers) {
+//            manager.setBonusEmployeePoint(10);
+//        }
+//        employeeRepository.saveAll(employees);
+//        managerRepository.saveAll(managers);
+//    }
     
     @Override
     public List<PointChangeDto> ViewMyChangePoint(String email)
@@ -196,13 +198,13 @@ public class PointService implements IPointService {
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + searchRequest.getEmployeeId()));
         Employee myInfo = employeeRepository.findByEmailCompany(myEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + myEmail));
-        if ("Manager".equals(myInfo.getType()) && emp.getManagerId() != myInfo.getId())
+        if ("Manager".equals(myInfo.getType()) && emp.getOrganization().getId() != myInfo.getId())
         {
             throw new AccessDeniedException("You do not have permission to modify this employee's points.");
         }
         else
         {
-            return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getManagerId());
+            return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getOrganization().getId());
         }
         
     }

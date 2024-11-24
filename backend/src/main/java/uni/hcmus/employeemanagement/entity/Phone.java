@@ -18,7 +18,7 @@ public class Phone extends MetaData{
 
 
     private String phone;
-    private String usage;
+    private String usage_type;
     @ManyToOne
     @JoinColumn(name="employee_id", nullable = false)
     private Employee employee;

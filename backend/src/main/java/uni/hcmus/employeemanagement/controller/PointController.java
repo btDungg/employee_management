@@ -1,4 +1,5 @@
 package uni.hcmus.employeemanagement.controller;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -61,17 +62,17 @@ public class PointController {
     //Trả về danh sách các nhân viên và số điểm của họ.
     //Đươờng dẫn: /api/points/employees/point
     @GetMapping("/employees/point")
-    public ResponseEntity<List<EmployeePointDto>> getEmployeeWithBaseRole(@RequestHeader("Authorization") String authorizationHeader) {
-        // Kiểm tra token hợp lệ
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+    public ResponseEntity<List<EmployeePointDto>> getEmployeeWithBaseRole(Principal principal) {
+        // Kiểm tra xem principal có null không
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
 
-        // Lấy token từ header Authorization (loại bỏ "Bearer ")
-        String token = authorizationHeader.substring(7);
+        // Lấy tên người dùng (username) từ Principal
+        String useEmail = principal.getName();
 
-        // Truyền token xuống service để lấy danh sách điểm nhân viên
-        List<EmployeePointDto> employeePoints = pointService.getEmployeePointsBasedOnRole(token);
+        // Truyền tên người dùng vào service để lấy danh sách điểm nhân viên
+        List<EmployeePointDto> employeePoints = pointService.getEmployeePointsBasedOnRole(useEmail);
         return ResponseEntity.ok(employeePoints);
     }
 

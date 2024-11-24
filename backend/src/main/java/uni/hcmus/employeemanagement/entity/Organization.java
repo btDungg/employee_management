@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "clazz_", discriminatorType = DiscriminatorType.STRING)
 public class Organization extends MetaData {
 
     @OneToOne

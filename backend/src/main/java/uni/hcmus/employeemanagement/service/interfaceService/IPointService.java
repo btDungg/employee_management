@@ -21,11 +21,11 @@ public interface IPointService {
     String increasePointsByManager(Employee employee, ModifyPointRequest modifyPoint);
     String decreasePoints(Employee employee, ModifyPointRequest modifyPoint);
     //Lấy danh sách điểm của nhân viên theo chức vụ hiêện tại của người xem
-    List<EmployeePointDto> getEmployeePointsBasedOnRole(String token);
+    List<EmployeePointDto> getEmployeePointsBasedOnRole(String userEmail);
 
     EmployeePointDto getEmployeePointDetailBasedOnRole(Long id,String token);
     // lay tat ca diem cua nhan vien
     List<EmployeePointDto> getAllEmployeePoints();
 
-    void autoAddPointsToEmployees();
+//    void autoAddPointsToEmployees();
 }

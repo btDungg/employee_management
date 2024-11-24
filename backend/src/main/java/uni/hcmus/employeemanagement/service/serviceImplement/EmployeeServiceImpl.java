@@ -70,7 +70,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 employee.getName(),
                 employee.getPoint(),
                 employee.getType(),
-                employee.getManagerId()
+                employee.getOrganization().getId()
         );
     }
 
@@ -78,7 +78,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
         List<Employee> employees = employeeRepository.findByManagerId(id);
         if (employees.isEmpty()) {
-            return Optional.empty();
+            throw new DataNotFoundException("Employees not found with managerID = " + id);
         }
         List<EmployeeDto> employeeDtos = employees.stream()
                 .map(employee -> new EmployeeDto(
@@ -86,7 +86,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         employee.getName(),
                         employee.getPoint(),
                         employee.getType(),
-                        employee.getManagerId()
+                        employee.getOrganization().getId()
                 ))
                 .toList();
         return Optional.of(employeeDtos);
