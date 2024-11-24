@@ -1,6 +1,8 @@
 package uni.hcmus.employeemanagement.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,19 +13,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActivityDetail extends MetaData {
-
-    @ManyToOne
-    @JoinColumn(name="activity_id", nullable = false)
-    private Activity activity;
+public class EmergencyContact extends MetaData {
+    private int priority;
+    private String preferredLanguage;
+    private String primaryContactInformation;
+    private String alternativeContactInformation;
 
     @ManyToOne
     @JoinColumn(name="employee_id", nullable = false)
     private Employee employee;
-
-    private String result;
-    private String evidence;
-    private int ranking;
-    private String status;
-
 }
