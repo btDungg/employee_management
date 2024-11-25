@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import uni.hcmus.employeemanagement.dto.Response.*;
 import uni.hcmus.employeemanagement.dto.Request.UserRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
+import uni.hcmus.employeemanagement.entity.Organization;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.EmailAlreadyTakenException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
+import uni.hcmus.employeemanagement.repository.OrganizationRepository;
 import uni.hcmus.employeemanagement.service.serviceImplement.EmployeeServiceImpl;
 import uni.hcmus.employeemanagement.utils.JwtTokenUtil;
 
@@ -35,6 +37,9 @@ public class AuthController {
 
     @Autowired
     private EmployeeServiceImpl employeeService;
+
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
@@ -91,12 +96,20 @@ public class AuthController {
             throw new EmailAlreadyTakenException("Email is already taken! " + userRequest.getEmail());
         }
 
+
+        if(organizationRepository.findById(userRequest.getOrganizationId()) == null) {
+            throw new DataNotFoundException("Organization not found with id = " + userRequest.getOrganizationId());
+        }
+
+
+
+
         Employee employee = new Employee();
         employee.setName(userRequest.getUsername());
-        employee.setManagerId(userRequest.getManagerId());
         employee.setType(userRequest.getType());
         employee.setEmailCompany(userRequest.getEmail());
         employee.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        employee.setOrganization(organizationRepository.findById(userRequest.getOrganizationId()).get());
         employeeRepository.save(employee);
         return ResponseEntity.ok(employee);
     }

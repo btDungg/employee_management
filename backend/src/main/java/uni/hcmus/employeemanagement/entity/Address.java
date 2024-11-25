@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Address extends MetaData {
     private String addressFull;
-    private String usage;
+    private String usage_type;
     private Date effectiveDate;
     @ManyToOne
     @JoinColumn(name="employee_id", nullable = false)

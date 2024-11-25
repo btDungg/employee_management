@@ -20,6 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "clazz_", discriminatorType = DiscriminatorType.STRING)
 public class Employee extends MetaData implements UserDetails {
 
     /** The email address of the employee as same as username to login. */
@@ -36,9 +37,6 @@ public class Employee extends MetaData implements UserDetails {
     /** The point value associated with the employee. */
     private int point;
 
-    /** The ID of the manager for the employee. */
-    @Column(name = "manager_id")
-    private long managerId;
 
     /** The type of employee. */
     private String type;
