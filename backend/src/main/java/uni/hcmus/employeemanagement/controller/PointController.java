@@ -47,12 +47,11 @@ public class PointController {
 //    }
 
     @GetMapping
-    public ResponseEntity<?> getMyPoints(@RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+    public ResponseEntity<?> getMyPoints(Principal principal) {
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
-        String token = authorizationHeader.substring(7);
-        String email = jwtTokenUtil.extractUserIdentifier(token);
+        String email = principal.getName();
         return ResponseEntity.ok(pointService.ViewMyPoint(email));
     }
 
@@ -118,13 +117,12 @@ public class PointController {
 
    
     @PostMapping("/search")
-	public ResponseEntity<EmployeeDto> searchEmployeeById(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchEmployeeRequest searchRequest)
+	public ResponseEntity<EmployeeDto> searchEmployeeById(Principal principal, @RequestBody SearchEmployeeRequest searchRequest)
 	{
-		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
-		String token = authorizationHeader.substring(7);
-		String email = jwtTokenUtil.extractUserIdentifier(token);
+		String email = principal.getName();
 		return ResponseEntity.ok(pointService.getEmployeeById(email, searchRequest));
 	}
     

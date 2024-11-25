@@ -20,7 +20,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name = "clazz_", discriminatorType = DiscriminatorType.STRING)
 public class Employee extends MetaData implements UserDetails {
 
     /** The email address of the employee as same as username to login. */

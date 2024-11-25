@@ -9,10 +9,12 @@ import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.dto.Response.*;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
+import uni.hcmus.employeemanagement.entity.Organization;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
 import uni.hcmus.employeemanagement.repository.ManagerRepository;
+import uni.hcmus.employeemanagement.repository.OrganizationRepository;
 import uni.hcmus.employeemanagement.repository.PointChangeRepository;
 
 import uni.hcmus.employeemanagement.entity.PointChange;
@@ -34,6 +36,8 @@ public class PointService implements IPointService {
 
     @Autowired
     private PointChangeRepository pointChangeRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -124,15 +128,17 @@ public class PointService implements IPointService {
     {
         Employee employee = employeeRepository.findByEmailCompany(email).orElse(null);
         if (employee != null) {
+            Organization organization = organizationRepository
+                    .findById(employee.getOrganization().getId())
+                    .orElse(null);
 
+            Long managerID= organization.getManager_id().getId();
             // Kiểm tra nếu đối tượng là Manager
             if ("Manager".equals(employee.getType())) {
-                Manager  manager = (Manager) employee;
-                return new ManagerPointDto(manager.getId(), manager.getName(), manager.getPoint(), manager.getType(), manager.getOrganization().getId(), manager.getBonusEmployeePoint());
-            }
-            else
-            {
-                return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), employee.getOrganization().getId());
+                Manager manager = managerRepository.findById(employee.getId()).orElse(null);
+                return new ManagerPointDto(manager.getId(), manager.getName(), manager.getPoint(), manager.getType(), managerID, manager.getBonusEmployeePoint());
+            } else {
+                return new EmployeePointDto(employee.getId(), employee.getName(), employee.getPoint(), employee.getType(), managerID);
             }
         }
         else
@@ -201,19 +207,41 @@ public class PointService implements IPointService {
 
     @Override
     public EmployeeDto getEmployeeById(String myEmail, SearchEmployeeRequest searchRequest)
-    {
-        Employee emp = employeeRepository.findById(searchRequest.getEmployeeId())
-                .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + searchRequest.getEmployeeId()));
+    {// Lấy thông tin người gọi API
         Employee myInfo = employeeRepository.findByEmailCompany(myEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + myEmail));
-        if ("Manager".equals(myInfo.getType()) && emp.getOrganization().getId() != myInfo.getId())
-        {
-            throw new AccessDeniedException("You do not have permission to modify this employee's points.");
-        }
-        else
-        {
+
+        // Lấy thông tin employee cần tìm
+        Employee emp = employeeRepository.findById(searchRequest.getEmployeeId())
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with employeeID " + searchRequest.getEmployeeId()));
+
+        // Trường hợp HR: Được phép lấy tất cả thông tin
+        if ("HR".equals(myInfo.getType())) {
             return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getOrganization().getId());
         }
+
+        // Trường hợp Manager: Kiểm tra emp thuộc organization do manager quản lý
+        if ("Manager".equals(myInfo.getType())) {
+            // Kiểm tra Manager có quản lý tổ chức của Employee hay không
+            Organization organization = organizationRepository.findById(emp.getOrganization().getId())
+                    .orElseThrow(() -> new DataNotFoundException("Organization not found with ID = " + emp.getOrganization().getId()));
+
+            if (organization.getManager_id() == null || !organization.getManager_id().getId().equals(myInfo.getId())) {
+                throw new AccessDeniedException("You do not have permission to access this employee's information.");
+            }
+            return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getOrganization().getId());
+        }
+
+        // Trường hợp Employee: Chỉ được phép lấy thông tin của chính họ
+        if ("Employee".equals(myInfo.getType())) {
+            if (!myInfo.getId().equals(emp.getId())) {
+                throw new AccessDeniedException("You can only access your own information.");
+            }
+            return new EmployeeDto(myInfo.getId(), myInfo.getName(), myInfo.getPoint(), myInfo.getType(), myInfo.getOrganization().getId());
+        }
+
+        // Nếu không thuộc loại nào, trả về ngoại lệ
+        throw new AccessDeniedException("Your role is not authorized to access this information.");
 
     }
 
