@@ -13,8 +13,11 @@ import java.util.Optional;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     // Find list employee by manager id in organization
-    @Query(value = "SELECT e.* FROM employee e JOIN organization o ON e.organization_id = o.id WHERE o.manager_id = ?1", nativeQuery = true)
-    List<Employee> findByManagerId(Long managerId);
+    @Query(value = "SELECT e.id, e.employee_name, e.point, e.type, o.id " +
+            "FROM employee e JOIN organization o ON e.organization_id = o.id " +
+            "WHERE o.manager_id = :managerId", nativeQuery = true)
+    List<Object[]> findByManagerId(@Param("managerId") Long managerId);
+
 
     // Find employee by email
     @Query("SELECT e FROM Employee e WHERE e.emailCompany = ?1")

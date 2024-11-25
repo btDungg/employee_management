@@ -23,7 +23,7 @@ public interface IPointService {
     //Lấy danh sách điểm của nhân viên theo chức vụ hiêện tại của người xem
     List<EmployeePointDto> getEmployeePointsBasedOnRole(String userEmail);
 
-    EmployeePointDto getEmployeePointDetailBasedOnRole(Long id,String token);
+    EmployeePointDto getEmployeePointDetailBasedOnRole(Long id,String userEmail);
     // lay tat ca diem cua nhan vien
     List<EmployeePointDto> getAllEmployeePoints();
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
@@ -11,6 +12,7 @@ import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
@@ -75,20 +77,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
-        List<Employee> employees = employeeRepository.findByManagerId(id);
+public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
+        List<Object[]> employees = employeeRepository.findByManagerId(id);
         if (employees.isEmpty()) {
             throw new DataNotFoundException("Employees not found with managerID = " + id);
         }
-        List<EmployeeDto> employeeDtos = employees.stream()
-                .map(employee -> new EmployeeDto(
-                        employee.getId(),
-                        employee.getName(),
-                        employee.getPoint(),
-                        employee.getType(),
-                        employee.getOrganization().getId()
-                ))
-                .toList();
-        return Optional.of(employeeDtos);
+        return Optional.of(employees.stream().map(employee -> new EmployeeDto(
+                (Long) employee[0],
+                (String) employee[1],
+                (Integer) employee[2],
+                (String) employee[3],
+                (Long) employee[4]
+        )).collect(Collectors.toList()));
     }
+
+
 }

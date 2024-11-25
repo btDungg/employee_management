@@ -80,12 +80,15 @@ public class PointController {
     //Trả về thông tin điểm của nhân viên.
     //Đường dẫn: /api/points/employee/{id}
     @GetMapping("/employee/{id}")
-    public ResponseEntity<EmployeePointDto> getDetailEmployeePoints(@PathVariable Long id, @RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+    public ResponseEntity<EmployeePointDto> getDetailEmployeePoints(@PathVariable Long id, Principal principal) {
+        // Kiểm tra xem principal có null không
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
-        String token = authorizationHeader.substring(7);
-        EmployeePointDto employeePoint = pointService.getEmployeePointDetailBasedOnRole(id, token);
+
+        // Lấy tên người dùng (username) từ Principal
+        String useEmail = principal.getName();
+        EmployeePointDto employeePoint = pointService.getEmployeePointDetailBasedOnRole(id, useEmail);
         return ResponseEntity.ok(employeePoint);
     }
 
