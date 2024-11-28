@@ -1,9 +1,9 @@
 package uni.hcmus.employeemanagement.service.interfaceService;
 
-import uni.hcmus.employeemanagement.dto.EmployeeDto;
-import uni.hcmus.employeemanagement.dto.EmployeePointDto;
-import uni.hcmus.employeemanagement.dto.ModifyPointRequest;
-import uni.hcmus.employeemanagement.dto.PointChangeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Response.PointChangeDto;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.entity.Employee;
 
@@ -21,11 +21,11 @@ public interface IPointService {
     String increasePointsByManager(Employee employee, ModifyPointRequest modifyPoint);
     String decreasePoints(Employee employee, ModifyPointRequest modifyPoint);
     //Lấy danh sách điểm của nhân viên theo chức vụ hiêện tại của người xem
-    List<EmployeePointDto> getEmployeePointsBasedOnRole(String token);
+    List<EmployeePointDto> getEmployeePointsBasedOnRole(String userEmail);
 
-    EmployeePointDto getEmployeePointDetailBasedOnRole(Long id,String token);
+    EmployeePointDto getEmployeePointDetailBasedOnRole(Long id,String userEmail);
     // lay tat ca diem cua nhan vien
     List<EmployeePointDto> getAllEmployeePoints();
 
-    void autoAddPointsToEmployees();
+//    void autoAddPointsToEmployees();
 }
