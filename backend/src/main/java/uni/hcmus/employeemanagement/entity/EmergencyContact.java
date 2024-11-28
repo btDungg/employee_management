@@ -14,9 +14,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmergencyContact extends MetaData {
+
     private int priority;
+
+    private String name;
+
+    private String relationship;
+
     private String preferredLanguage;
+
     private String primaryContactInformation;
+
     private String alternativeContactInformation;
 
     @ManyToOne
