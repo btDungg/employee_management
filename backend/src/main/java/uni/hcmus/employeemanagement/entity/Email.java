@@ -14,8 +14,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Email extends MetaData {
+
     private String email;
+
     private String usage_type;
+
     @ManyToOne
     @JoinColumn(name="employee_id", nullable = false)
     private Employee employee;

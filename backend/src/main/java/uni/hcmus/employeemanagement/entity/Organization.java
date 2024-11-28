@@ -18,6 +18,7 @@ public class Organization extends MetaData {
     @OneToOne
     @JoinColumn(name="manager_id", nullable = true)
     private Employee manager_id;
+
     private String name;
 
 }

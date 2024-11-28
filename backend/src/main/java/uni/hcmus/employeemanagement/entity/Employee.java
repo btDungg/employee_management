@@ -40,16 +40,19 @@ public class Employee extends MetaData implements UserDetails {
     /** The type of employee. */
     private String type;
 
+    /** The manager ID of the employee. */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    /** The manager ID of the employee. */
     @Override
     public String getPassword() {
         return password;
     }
 
+    /** The manager ID of the employee. */
     @Override
     public String getUsername() {
         return emailCompany;
@@ -61,25 +64,50 @@ public class Employee extends MetaData implements UserDetails {
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
 
+    // Personal Information
     private Boolean gender;
 
+    @Column(name = "date_of_birth")
     private Date DateOfBirth;
 
     private int age;
+
+    @Column(name = "country_of_birth")
     private String countryOfBirth;
+
+    @Column(name = "region_of_birth")
     private String regionOfBirth;
+
+    @Column(name = "city_of_birth")
     private String cityOfBirth;
+
     private String marital;
+
     private String religion;
+
     private String ethnicty;
+
+    @Column(name = "citizenship_status")
     private String citizenshipStatus;
+
+    @Column(name = "primary_nationality")
     private String primaryNationality;
-    private String job; //
+
+    // Job Information
+    private String job;
+
+    @Column(name = "business_title")
     private String businessTitle;
+
+    @Column(name = "job_profile")
     private String jobProfile;
-    private String employeType; //
+
+    @Column(name = "time_type")
     private String timeType;
-    private String Location;
-    private String hireDate;
+
+    private String location;
+
+    @Column(name = "hire_date")
+    private Date hireDate;
 
 }
