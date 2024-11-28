@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uni.hcmus.employeemanagement.entity.Address;
+import uni.hcmus.employeemanagement.entity.Email;
+import uni.hcmus.employeemanagement.entity.EmergencyContact;
+import uni.hcmus.employeemanagement.entity.Phone;
 
 import java.util.Date;
 import java.util.List;
@@ -61,16 +65,16 @@ public class EmployeeDetailInfoDto {
     private String primaryNationality;
 
     @JsonProperty("phones")
-    private List<String> phones;
+    private List<Phone> phones;
 
     @JsonProperty("emails")
-    private List<String> emails;
+    private List<Email> emails;
 
     @JsonProperty("addresses")
-    private List<String> addresses;
+    private List<Address> addresses;
 
     @JsonProperty("emergencyContacts")
-    private List<String> emergencyContacts;
+    private List<EmergencyContact> emergencyContacts;
 
     // Job Information
     @JsonProperty("job")
@@ -93,4 +97,7 @@ public class EmployeeDetailInfoDto {
 
     @JsonProperty("hireDate")
     private Date hireDate;
+
+    public EmployeeDetailInfoDto(Long id, String name, String type, Long id1, Boolean gender, Date dateOfBirth, int age, String countryOfBirth, String regionOfBirth, String cityOfBirth, String marital, String religion, String ethnicty, String citizenshipStatus, String primaryNationality, List<Phone> phones, List<Email> emails, List<Address> addresses, List<EmergencyContact> emergencyContacts, String job, String businessTitle, String jobProfile, String timeType, String location, Date hireDate) {
+    }
 }

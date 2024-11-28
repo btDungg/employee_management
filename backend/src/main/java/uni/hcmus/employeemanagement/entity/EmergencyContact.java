@@ -17,6 +17,10 @@ public class EmergencyContact extends MetaData {
 
     private int priority;
 
+    private String name;
+
+    private String relationship;
+
     private String preferredLanguage;
 
     private String primaryContactInformation;

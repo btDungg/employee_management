@@ -3,11 +3,12 @@ package uni.hcmus.employeemanagement.service.serviceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDetailInfoDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
-import uni.hcmus.employeemanagement.entity.Employee;
+import uni.hcmus.employeemanagement.entity.*;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
-import uni.hcmus.employeemanagement.repository.EmployeeRepository;
+import uni.hcmus.employeemanagement.repository.*;
 import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 
 import java.util.List;
@@ -25,6 +26,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private OtpServiceImpl otpServiceImpl;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PhoneRepository phoneRepository;
+    @Autowired
+    private EmailRepository emailRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private EmergencyContactRepository emergencyContactRepository;
 
     @Override
     public Employee addEmployee(Employee employee) {
@@ -77,7 +86,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
+    public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
         List<Object[]> employees = employeeRepository.findByManagerId(id);
         if (employees.isEmpty()) {
             throw new DataNotFoundException("Employees not found with managerID = " + id);
@@ -91,5 +100,42 @@ public Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id) {
         )).collect(Collectors.toList()));
     }
 
+    @Override
+    public EmployeeDetailInfoDto getEmployeePersonalInfoByEmail(String email) {
+        Employee employee = employeeRepository.findByEmailCompany(email)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
 
+        List<Phone> phones = phoneRepository.findByEmployeeId(employee.getId());
+        List<Email> emails = emailRepository.findByEmployeeId(employee.getId());
+        List<Address> addresses = addressRepository.findByEmployeeId(employee.getId());
+        List<EmergencyContact> emergencyContacts = emergencyContactRepository.findByEmployeeId(employee.getId());
+
+        return new EmployeeDetailInfoDto(
+                employee.getId(),
+                employee.getName(),
+                employee.getType(),
+                employee.getOrganization().getId(),
+                employee.getGender(),
+                employee.getDateOfBirth(),
+                employee.getAge(),
+                employee.getCountryOfBirth(),
+                employee.getRegionOfBirth(),
+                employee.getCityOfBirth(),
+                employee.getMarital(),
+                employee.getReligion(),
+                employee.getEthnicty(),
+                employee.getCitizenshipStatus(),
+                employee.getPrimaryNationality(),
+                phones,
+                emails,
+                addresses,
+                emergencyContacts,
+                employee.getJob(),
+                employee.getBusinessTitle(),
+                employee.getJobProfile(),
+                employee.getTimeType(),
+                employee.getLocation(),
+                employee.getHireDate()
+        );
+    }
 }
