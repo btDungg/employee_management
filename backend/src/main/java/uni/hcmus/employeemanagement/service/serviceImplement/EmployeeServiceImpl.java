@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDetailInfoDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
-import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeePublicDto_v1;
 import uni.hcmus.employeemanagement.entity.*;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.*;
@@ -69,7 +69,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
         existedEmployee.get().setPassword(passwordEncoder.encode(password));
         employeeRepository.save(existedEmployee.get());
     }
-    
+
     public EmployeeDto getEmployeeByEmail(String email) {
         // Tìm Employee dựa trên email công ty
         Employee employee = employeeRepository.findByEmailCompany(email)
@@ -137,5 +137,39 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 employee.getLocation(),
                 employee.getHireDate()
         );
+    }
+
+    @Override
+    public Optional<List<EmployeePublicDto_v1>> getEmployeeByManagerID_v1(String email) {
+        Employee manager = employeeRepository.findByEmailCompany(email)
+                .orElseThrow(() -> new DataNotFoundException("Manager not found with email = " + email));
+        if (!"Manager".equals(manager.getType())) {
+            throw new DataNotFoundException("User is not a manager!");
+        }
+        Long id = manager.getId();
+        List<Object[]> employees = employeeRepository.findByManagerID_v1(id);
+
+        if (employees.isEmpty()) {
+            throw new DataNotFoundException("Employees not found with managerID = " + id);
+        }
+        return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
+                (Long) employee[0],
+                (String) employee[1],
+                (int) employee[2],
+                (String) employee[3],
+                (String) employee[4],
+                (String) employee[5],
+                (Long) employee[6],
+                employee[7] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
+                (int) employee[8],
+                employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                (String) employee[10],
+                (String) employee[11],
+                employee[12] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null,
+                (String) employee[13],
+                (String) employee[14],
+                (String) employee[15],
+                id
+        )).collect(Collectors.toList()));
     }
 }
