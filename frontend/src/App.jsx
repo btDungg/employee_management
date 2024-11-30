@@ -13,6 +13,7 @@ import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import '../public/css/app.css';
+import PersonalInfoPage from "./pages/PersonalInfoPage.jsx";
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/view-other-points" element={<PrivateRoute element={ViewOtherPointsPage} />} />
                     <Route path="/point-history" element={<PrivateRoute element={PointHistoryPage} />} />
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
+                    <Route path="/personal-info" element={<PrivateRoute element={PersonalInfoPage} />} />
                 </Routes>
             </div>
         </div>

@@ -24,21 +24,18 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class PointChange extends MetaData {
 
-    /** The amount of points changed. */
+    @Column(nullable = false)
     private int amount;
 
-    /** The date when the change occurred. */
-    @Column(name = "change_date")
+    @Column(name = "change_date", nullable = false)
     private LocalDate changeDate;
 
-    /** The reason for the point change. */
     private String reason;
 
+    @ManyToOne
+    @JoinColumn(name = "received_id", nullable = false)
+    private Employee received;
 
-    @Column(name="received_id")
-    private Long receivedId;
-
-    /** The employee associated with the point change. */
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
