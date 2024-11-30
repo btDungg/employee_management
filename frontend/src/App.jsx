@@ -13,13 +13,15 @@ import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import '../public/css/app.css';
-import PersonalInfoPage from "./pages/PersonalInfoPage.jsx";
+import InfoNavigationPage from "./pages/InfoNavigationPage.jsx";
+import SummaryPage from "./pages/personal_information/SummaryPage.jsx";
 
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const location = useLocation();
     const showTopNavbar = ['/point-info', '/view-other-points', '/point-history', '/change-points'].includes(location.pathname);
+    const hideSidebar = location.pathname.includes('/personal-info/');
     const isLoggedIn = !!localStorage.getItem('token');
 
     const toggleSidebar = () => {
@@ -39,7 +41,7 @@ const App = () => {
 
     return (
         <div className="app">
-            {isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
+            {!hideSidebar && isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
             {showTopNavbar && <TopNavbarPoint />}
             <div className={`content ${isSidebarOpen ? "" : "expanded"}`} style={{ marginTop: showTopNavbar ? '60px' : '0' }}>
                 <Routes>
@@ -52,7 +54,8 @@ const App = () => {
                     <Route path="/view-other-points" element={<PrivateRoute element={ViewOtherPointsPage} />} />
                     <Route path="/point-history" element={<PrivateRoute element={PointHistoryPage} />} />
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
-                    <Route path="/personal-info" element={<PrivateRoute element={PersonalInfoPage} />} />
+                    <Route path="/personal-info-navigation" element={<PrivateRoute element={InfoNavigationPage} />} />
+                    <Route path="/personal-info/summary" element={<PrivateRoute element={SummaryPage} />} />
                 </Routes>
             </div>
         </div>

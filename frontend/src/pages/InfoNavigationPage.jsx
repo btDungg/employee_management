@@ -1,7 +1,7 @@
 import React from 'react';
 import InfoNavigation from "../components/InfoNavigation.jsx";
 
-const PersonalInfoPage = () => {
+const InfoNavigationPage = () => {
     return (
         <div className="container mt-5">
             <InfoNavigation></InfoNavigation>
@@ -9,4 +9,4 @@ const PersonalInfoPage = () => {
     );
 };
 
-export default PersonalInfoPage;
+export default InfoNavigationPage;

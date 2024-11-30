@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {/* Sidebar Links */}
         <Link to="/" className={location.pathname === "/" ? "active" : ""}>Trang chủ</Link>
-        <Link to="/personal-info" className={location.pathname === "/personal-info" ? "active" : ""}>Thông tin cá nhân</Link>
+        <Link to="/personal-info-navigation" className={location.pathname === "/personal-info-navigation" ? "active" : ""}>Thông tin cá nhân</Link>
         <Link to="/leave-request" className={location.pathname === "/leave-request" ? "active" : ""}>Yêu cầu nghỉ phép</Link>
         <Link to="/timesheet-update" className={location.pathname === "/timesheet-update" ? "active" : ""}>Cập nhật timesheet</Link>
         <Link to="/personal-activity" className={location.pathname === "/personal-activity" ? "active" : ""}>Hoạt động cá nhân</Link>
