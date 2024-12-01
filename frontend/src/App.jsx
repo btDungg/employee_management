@@ -12,9 +12,10 @@ import PointHistoryPage from './pages/PointHistoryPage.jsx';
 import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
-import '../public/css/app.css';
+import '../public/css/App.css';
 import InfoNavigationPage from "./pages/InfoNavigationPage.jsx";
 import SummaryPage from "./pages/personal_information/SummaryPage.jsx";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 const App = () => {
@@ -27,6 +28,12 @@ const App = () => {
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+    useEffect(() => {
+        if (location.pathname.includes('/personal-info/')) {
+            setIsSidebarOpen("");
+        }
+    }, [location]);
 
     useEffect(() => {
         const topNavbar = document.querySelector('.topnavbarpoint');
