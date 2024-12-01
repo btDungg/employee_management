@@ -141,3 +141,15 @@ export const getEmployeeById = async (id) => {
     }
 };
 
+export const getEmployeeDetailsByEmail = async () => {
+    try {
+        const response = await axios.get(`${EMPLOYEE_URL}/details`, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching employee details:', error);
+        throw error;
+    }
+};
+

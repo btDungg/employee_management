@@ -51,7 +51,7 @@
     font-size: 16px; /* Increase font size */
 }
 
-.btn {
+.btn-form {
     padding: 15px 30px; /* Increase padding */
     font-size: 18px; /* Increase font size */
     background-color: #2f5742;
@@ -62,7 +62,7 @@
     margin-left: 10px;
 }
 
-.btn:hover {
+.btn-form:hover {
     background-color: #86a089;
 }
 

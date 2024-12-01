@@ -31,6 +31,9 @@ public class EmployeeDetailInfoDto {
     private Long organizationId;
 
     // Personal Information
+    @JsonProperty("avatar")
+    private String avatar;
+
     @JsonProperty("gender")
     private Boolean gender;
 
@@ -98,6 +101,6 @@ public class EmployeeDetailInfoDto {
     @JsonProperty("hireDate")
     private Date hireDate;
 
-    public EmployeeDetailInfoDto(Long id, String name, String type, Long id1, Boolean gender, Date dateOfBirth, int age, String countryOfBirth, String regionOfBirth, String cityOfBirth, String marital, String religion, String ethnicty, String citizenshipStatus, String primaryNationality, List<Phone> phones, List<Email> emails, List<Address> addresses, List<EmergencyContact> emergencyContacts, String job, String businessTitle, String jobProfile, String timeType, String location, Date hireDate) {
+    public EmployeeDetailInfoDto(Long id, String name, String type, Long id1, String avatar, Boolean gender, Date dateOfBirth, int age, String countryOfBirth, String regionOfBirth, String cityOfBirth, String marital, String religion, String ethnicty, String citizenshipStatus, String primaryNationality, List<Phone> phones, List<Email> emails, List<Address> addresses, List<EmergencyContact> emergencyContacts, String job, String businessTitle, String jobProfile, String timeType, String location, Date hireDate) {
     }
 }

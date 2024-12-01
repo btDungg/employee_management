@@ -55,7 +55,7 @@ const HRChangePointsForm = ({ onCommit }) => {
                         onChange={(e) => setEmployeeId(e.target.value)}
                         required
                     />
-                    <button className="btn" type="button" onClick={handleSearch}>Tìm kiếm</button>
+                    <button className="btn-form" type="button" onClick={handleSearch}>Tìm kiếm</button>
                 </div>
                 {searchWarning && <div className="search-warning">{searchWarning}</div>}
                 <div className="form-group">
@@ -98,7 +98,7 @@ const HRChangePointsForm = ({ onCommit }) => {
                         required
                     />
                 </div>
-                <button className="btn" type="submit">Xác nhận</button>
+                <button className="btn-form" type="submit">Xác nhận</button>
             </form>
         </div>
     );

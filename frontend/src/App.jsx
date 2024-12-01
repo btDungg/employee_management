@@ -15,8 +15,14 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import '../public/css/App.css';
 import InfoNavigationPage from "./pages/InfoNavigationPage.jsx";
 import SummaryPage from "./pages/personal_information/SummaryPage.jsx";
+import OverviewPage from "./pages/personal_information/OverviewPage.jsx";
+import JobPage from "./pages/personal_information/JobPage.jsx";
+import CompensationPage from "./pages/personal_information/CompensationPage.jsx";
+import PersonalPage from "./pages/personal_information/PersonalPage.jsx";
+import PerformancePage from "./pages/personal_information/PerformancePage.jsx";
+import CareerPage from "./pages/personal_information/CareerPage.jsx";
+import FeedbackPage from "./pages/personal_information/FeedbackPage.jsx";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -63,6 +69,13 @@ const App = () => {
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
                     <Route path="/personal-info-navigation" element={<PrivateRoute element={InfoNavigationPage} />} />
                     <Route path="/personal-info/summary" element={<PrivateRoute element={SummaryPage} />} />
+                    <Route path="/personal-info/overview" element={<PrivateRoute element={OverviewPage} />} />
+                    <Route path="/personal-info/job" element={<PrivateRoute element={JobPage} />} />
+                    <Route path="/personal-info/compensation" element={<PrivateRoute element={CompensationPage} />} />
+                    <Route path="/personal-info/personal" element={<PrivateRoute element={PersonalPage} />} />
+                    <Route path="/personal-info/performance" element={<PrivateRoute element={PerformancePage} />} />
+                    <Route path="/personal-info/career" element={<PrivateRoute element={CareerPage} />} />
+                    <Route path="/personal-info/feedback" element={<PrivateRoute element={FeedbackPage} />} />
                 </Routes>
             </div>
         </div>

@@ -21,3 +21,15 @@
     background-color: #2f5742;
     color: white;
 }
+
+.nav-link {
+    color: white; /* Set default link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link:focus {
+    color: white; /* Keep link color black on hover */
+    text-decoration: none; /* Ensure underline is not added on hover */
+}

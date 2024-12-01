@@ -51,7 +51,7 @@ const HRPoints = ({ employeeId }) => {
                         <td>{employee.point}</td>
                         <td>
                             <button
-                                className="btn btn-primary"
+                                className="btn-form btn-primary"
                                 onClick={() => handleAddClick(employee)}
                             >
                                 Add
