@@ -36,5 +36,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT e FROM Employee e WHERE e.emailCompany = ?1")
     Optional<Employee> findByEmailCompany(String emailCompany);
 
+    @Query(value = "SELECT e.id, e.employee_name, e.email_company, e.gender, e.job, e.business_title, e.location, " +
+            "e.avatar, o.organization_name, e.phone, e.address " +
+            "FROM employee e JOIN organization o ON e.organization_id = o.id " +
+            "JOIN phone p ON e.id = p.employee_id " +
+            "JOIN address a ON e.id = a.employee_id " +
+            "WHERE e.id = :employeeId", nativeQuery = true)
+    List<Object[]> findTeamMate(@Param("employeeId") Long employeeId);
+
     Boolean existsByEmailCompany(String emailCompany);
 }

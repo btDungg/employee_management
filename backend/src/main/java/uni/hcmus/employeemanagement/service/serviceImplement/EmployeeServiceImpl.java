@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDetailInfoDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePublicDto_v1;
+import uni.hcmus.employeemanagement.dto.Response.TeamMateDto;
 import uni.hcmus.employeemanagement.entity.*;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.*;
@@ -172,5 +173,31 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 (String) employee[15],
                 id
         )).collect(Collectors.toList()));
+    }
+
+    @Override
+    public Optional<List<TeamMateDto>> getTeamMate(String email) {
+
+        Employee e = employeeRepository.findByEmailCompany(email)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
+
+        List<Object[]> employees = employeeRepository.findTeamMate(e.getId());
+        if (employees.isEmpty()) {
+            throw new DataNotFoundException("Employees not found with employeeID = " + e.getId());
+        }
+        return Optional.of(employees.stream().map(employee -> new TeamMateDto(
+                (Long) employee[0],
+                (String) employee[1],
+                (String) employee[2],
+                employee[3] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                (String) employee[4],
+                (String) employee[5],
+                (String) employee[6],
+                (String) employee[7],
+                (String) employee[8],
+                (String) employee[9],
+                (String) employee[10]
+        )).collect(Collectors.toList()));
+
     }
 }

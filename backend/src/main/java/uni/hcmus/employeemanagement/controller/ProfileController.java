@@ -21,6 +21,8 @@ public class ProfileController {
     @Autowired
     IEmployeeService employeeService;
 
+
+    //lay ra danh sach tat ca cac nhan vien trong team cua nguoi dang dang nhap
     @GetMapping("all")
     public ResponseEntity<List<EmployeePublicDto_v1>> getAllProfile(Principal principal) {
         String email = principal.getName();

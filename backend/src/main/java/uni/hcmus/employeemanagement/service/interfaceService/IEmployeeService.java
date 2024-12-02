@@ -3,6 +3,7 @@ package uni.hcmus.employeemanagement.service.interfaceService;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDetailInfoDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePublicDto_v1;
+import uni.hcmus.employeemanagement.dto.Response.TeamMateDto;
 import uni.hcmus.employeemanagement.entity.Employee;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface IEmployeeService {
     Optional<List<EmployeeDto>> getEmployeesByManagerid(Long id); //lay danh sach nhan vien theo id cua manager
 
     Optional<List<EmployeePublicDto_v1>> getEmployeeByManagerID_v1(String email); //lay danh sach nhan vien theo id cua manager
+
+    Optional<List<TeamMateDto>> getTeamMate(String email); //lay danh sach nhan vien cung team voi nguoi dang nhap
 }
