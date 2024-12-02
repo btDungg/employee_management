@@ -65,6 +65,8 @@ public class Employee extends MetaData implements UserDetails {
     private Organization organization;
 
     // Personal Information
+    private String avatar;
+
     private Boolean gender;
 
     @Column(name = "date_of_birth")

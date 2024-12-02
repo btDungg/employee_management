@@ -96,7 +96,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<EmployeeDetailInfoDto> getEmployeeDetailsByEmail(@RequestParam String email) {
+    public ResponseEntity<EmployeeDetailInfoDto> getEmployeeDetailsByEmail(Principal principal) {
+        String email = principal.getName();
         EmployeeDetailInfoDto employeeDetailInfo = employeeService.getEmployeePersonalInfoByEmail(email);
         return ResponseEntity.ok(employeeDetailInfo);
     }

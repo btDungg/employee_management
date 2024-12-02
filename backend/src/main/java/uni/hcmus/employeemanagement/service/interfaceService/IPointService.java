@@ -2,7 +2,7 @@ package uni.hcmus.employeemanagement.service.interfaceService;
 
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
-import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Request.ModifyPointRequest;
 import uni.hcmus.employeemanagement.dto.Response.PointChangeDto;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.entity.Employee;

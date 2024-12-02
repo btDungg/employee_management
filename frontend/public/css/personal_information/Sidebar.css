@@ -1,0 +1,35 @@
+.profile-icons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.icon-button {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 18px;
+}
+
+.icon-button:hover {
+    background-color: #2f5742;
+    color: white;
+}
+
+.nav-link {
+    color: white; /* Set default link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link:focus {
+    color: white; /* Keep link color black on hover */
+    text-decoration: none; /* Ensure underline is not added on hover */
+}

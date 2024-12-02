@@ -28,7 +28,7 @@
     margin-top: 20px;
 }
 
-.btn {
+.btn-form {
     padding: 10px;
     background-color: #2f5742;
     border: none;
@@ -38,6 +38,6 @@
     cursor: pointer;
 }
 
-.btn:hover {
+.btn-form:hover {
     background-color: #86a089;
 }

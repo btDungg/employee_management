@@ -1,10 +1,9 @@
 package uni.hcmus.employeemanagement.service.serviceImplement;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import uni.hcmus.employeemanagement.dto.Request.ModifyPointRequest;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.dto.Response.*;
 import uni.hcmus.employeemanagement.entity.Employee;

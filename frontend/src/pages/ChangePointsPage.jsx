@@ -76,8 +76,8 @@ const ChangePointsPage = () => {
                             <p>Số điểm tặng còn lại: {formData.bonusPoints - formData.changePoints}</p>
                         )}
                         <div className="popup-buttons">
-                            <button className="btn" onClick={handleConfirm}>Xác nhận</button>
-                            <button className="btn" onClick={handleCancel}>Hủy</button>
+                            <button className="btn-form" onClick={handleConfirm}>Xác nhận</button>
+                            <button className="btn-form" onClick={handleCancel}>Hủy</button>
                         </div>
                     </div>
                 </div>

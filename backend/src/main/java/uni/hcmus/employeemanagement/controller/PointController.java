@@ -1,10 +1,9 @@
 package uni.hcmus.employeemanagement.controller;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
-import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Request.ModifyPointRequest;
 import uni.hcmus.employeemanagement.dto.Response.PointChangeDto;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 import uni.hcmus.employeemanagement.utils.JwtTokenUtil;

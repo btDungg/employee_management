@@ -115,6 +115,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 employee.getName(),
                 employee.getType(),
                 employee.getOrganization().getId(),
+                employee.getAvatar(),
                 employee.getGender(),
                 employee.getDateOfBirth(),
                 employee.getAge(),
