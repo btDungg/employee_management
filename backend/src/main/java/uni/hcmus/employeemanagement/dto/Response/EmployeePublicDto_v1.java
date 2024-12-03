@@ -18,7 +18,6 @@ public class EmployeePublicDto_v1 {
     private String name;
     private int point;
     private String type;
-    private String empType;
     private String emailCompany;
     private Long organization;
     private LocalDate birthDate;
@@ -35,12 +34,12 @@ public class EmployeePublicDto_v1 {
     private String managerName;
     private Long manager;
 
-    public EmployeePublicDto_v1(long id, String name, String type, String empType, String emailCompany, Long organization,
+    public EmployeePublicDto_v1(long id, String name, String type, String emailCompany, Long organization,
                                 String gender, String avatar, String organizationName, String managerName, Long manager) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.empType = empType;
+
         this.emailCompany = emailCompany;
         this.organization = organization;
         this.gender = gender;

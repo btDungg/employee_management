@@ -161,30 +161,33 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     (int) employee[2],
                     (String) employee[3],
                     (String) employee[4],
-                    (String) employee[5],
-                    (Long) employee[6],
-                    employee[7] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
-                    (int) employee[8],
-                    employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (Long) employee[5],
+                    employee[6] != null ? ((java.sql.Timestamp) employee[6]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
+                    (int) employee[7],
+                    employee[8] != null && (Boolean) employee[8] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (String) employee[9],
                     (String) employee[10],
-                    (String) employee[11],
-                    employee[12] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null,
+                    employee[11] != null ? ((java.sql.Timestamp) employee[11]).toLocalDateTime().toLocalDate() : null,
+                    (String) employee[12],
                     (String) employee[13],
                     (String) employee[14],
                     (String) employee[15],
                     (String) employee[16],
-                    (String) employee[17],
                     managerName,
                     id
             )).collect(Collectors.toList()));
         }
         Long orgId = emp.getOrganization().getId();
-        Optional[] manager = employeeRepository.getManager(orgId);
+        Object[] manager = employeeRepository.getManager(orgId);
         if (manager.length == 0) {
             return Optional.empty();
         }
-        ManagerDto_v1 managerDto = new ManagerDto_v1((Long) manager[0].orElse(null), (String) manager[1].orElse(null));
+        Object[] managerDetails = (Object[]) manager[0]; // manager[0] là Object[], cần cast
+        Long managerId = (Long) managerDetails[0];      // Lấy phần tử đầu tiên (kiểu Long)
+        String managerName = (String) managerDetails[1];// Lấy phần tử thứ hai (kiểu String)
 
+
+        ManagerDto_v1 managerDto = new ManagerDto_v1(managerId, managerName);
 
         List<Object[]> employees = employeeRepository.findTeamMate(orgId);
         if (employees.isEmpty()) {
@@ -197,19 +200,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     (int) employee[2],
                     (String) employee[3],
                     (String) employee[4],
-                    (String) employee[5],
-                    (Long) employee[6],
-                    employee[7] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
-                    (int) employee[8],
-                    employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (Long) employee[5],
+                    employee[6] != null ? ((java.sql.Timestamp) employee[6]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
+                    (int) employee[7],
+                    employee[8] != null && (Boolean) employee[8] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (String) employee[9],
                     (String) employee[10],
-                    (String) employee[11],
-                    employee[12] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null,
+                    employee[11] != null ? ((java.sql.Timestamp) employee[11]).toLocalDateTime().toLocalDate() : null,
+                    (String) employee[12],
                     (String) employee[13],
                     (String) employee[14],
                     (String) employee[15],
                     (String) employee[16],
-                    (String) employee[17],
                     managerDto.getName(),
                     managerDto.getId()
             )).collect(Collectors.toList()));
@@ -220,11 +222,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     (String) employee[1],
                     (String) employee[3],
                     (String) employee[4],
-                    (String) employee[5],
-                    (Long) employee[6],
-                    employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (Long) employee[5],
+                    employee[8] != null && (Boolean) employee[8] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (String) employee[15],
                     (String) employee[16],
-                    (String) employee[17],
                     managerDto.getName(),
                     managerDto.getId()
             )).collect(Collectors.toList()));
@@ -232,29 +233,5 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     }
 
-//    @Override
-//    public Optional<List<TeamMateDto>> getTeamMate(String email) {
-//
-//        Employee e = employeeRepository.findByEmailCompany(email)
-//                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
-//
-//        List<Object[]> employees = employeeRepository.findTeamMate(e.getId());
-//        if (employees.isEmpty()) {
-//            throw new DataNotFoundException("Employees not found with employeeID = " + e.getId());
-//        }
-//        return Optional.of(employees.stream().map(employee -> new TeamMateDto(
-//                (Long) employee[0],
-//                (String) employee[1],
-//                (String) employee[2],
-//                employee[3] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
-//                (String) employee[4],
-//                (String) employee[5],
-//                (String) employee[6],
-//                (String) employee[7],
-//                (String) employee[8],
-//                (String) employee[9],
-//                (String) employee[10]
-//        )).collect(Collectors.toList()));
-//
-//    }
+
 }
