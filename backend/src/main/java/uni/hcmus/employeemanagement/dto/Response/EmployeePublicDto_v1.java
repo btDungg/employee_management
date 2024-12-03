@@ -30,7 +30,24 @@ public class EmployeePublicDto_v1 {
     private String religion;
     private String marital;
     private String ethnicity;
+    private String avatar;
+    private String organizationName;
+    private String managerName;
     private Long manager;
 
+    public EmployeePublicDto_v1(long id, String name, String type, String empType, String emailCompany, Long organization,
+                                String gender, String avatar, String organizationName, String managerName, Long manager) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.empType = empType;
+        this.emailCompany = emailCompany;
+        this.organization = organization;
+        this.gender = gender;
+        this.avatar = avatar;
+        this.organizationName = organizationName;
+        this.managerName = managerName;
+        this.manager = manager;
+    }
 
 }

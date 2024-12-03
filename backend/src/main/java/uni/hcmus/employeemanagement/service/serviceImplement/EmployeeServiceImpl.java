@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDetailInfoDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePublicDto_v1;
-import uni.hcmus.employeemanagement.dto.Response.TeamMateDto;
+import uni.hcmus.employeemanagement.dto.Response.ManagerDto_v1;
 import uni.hcmus.employeemanagement.entity.*;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.*;
@@ -142,62 +142,119 @@ public class EmployeeServiceImpl implements IEmployeeService {
     }
 
     @Override
-    public Optional<List<EmployeePublicDto_v1>> getEmployeeByManagerID_v1(String email) {
-        Employee manager = employeeRepository.findByEmailCompany(email)
+    public Optional<List<EmployeePublicDto_v1>> getTeamMate(String email) {
+        Employee emp = employeeRepository.findByEmailCompany(email)
                 .orElseThrow(() -> new DataNotFoundException("Manager not found with email = " + email));
-        if (!"Manager".equals(manager.getType())) {
-            throw new DataNotFoundException("User is not a manager!");
-        }
-        Long id = manager.getId();
-        List<Object[]> employees = employeeRepository.findByManagerID_v1(id);
+        Long id = emp.getId();
 
-        if (employees.isEmpty()) {
-            throw new DataNotFoundException("Employees not found with managerID = " + id);
+        if ("Manager".equals(emp.getType())) {
+            List<Object[]> employees = employeeRepository.findByManagerID_v1(id);
+            if (employees.isEmpty()) {
+//                throw new DataNotFoundException("Employees not found with managerID = " + id);
+                return Optional.empty();
+            }
+            String managerName = emp.getName();
+
+            return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
+                    (Long) employee[0],
+                    (String) employee[1],
+                    (int) employee[2],
+                    (String) employee[3],
+                    (String) employee[4],
+                    (String) employee[5],
+                    (Long) employee[6],
+                    employee[7] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
+                    (int) employee[8],
+                    employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (String) employee[10],
+                    (String) employee[11],
+                    employee[12] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null,
+                    (String) employee[13],
+                    (String) employee[14],
+                    (String) employee[15],
+                    (String) employee[16],
+                    (String) employee[17],
+                    managerName,
+                    id
+            )).collect(Collectors.toList()));
         }
-        return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
-                (Long) employee[0],
-                (String) employee[1],
-                (int) employee[2],
-                (String) employee[3],
-                (String) employee[4],
-                (String) employee[5],
-                (Long) employee[6],
-                employee[7] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
-                (int) employee[8],
-                employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
-                (String) employee[10],
-                (String) employee[11],
-                employee[12] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null,
-                (String) employee[13],
-                (String) employee[14],
-                (String) employee[15],
-                id
-        )).collect(Collectors.toList()));
+        Long orgId = emp.getOrganization().getId();
+        Optional[] manager = employeeRepository.getManager(orgId);
+        if (manager.length == 0) {
+            return Optional.empty();
+        }
+        ManagerDto_v1 managerDto = new ManagerDto_v1((Long) manager[0].orElse(null), (String) manager[1].orElse(null));
+
+
+        List<Object[]> employees = employeeRepository.findTeamMate(orgId);
+        if (employees.isEmpty()) {
+            return Optional.empty();
+        }
+        if ("HR".equals(emp.getType())) {
+            return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
+                    (Long) employee[0],
+                    (String) employee[1],
+                    (int) employee[2],
+                    (String) employee[3],
+                    (String) employee[4],
+                    (String) employee[5],
+                    (Long) employee[6],
+                    employee[7] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null, // Chuyển Timestamp -> LocalDate
+                    (int) employee[8],
+                    employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (String) employee[10],
+                    (String) employee[11],
+                    employee[12] != null ? ((java.sql.Timestamp) employee[7]).toLocalDateTime().toLocalDate() : null,
+                    (String) employee[13],
+                    (String) employee[14],
+                    (String) employee[15],
+                    (String) employee[16],
+                    (String) employee[17],
+                    managerDto.getName(),
+                    managerDto.getId()
+            )).collect(Collectors.toList()));
+
+        } else {
+            return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
+                    (Long) employee[0],
+                    (String) employee[1],
+                    (String) employee[3],
+                    (String) employee[4],
+                    (String) employee[5],
+                    (Long) employee[6],
+                    employee[9] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+                    (String) employee[16],
+                    (String) employee[17],
+                    managerDto.getName(),
+                    managerDto.getId()
+            )).collect(Collectors.toList()));
+        }
+
     }
 
-    @Override
-    public Optional<List<TeamMateDto>> getTeamMate(String email) {
-
-        Employee e = employeeRepository.findByEmailCompany(email)
-                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
-
-        List<Object[]> employees = employeeRepository.findTeamMate(e.getId());
-        if (employees.isEmpty()) {
-            throw new DataNotFoundException("Employees not found with employeeID = " + e.getId());
-        }
-        return Optional.of(employees.stream().map(employee -> new TeamMateDto(
-                (Long) employee[0],
-                (String) employee[1],
-                (String) employee[2],
-                employee[3] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
-                (String) employee[4],
-                (String) employee[5],
-                (String) employee[6],
-                (String) employee[7],
-                (String) employee[8],
-                (String) employee[9],
-                (String) employee[10]
-        )).collect(Collectors.toList()));
-
-    }
+//    @Override
+//    public Optional<List<TeamMateDto>> getTeamMate(String email) {
+//
+//        Employee e = employeeRepository.findByEmailCompany(email)
+//                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
+//
+//        List<Object[]> employees = employeeRepository.findTeamMate(e.getId());
+//        if (employees.isEmpty()) {
+//            throw new DataNotFoundException("Employees not found with employeeID = " + e.getId());
+//        }
+//        return Optional.of(employees.stream().map(employee -> new TeamMateDto(
+//                (Long) employee[0],
+//                (String) employee[1],
+//                (String) employee[2],
+//                employee[3] != null && (Boolean) employee[9] ? "Nam" : "Nữ", // Chuyển đổi Boolean thành Nam/Nữ
+//                (String) employee[4],
+//                (String) employee[5],
+//                (String) employee[6],
+//                (String) employee[7],
+//                (String) employee[8],
+//                (String) employee[9],
+//                (String) employee[10]
+//        )).collect(Collectors.toList()));
+//
+//    }
 }

@@ -25,8 +25,6 @@ public class TeamMateDto {
     private String avatar;
 
     private String organizationName;
-    private String phones;
-    private String addresses;
 
 //    public TeamMateDto(Long id, String name, String emailCompany, String gender, String job, String businessTitle, String location, String avatar, String organizationName, String phones, String addresses) {
 //        this.id = id;

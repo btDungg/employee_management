@@ -21,10 +21,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(value = "SELECT e.id,e.employee_name,e.point,e.type, e.employe_type, e.email_company," +
             "e.organization_id, e.date_of_birth, e.age, e.gender, " +
-            "e.primary_nationality, e.location, e.hire_date,e.religion, e.marital, e.ethnicty," +
+            "e.primary_nationality, e.location, e.hire_date,e.religion, e.marital, e.ethnicty, e.avatar, o.name," +
             "e.citizenship_status, e.city_of_birth, e.country_of_birth,  e.business_title, " +
             "e.job, e.job_profile, " +
-            "e.region_of_birth,  e.time_type " +
+            "e.region_of_birth,  e.time_type" +
             "AS organization_business_title " +
             "FROM employee e " +
             "JOIN organization o ON e.organization_id = o.id " +
@@ -36,13 +36,24 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT e FROM Employee e WHERE e.emailCompany = ?1")
     Optional<Employee> findByEmailCompany(String emailCompany);
 
-    @Query(value = "SELECT e.id, e.employee_name, e.email_company, e.gender, e.job, e.business_title, e.location, " +
-            "e.avatar, o.organization_name, e.phone, e.address " +
-            "FROM employee e JOIN organization o ON e.organization_id = o.id " +
-            "JOIN phone p ON e.id = p.employee_id " +
-            "JOIN address a ON e.id = a.employee_id " +
-            "WHERE e.id = :employeeId", nativeQuery = true)
-    List<Object[]> findTeamMate(@Param("employeeId") Long employeeId);
+    @Query(value = "SELECT e.id,e.employee_name,e.point,e.type, e.employe_type, e.email_company," +
+            "e.organization_id, e.date_of_birth, e.age, e.gender, " +
+            "e.primary_nationality, e.location, e.hire_date,e.religion, e.marital, e.ethnicty, e.avatar, o.name," +
+            "e.citizenship_status, e.city_of_birth, e.country_of_birth,  e.business_title, " +
+            "e.job, e.job_profile, " +
+            "e.region_of_birth,  e.time_type" +
+            "AS organization_business_title " +
+            "FROM employee e " +
+            "JOIN organization o ON e.organization_id = o.id " +
+            "WHERE e.organization_id = :organization_id", nativeQuery = true)
+    List<Object[]> findTeamMate(@Param("organization_id") Long orgId);
+
+
+    @Query(value = "SELECT e.id,e.employee_name" +
+            "FROM employee e " +
+            "JOIN organization o ON e.id = o.manager_id " +
+            "WHERE o.id = :organization_id", nativeQuery = true)
+    Optional[] getManager(@Param("organization_id") Long orgId);
 
     Boolean existsByEmailCompany(String emailCompany);
 }
