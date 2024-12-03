@@ -1,6 +1,9 @@
 package uni.hcmus.employeemanagement.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +21,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MetaData {
 
-    /** The unique identifier for the entity. */
+    /**
+     * The unique identifier for the entity.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

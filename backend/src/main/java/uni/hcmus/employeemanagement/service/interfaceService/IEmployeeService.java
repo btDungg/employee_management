@@ -25,5 +25,6 @@ public interface IEmployeeService {
 
     Optional<List<EmployeePublicDto_v1>> getTeamMate(String email); //lay danh sach nhan vien theo id cua manager
 
+    Optional<EmployeePublicDto_v1> getMyselft(String email, Long id); //lay thong tin cua nhan vien dang dang nhap
 
 }

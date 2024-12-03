@@ -13,6 +13,7 @@ import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -33,6 +34,12 @@ public class ProfileController {
     @GetMapping("{id}")
     public ResponseEntity<EmployeePublicDto_v1> getSummaryProfile(Principal principal, @PathVariable Long id) {
         String email = principal.getName();
+
+        // Kiểm tra profile cá nhân
+        Optional<EmployeePublicDto_v1> emp = employeeService.getMyselft(email, id);
+        if (emp.isPresent()) {
+            return ResponseEntity.ok(emp.get());
+        }
 
         List<EmployeePublicDto_v1> employees = employeeService.getTeamMate(email)
                 .orElseThrow(() -> new DataNotFoundException("No employees found."));

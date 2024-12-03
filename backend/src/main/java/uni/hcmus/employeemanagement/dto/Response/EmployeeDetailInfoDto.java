@@ -101,6 +101,41 @@ public class EmployeeDetailInfoDto {
     @JsonProperty("hireDate")
     private Date hireDate;
 
-    public EmployeeDetailInfoDto(Long id, String name, String type, Long id1, String avatar, Boolean gender, Date dateOfBirth, int age, String countryOfBirth, String regionOfBirth, String cityOfBirth, String marital, String religion, String ethnicty, String citizenshipStatus, String primaryNationality, List<Phone> phones, List<Email> emails, List<Address> addresses, List<EmergencyContact> emergencyContacts, String job, String businessTitle, String jobProfile, String timeType, String location, Date hireDate) {
+    public EmployeeDetailInfoDto(Long id, String name, String type, Long id1,
+                                 String avatar, Boolean gender,
+                                 Date dateOfBirth, int age, String countryOfBirth,
+                                 String regionOfBirth, String cityOfBirth, String marital,
+                                 String religion, String ethnicty, String citizenshipStatus,
+                                 String primaryNationality, List<Phone> phones, List<Email> emails,
+                                 List<Address> addresses, List<EmergencyContact> emergencyContacts,
+                                 String job, String businessTitle, String jobProfile,
+                                 String timeType, String location, Date hireDate) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.organizationId = id1;
+        this.avatar = avatar;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.age = age;
+        this.countryOfBirth = countryOfBirth;
+        this.regionOfBirth = regionOfBirth;
+        this.cityOfBirth = cityOfBirth;
+        this.marital = marital;
+        this.religion = religion;
+        this.ethnicity = ethnicty;
+        this.citizenshipStatus = citizenshipStatus;
+        this.primaryNationality = primaryNationality;
+        this.phones = phones;
+        this.emails = emails;
+        this.addresses = addresses;
+        this.emergencyContacts = emergencyContacts;
+        this.job = job;
+        this.businessTitle = businessTitle;
+        this.jobProfile = jobProfile;
+        this.timeType = timeType;
+        this.location = location;
+        this.hireDate = hireDate;
+
     }
 }
