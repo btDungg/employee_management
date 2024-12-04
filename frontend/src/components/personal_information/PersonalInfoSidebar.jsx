@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import '../../../public/css/personal_information/Sidebar.css';
 import { logout } from "../../apis/api.js";
 
-const Sidebar = ({ employee }) => {
+const PersonalInfoSidebar = ({ employee }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -14,7 +14,7 @@ const Sidebar = ({ employee }) => {
             console.error('Đăng xuất thất bại:', error);
         }
     };
-    console.log('Employee data in Sidebar:', employee);
+
     const handleHomeClick = () => {
         navigate('/');
     };
@@ -66,4 +66,4 @@ const Sidebar = ({ employee }) => {
     );
 };
 
-export default Sidebar;
+export default PersonalInfoSidebar;

@@ -1,25 +1,29 @@
 import React from 'react';
 
 const Summary = ({ employee }) => {
+    if (!employee) {
+        return <p>Loading employee details...</p>;
+    }
+
     return (
         <div className="content bg-white">
             <div className="row pt-4">
                 {/* Header Section */}
                 <div className="col-md-6 mb-4">
                     <h6>Position Title</h6>
-                    <p>{employee?.businessTitle || "N/A"}</p>
+                    <p>{employee.businessTitle || "N/A"}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                     <h6>Location</h6>
-                    <p>{employee?.location || "N/A"}</p>
+                    <p>{employee.location || "N/A"}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                     <h6>Manager</h6>
-                    <p>{employee?.managerName}</p>
+                    <p>{employee.managerName || "N/A"}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                     <h6>Organization</h6>
-                    <p>{employee?.organizationName}</p>
+                    <p>{employee.organizationName || "N/A"}</p>
                 </div>
             </div>
 

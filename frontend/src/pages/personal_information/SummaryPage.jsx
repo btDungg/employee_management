@@ -4,15 +4,14 @@ import { getEmployeeDetailsByEmail } from "../../apis/api.js";
 import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 
 const SummaryPage = () => {
-    const [employee, setEmployee] = useState(null); // State to store employee data
-    const [loading, setLoading] = useState(true);  // State to handle loading
-    const [error, setError] = useState(null);      // State to handle errors
+    const [employee, setEmployee] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchEmployee = async () => {
             try {
                 const data = await getEmployeeDetailsByEmail();
-                console.log('Fetched employee data:', data); // Check the fetched data
                 setEmployee(data);
             } catch (err) {
                 setError("Failed to fetch employee details");
@@ -27,12 +26,7 @@ const SummaryPage = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
-    return (
-        <div>
-            <Summary employee={employee} />
-        </div>
-    );
+    return <Summary employee={employee} />;
 };
 
-// Pass the employee prop to WithSidebar HOC
 export default WithSidebar(SummaryPage);
