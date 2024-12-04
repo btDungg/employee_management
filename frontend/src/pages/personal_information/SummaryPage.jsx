@@ -14,7 +14,7 @@ const SummaryPage = () => {
                 const data = await getEmployeeDetailsByEmail();
                 setEmployee(data);
             } catch (err) {
-                setError("Failed to fetch employee details");
+                setError("Không thể lấy thông tin nhân viên.");
             } finally {
                 setLoading(false);
             }
@@ -23,10 +23,10 @@ const SummaryPage = () => {
         fetchEmployee();
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <p>Đang tải...</p>;
     if (error) return <p>{error}</p>;
 
-    return <Summary employee={employee} />;
+    return <WithSidebar WrappedComponent={Summary} employee={employee} />;
 };
 
-export default WithSidebar(SummaryPage);
+export default SummaryPage;

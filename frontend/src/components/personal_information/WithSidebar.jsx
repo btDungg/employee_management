@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PersonalInfoSidebar from './PersonalInfoSidebar.jsx';
 
-const WithSidebar = (WrappedComponent) => {
-    return (props) => {
-        const [employee, setEmployee] = useState(null);
-
-        useEffect(() => {
-            console.log('Employee prop received in WithSidebar:', props.employee);
-
-            if (props.employee) {
-                setEmployee(props.employee);
-            } else {
-                console.warn('No employee prop received in WithSidebar.');
-            }
-        }, [props.employee]);
-
-        return (
-            <div className="container-fluid">
-                <div className="row">
-                    <PersonalInfoSidebar employee={employee} />
-                    <div className="col-8">
-                        <WrappedComponent {...props} employee={employee} />
-                    </div>
+const WithSidebar = ({ WrappedComponent, employee }) => {
+    return (
+        <div className="container-fluid">
+            <div className="row">
+                {/* Truyền employee vào PersonalInfoSidebar */}
+                <PersonalInfoSidebar employee={employee} />
+                <div className="col-8">
+                    {/* Truyền employee vào component con */}
+                    <WrappedComponent employee={employee} />
                 </div>
             </div>
-        );
-    };
+        </div>
+    );
 };
 
 export default WithSidebar;

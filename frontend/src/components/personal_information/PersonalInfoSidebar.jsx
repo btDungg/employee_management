@@ -23,9 +23,9 @@ const PersonalInfoSidebar = ({ employee }) => {
         <div className="col-4 sidebar d-flex flex-column justify-content-between">
             <div>
                 <div className="profile-section text-center py-4">
-                    <h5>{employee?.name || "Guest"}</h5>
-                    <p>{employee?.type || "N/A"}</p>
-                    <button>Action</button>
+                    {/* Hiển thị thông tin nhân viên */}
+                    <h5>{employee?.name || "Khách"}</h5>
+                    <p>{employee?.type || "Không xác định"}</p>
                     <div className="profile-icons">
                         <button className="icon-button me-2"><i className="fas fa-envelope"></i></button>
                         <button className="icon-button" onClick={() => navigate('/personal-info/members')}><i className="fas fa-users"></i></button>
