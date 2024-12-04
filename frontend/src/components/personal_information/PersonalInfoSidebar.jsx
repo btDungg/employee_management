@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import '../../../public/css/personal_information/Sidebar.css';
 import { logout } from "../../apis/api.js";
 
+
 const PersonalInfoSidebar = ({ employee }) => {
     const navigate = useNavigate();
 

@@ -4,10 +4,9 @@ import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 const PersonalPage = () => {
     return (
         <div className="content bg-white">
-          
-           {<WithSidebar/>}
+            <p>This is the Personal Page</p>
         </div>
     );
 };
 
-export default PersonalPage;
+export default WithSidebar(PersonalPage);
