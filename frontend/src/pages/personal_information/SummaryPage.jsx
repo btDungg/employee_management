@@ -10,5 +10,5 @@ const SummaryPage = () => {
     );
 };
 
-// Pass the employee prop to WithSidebar HOC
+
 export default SummaryPage;

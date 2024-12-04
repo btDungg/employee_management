@@ -1,0 +1,26 @@
+.navbar .flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nav-link {
+    color: #1d4ed8; /* Default text color */
+    transition: color 0.3s ease;
+    text-decoration: none;
+    margin-right: 20px; /* Add space between links */
+}
+
+.nav-link:last-child {
+    margin-right: 0; /* Remove margin from the last link */
+}
+
+.nav-link:hover {
+    color: #2f5742; /* Hover color */
+    text-decoration: none;
+}
+
+.nav-link:active {
+    color: #86a089; /* Active color */
+    text-decoration: none;
+}

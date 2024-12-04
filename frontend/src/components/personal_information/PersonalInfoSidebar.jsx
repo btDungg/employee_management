@@ -24,6 +24,10 @@ const PersonalInfoSidebar = ({ employee }) => {
         <div className="col-4 sidebar d-flex flex-column justify-content-between">
             <div>
                 <div className="profile-section text-center py-4">
+                    {/* Avatar */}
+                    <div className="avatar mb-3">
+                        <img src={employee?.avatarUrl || "/default-avatar.png"} alt="Avatar" className="rounded-circle" />
+                    </div>
                     {/* Hiển thị thông tin nhân viên */}
                     <h5>{employee?.name || "Khách"}</h5>
                     <p>{employee?.type || "Không xác định"}</p>
