@@ -107,6 +107,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
         Employee employee = employeeRepository.findByEmailCompany(email)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + email));
 
+        Long orgId = employee.getOrganization().getId();
+        String orgName = employee.getOrganization().getName();
+        Employee manager = employee.getOrganization().getManager_id();
+        Long managerId = manager != null ? manager.getId() : null;
+        String managerName = manager != null ? manager.getName() : null;
+
         List<Phone> phones = phoneRepository.findByEmployeeId(employee.getId());
         List<Email> emails = emailRepository.findByEmployeeId(employee.getId());
         List<Address> addresses = addressRepository.findByEmployeeId(employee.getId());
@@ -138,7 +144,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 employee.getJobProfile(),
                 employee.getTimeType(),
                 employee.getLocation(),
-                employee.getHireDate()
+                employee.getHireDate(),
+                orgName,
+                managerId,
+                managerName
         );
     }
 

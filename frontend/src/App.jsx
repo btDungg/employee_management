@@ -22,6 +22,8 @@ import PersonalPage from "./pages/personal_information/PersonalPage.jsx";
 import PerformancePage from "./pages/personal_information/PerformancePage.jsx";
 import CareerPage from "./pages/personal_information/CareerPage.jsx";
 import FeedbackPage from "./pages/personal_information/FeedbackPage.jsx";
+import MembersPage from './pages/personal_information/MembersPage.jsx';
+// import ProfilePage from './pages/personal_information/ProfilePage.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App = () => {
@@ -76,6 +78,8 @@ const App = () => {
                     <Route path="/personal-info/performance" element={<PrivateRoute element={PerformancePage} />} />
                     <Route path="/personal-info/career" element={<PrivateRoute element={CareerPage} />} />
                     <Route path="/personal-info/feedback" element={<PrivateRoute element={FeedbackPage} />} />
+                    <Route path="/personal-info/members" element={<PrivateRoute element={MembersPage} />} />
+                    {/* <Route path="/profile/:id" element={<PrivateRoute element={ProfilePage} />} /> */}
                 </Routes>
             </div>
         </div>

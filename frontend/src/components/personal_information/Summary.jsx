@@ -1,26 +1,25 @@
 import React from 'react';
-import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 
-const Summary = () => {
+const Summary = ({ employee }) => {
     return (
         <div className="content bg-white">
             <div className="row pt-4">
                 {/* Header Section */}
                 <div className="col-md-6 mb-4">
                     <h6>Position Title</h6>
-                    <p>Staff</p>
+                    <p>{employee?.businessTitle || "N/A"}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                     <h6>Location</h6>
-                    <p>Bình Dương</p>
+                    <p>{employee?.location || "N/A"}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                     <h6>Manager</h6>
-                    <p>Tên quản lý</p>
+                    <p>{employee?.managerName}</p>
                 </div>
                 <div className="col-md-6 mb-4">
-                    <h6>Company</h6>
-                    <p>Tên công ty</p>
+                    <h6>Organization</h6>
+                    <p>{employee?.organizationName}</p>
                 </div>
             </div>
 
@@ -65,4 +64,4 @@ const Summary = () => {
     );
 };
 
-export default WithSidebar(Summary);
+export default Summary;
