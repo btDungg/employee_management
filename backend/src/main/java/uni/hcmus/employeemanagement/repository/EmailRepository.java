@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface EmailRepository extends JpaRepository<Email, Long> {
     List<Email> findByEmployeeId(Long employeeId);
+
+
 }

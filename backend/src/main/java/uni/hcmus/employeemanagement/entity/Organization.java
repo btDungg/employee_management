@@ -1,6 +1,7 @@
 package uni.hcmus.employeemanagement.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +16,9 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Organization extends MetaData {
 
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name="manager_id", nullable = true)
+    @JoinColumn(name = "manager_id", nullable = true)
     private Employee manager_id;
 
     private String name;

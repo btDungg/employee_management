@@ -1,5 +1,7 @@
 package uni.hcmus.employeemanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -17,13 +19,14 @@ import java.util.Date;
 @NoArgsConstructor
 public class Address extends MetaData {
 
+    @JsonProperty("address")
     private String addressFull;
-
+    @JsonProperty("usage_type")
     private String usage_type;
-
+    @JsonProperty("effectiveDate")
     private Date effectiveDate;
-
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="employee_id", nullable = false)
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 }
