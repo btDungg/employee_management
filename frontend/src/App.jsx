@@ -78,7 +78,7 @@ const App = () => {
                                 <Route path="overview" element={<PrivateRoute element={OverviewPage} />} />
                                 <Route path="job" element={<PrivateRoute element={JobPage} />} />
                                 <Route path="compensation" element={<PrivateRoute element={CompensationPage} />} />
-                                <Route path="personal" element={<PrivateRoute element={PersonalPage} />} />
+                                <Route path="personal/*" element={<PrivateRoute element={PersonalPage} />} />
                                 <Route path="performance" element={<PrivateRoute element={PerformancePage} />} />
                                 <Route path="career" element={<PrivateRoute element={CareerPage} />} />
                                 <Route path="feedback" element={<PrivateRoute element={FeedbackPage} />} />

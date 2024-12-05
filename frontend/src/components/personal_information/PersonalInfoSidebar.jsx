@@ -21,7 +21,7 @@ const PersonalInfoSidebar = ({ employee }) => {
     };
 
     return (
-        <div className="col-4 sidebar d-flex flex-column justify-content-between">
+        <div className="sidebar d-flex flex-column justify-content-between">
             <div>
                 <div className="profile-section text-center py-4">
                     {/* Avatar */}

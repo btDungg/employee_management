@@ -53,6 +53,14 @@
     overflow-y: auto; /* Optional: Add vertical scrolling if content overflows */
 }
 
+.content-personal {
+    flex: 1;
+    padding: 0; /* Optional padding */
+    margin-left: 200px; /* Matches sidebar width */
+    transition: margin-left 0.3s ease;
+    overflow-y: auto;
+}
+
 .content.expanded {
     margin-left: 0; /* No margin when sidebar is hidden */
 }

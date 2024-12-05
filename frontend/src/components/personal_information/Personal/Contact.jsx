@@ -1,8 +1,8 @@
 import React from "react";
 
-const Personal = () => {
+const Contact = () => {
     return (
-        <div className="content p-6">
+        <div className="p-6">
             <h2 className="text-xl font-bold mb-4">Contact</h2>
             <div className="mb-6">
                 <h3 className="text-lg font-semibold">Home Contact Information</h3>
@@ -31,4 +31,4 @@ const Personal = () => {
     );
 };
 
-export default Personal;
+export default Contact;

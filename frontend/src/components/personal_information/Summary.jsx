@@ -6,7 +6,7 @@ const Summary = ({ employee }) => {
     }
 
     return (
-        <div className="content bg-white">
+        <div className="bg-white">
             <div className="row pt-4">
                 {/* Header Section */}
                 <div className="col-md-6 mb-4">

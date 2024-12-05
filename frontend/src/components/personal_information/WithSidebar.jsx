@@ -19,11 +19,8 @@ const WithSidebar = (WrappedComponent) => {
             <div className="container-fluid">
                 <div className="row">
                     <PersonalInfoSidebar employee={employee} />
-                    <div className="col-8 d-flex flex-column align-items-center">
-                        <div className="" >
-                            <PersonalInfoNavbar />
-                            <WrappedComponent {...props} employee={employee} />
-                        </div>
+                    <div className="d-flex flex-column align-items-center">
+                        <WrappedComponent {...props} employee={employee} />
                     </div>
                 </div>
             </div>
