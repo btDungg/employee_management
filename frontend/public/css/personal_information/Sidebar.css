@@ -33,3 +33,8 @@
     color: white; /* Keep link color black on hover */
     text-decoration: none; /* Ensure underline is not added on hover */
 }
+
+.avatar img {
+    width: 100px;
+    height: 100px;
+}

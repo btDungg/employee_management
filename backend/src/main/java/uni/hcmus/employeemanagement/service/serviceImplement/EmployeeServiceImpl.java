@@ -147,7 +147,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 employee.getHireDate(),
                 orgName,
                 managerId,
-                managerName
+                managerName,
+                employee.getEmailCompany()
         );
     }
 
