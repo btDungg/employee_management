@@ -8,7 +8,7 @@ const NavBar = ({ showNavBar, showLinks }) => {
     }
 
     return (
-        <div className="personal-navbar p-2">
+        <div className="personal-navbar p-2 mb-3">
             <div className="personal-navbar-flex text-sm">
                 {showLinks.contact && (
                     <NavLink

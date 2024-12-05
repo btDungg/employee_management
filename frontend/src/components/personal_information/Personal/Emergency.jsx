@@ -9,7 +9,7 @@ const Emergency = () => {
     return (
         <div className="p-6">
             <h2 className="text-xl font-bold mb-4">Emergency</h2>
-            <button className="mb-4 px-4 py-2 bg-blue-500 rounded">Edit</button>
+            <button className="mb-4 px-4 py-2 rounded">Edit</button>
 
             <div className="border p-4 rounded">
                 <table className="table table-bordered">
