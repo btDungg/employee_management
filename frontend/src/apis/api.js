@@ -3,6 +3,7 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8080/api/points';
 const AUTH_URL = 'http://localhost:8080/api/auth';
 const EMPLOYEE_URL = 'http://localhost:8080/api/employees';
+const LEAVE_REQUEST_URL = 'http://localhost:8080/api/leave-request';
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -141,3 +142,15 @@ export const getEmployeeById = async (id) => {
     }
 };
 
+export const sendLeaveRequest = async (leaveRequest) => {
+    try {
+        const response = await axios.post(
+            `${LEAVE_REQUEST_URL}/new`, leaveRequest,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error send leave request:', error);
+        throw error;
+    }
+};
