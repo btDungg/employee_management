@@ -1,0 +1,5 @@
+.coll-8 {
+    flex: 1; /* Đảm bảo col-8 chiếm hết không gian còn lại */
+    overflow: auto; /* Cho phép cuộn nội dung nếu cần */
+    height: auto; /* Đảm bảo không bị giới hạn chiều cao */
+}
