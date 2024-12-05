@@ -5,7 +5,7 @@ const Emergency = () => {
     const { employee } = useContext(EmployeeContext);
 
     const emergencyContacts = employee?.emergencyContacts || [];
-    console.log(emergencyContacts)
+    console.log("Emergency Contacts", emergencyContacts);
     return (
         <div className="p-6">
             <h2 className="text-xl font-bold mb-4">Emergency</h2>

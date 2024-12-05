@@ -83,6 +83,7 @@ const App = () => {
                                 <Route path="career" element={<PrivateRoute element={CareerPage} />} />
                                 <Route path="feedback" element={<PrivateRoute element={FeedbackPage} />} />
                                 <Route path="members" element={<PrivateRoute element={MembersPage} />} />
+                                <Route path=":id/teammates" element={<PrivateRoute element={SummaryPage} />} />
                             </Routes>
                         </EmployeeProvider>
                     } />

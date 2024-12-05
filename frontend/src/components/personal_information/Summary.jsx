@@ -1,5 +1,4 @@
 import React from 'react';
-import WithSidebar from "./WithSidebar.jsx";
 const Summary = ({ employee }) => {
     if (!employee) {
         return <div>No employee data available.</div>;
@@ -68,4 +67,4 @@ const Summary = ({ employee }) => {
     );
 };
 
-export default WithSidebar(Summary);
+export default Summary;
