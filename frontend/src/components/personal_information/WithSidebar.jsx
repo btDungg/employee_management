@@ -15,13 +15,10 @@ const WithSidebar = (WrappedComponent) => {
             return <div>{error}</div>;
         }
 
-        const currentEmployee = props.viewedEmployee || employee;
-
-        console.log("sidebar:",props.viewedEmployee);
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <PersonalInfoSidebar employee={currentEmployee} />
+                    <PersonalInfoSidebar employee={employee} />
                     <div className="d-flex flex-column align-items-center">
                         <WrappedComponent {...props} employee={employee} />
                     </div>

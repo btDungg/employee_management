@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../../../public/css/personal_information/MembersList.css";
-import { getTeamMates,getDetailTeamMates } from "../../apis/api.js";
+import WithSidebar from "./WithSidebar.jsx";
+import { getTeamMates } from "../../apis/api.js";
 
-const MembersList = ({ employee }) => {
+const MembersList = () => {
     const navigate = useNavigate();
     const [teamMates, setTeamMates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [teammateDetails, setTeammateDetails] = useState(null); // Thêm state để lưu chi tiết teammate
-
 
     // Fetch team mates on component mount
     useEffect(() => {
@@ -28,22 +27,8 @@ const MembersList = ({ employee }) => {
         fetchTeamMates();
     }, []);
 
-    const handleRowClick = async (id) => {
-        try {
-            const details = await getDetailTeamMates(id);
-            setTeammateDetails(details); // Lưu dữ liệu chi tiết vào state
-    
-            // Điều hướng đến trang chi tiết của thành viên và truyền state
-            navigate(`/personal-info/${id}/teammates`, {
-                state: {
-                    selectedEmployeeId: id,
-                    currentEmployee: employee,
-                    teammateDetails: details,  // Truyền dữ liệu teammate chi tiết vào state
-                }
-            });
-        } catch (err) {
-            console.error("Failed to fetch teammate details:", err);
-        }
+    const handleRowClick = (id) => {
+        navigate(`/profile/${id}`); // Điều hướng đến trang chi tiết của thành viên
     };
 
     if (loading) {
@@ -55,7 +40,7 @@ const MembersList = ({ employee }) => {
     }
 
     return (
-        <div>
+        <div >
             <h4>Team Mates:</h4>
             {teamMates && teamMates.length > 0 ? (
                 <table className="table table-bordered table-hover">
@@ -89,4 +74,4 @@ const MembersList = ({ employee }) => {
     );
 };
 
-export default MembersList;
+export default WithSidebar(MembersList);

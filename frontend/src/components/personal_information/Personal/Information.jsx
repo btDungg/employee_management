@@ -1,14 +1,10 @@
 import React, { useContext } from "react";
-import { EmployeeContext } from "../EmployeeProvider.jsx";  // Import context
+import { EmployeeContext } from "../EmployeeProvider.jsx";
 
-const Information = ({ emp }) => {
-    const { employee: contextEmployee } = useContext(EmployeeContext);  // Get employee from context
-    const employee = emp || contextEmployee;  // Use `emp` prop if available, otherwise fall back to context
+const Information = () => {
+    const { employee } = useContext(EmployeeContext);
 
-    console.log("emp", emp);
-   
-
-    // Map employee data for display
+    // Explicitly map desired keys and values
     const employeeData = [
         { label: "Name", value: employee?.name },
         { label: "Age", value: employee?.age },
@@ -32,7 +28,7 @@ const Information = ({ emp }) => {
                 <ul className="list-none">
                     {employeeData.map(
                         (item, index) =>
-                            item.value && (  // Only display non-null values
+                            item.value && ( // Ensure only non-null/undefined values are displayed
                                 <li key={index} className="py-2 border-b border-gray-300">
                                     <span className="font-bold">{item.label}: </span>
                                     <span>{item.value}</span>
