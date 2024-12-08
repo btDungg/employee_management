@@ -9,4 +9,4 @@ const FeedbackPage = () => {
     );
 };
 
-export default WithSidebar(FeedbackPage);
+export default FeedbackPage;

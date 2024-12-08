@@ -2,23 +2,23 @@ import React from 'react';
 import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 import Summary from "../../components/personal_information/Summary.jsx";
 import Contact from "../../components/personal_information/Personal/Contact.jsx";
-import PersonalInfoNavbar from "../../components/personal_information/PersonalInfoNavbar.jsx";
+import PersonalInfoNavbar from "../../components/personal_information/Bar/PersonalInfoNavbar.jsx";
 import {Route, Routes, Navigate} from "react-router-dom";
 import Emergency from "../../components/personal_information/Personal/Emergency.jsx";
 import Information from "../../components/personal_information/Personal/Information.jsx";
 
-const PersonalPage = () => {
+const PersonalPage = (props) => {
     return (
         <div className="content-personal bg-white">
             <PersonalInfoNavbar showNavBar={true} showLinks={{ contact: true, personalInfomation: true, emergency: true }} />
             <Routes>
-                <Route path="/" element={<Navigate to="contact" />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="personal-infomation" element={<Information />} />
-                <Route path="emergency" element={<Emergency />} />
+                <Route path="/" element={<Navigate to="contact"/>} />
+                <Route path="contact" element={<Contact employee={props.employee}/>} />
+                <Route path="personal-infomation" element={<Information employee={props.employee}/>} />
+                <Route path="emergency" element={<Emergency employee={props.employee}/>} />
             </Routes>
         </div>
     );
 };
 
-export default WithSidebar(PersonalPage);
+export default PersonalPage;

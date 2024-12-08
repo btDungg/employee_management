@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
-import { EmployeeContext } from "../EmployeeProvider.jsx";
+import React from "react";
 
-const Emergency = () => {
-    const { employee } = useContext(EmployeeContext);
-
+const Emergency = (props) => {
+    const employee = props.employee;
     const emergencyContacts = employee?.emergencyContacts || [];
     console.log(emergencyContacts)
     return (

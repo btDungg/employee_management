@@ -68,4 +68,4 @@ const Summary = ({ employee }) => {
     );
 };
 
-export default WithSidebar(Summary);
+export default Summary;

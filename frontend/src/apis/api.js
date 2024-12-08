@@ -165,6 +165,7 @@ export const getTeamMates = async () => {
         throw error;
     }
 }
+
 export const getDetailTeamMates = async (id) => {
     try {
         const response = await axios.get(`${PROFILE_URL}/${id}`, {

@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "../../../public/css/personal_information/Navbar.css";
+import "../../../../public/css/personal_information/Navbar.css";
 
 const NavBar = ({ showNavBar, showLinks }) => {
     if (!showNavBar) {

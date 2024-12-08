@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import MembersList from "../../components/personal_information/MembersList.jsx";
+import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 
-const MembersPage = () => {
+const MembersPage = (props) => {
 
     return (
         <div className="content bg-white">
             <div className="row">
-                <MembersList  />
+                <MembersList employee={props.employee}/>
             </div>
         </div>
     );

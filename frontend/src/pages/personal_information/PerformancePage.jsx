@@ -9,4 +9,4 @@ const PerformancePage = () => {
     );
 };
 
-export default WithSidebar(PerformancePage);
+export default PerformancePage;

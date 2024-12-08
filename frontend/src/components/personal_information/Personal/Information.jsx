@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
-import { EmployeeContext } from "../EmployeeProvider.jsx";
+import React from "react";
 
-const Information = () => {
-    const { employee } = useContext(EmployeeContext);
+const Information = (props) => {
+    const employee = props.employee;
 
     // Explicitly map desired keys and values
     const employeeData = [

@@ -9,4 +9,4 @@ const CompensationPage = () => {
     );
 };
 
-export default WithSidebar(CompensationPage);
+export default CompensationPage;

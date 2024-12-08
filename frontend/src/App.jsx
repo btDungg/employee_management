@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage.jsx';
 import EmployeePage from './pages/EmployeePage.jsx';
@@ -23,15 +23,17 @@ import PerformancePage from "./pages/personal_information/PerformancePage.jsx";
 import CareerPage from "./pages/personal_information/CareerPage.jsx";
 import FeedbackPage from "./pages/personal_information/FeedbackPage.jsx";
 import MembersPage from './pages/personal_information/MembersPage.jsx';
-// import ProfilePage from './pages/personal_information/ProfilePage.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import {EmployeeProvider} from "./components/personal_information/EmployeeProvider.jsx";
+import EmployeeProvider from "./components/personal_information/EmployeeProvider.jsx";
+import { UserProvider } from "./components/personal_information/UserProvider.jsx";
+import WithSidebar from "./components/personal_information/WithSidebar.jsx";
+import ProfileRoutes from "./ProfileRoutes.jsx";
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const location = useLocation();
     const showTopNavbar = ['/point-info', '/view-other-points', '/point-history', '/change-points'].includes(location.pathname);
-    const hideSidebar = location.pathname.includes('/personal-info/');
+    const hideSidebar = location.pathname.includes('/personal-info/') || location.pathname.includes('/profile/');
     const isLoggedIn = !!localStorage.getItem('token');
 
     const toggleSidebar = () => {
@@ -39,7 +41,7 @@ const App = () => {
     };
 
     useEffect(() => {
-        if (location.pathname.includes('/personal-info/')) {
+        if (location.pathname.includes('/personal-info/') || location.pathname.includes('/profile/')) {
             setIsSidebarOpen("");
         }
     }, [location]);
@@ -72,21 +74,21 @@ const App = () => {
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
                     <Route path="/personal-info-navigation" element={<PrivateRoute element={InfoNavigationPage} />} />
                     <Route path="/personal-info/*" element={
-                        <EmployeeProvider>
+                        <UserProvider>
                             <Routes>
-                                <Route path="summary" element={<PrivateRoute element={SummaryPage} />} />
-                                <Route path="overview" element={<PrivateRoute element={OverviewPage} />} />
-                                <Route path="job" element={<PrivateRoute element={JobPage} />} />
-                                <Route path="compensation" element={<PrivateRoute element={CompensationPage} />} />
-                                <Route path="personal/*" element={<PrivateRoute element={PersonalPage} />} />
-                                <Route path="performance" element={<PrivateRoute element={PerformancePage} />} />
-                                <Route path="career" element={<PrivateRoute element={CareerPage} />} />
-                                <Route path="feedback" element={<PrivateRoute element={FeedbackPage} />} />
-                                <Route path="members" element={<PrivateRoute element={MembersPage} />} />
+                                <Route path="summary" element={<PrivateRoute element={WithSidebar(SummaryPage, false)} />} />
+                                <Route path="overview" element={<PrivateRoute element={WithSidebar(OverviewPage, false)} />} />
+                                <Route path="job" element={<PrivateRoute element={WithSidebar(JobPage, false)} />} />
+                                <Route path="compensation" element={<PrivateRoute element={WithSidebar(CompensationPage, false)} />} />
+                                <Route path="personal/*" element={<PrivateRoute element={WithSidebar(PersonalPage, false)} />} />
+                                <Route path="performance" element={<PrivateRoute element={WithSidebar(PerformancePage, false)} />} />
+                                <Route path="career" element={<PrivateRoute element={WithSidebar(CareerPage, false)} />} />
+                                <Route path="feedback" element={<PrivateRoute element={WithSidebar(FeedbackPage, false)} />} />
+                                <Route path="members" element={<PrivateRoute element={WithSidebar(MembersPage, false)} />} />
                             </Routes>
-                        </EmployeeProvider>
+                        </UserProvider>
                     } />
-                    {/* <Route path="/profile/:id" element={<PrivateRoute element={ProfilePage} />} /> */}
+                    <Route path="/profile/:id/*" element={<ProfileRoutes />} />
                 </Routes>
             </div>
         </div>
@@ -95,8 +97,9 @@ const App = () => {
 
 const AppWrapper = () => (
     <Router>
-        <App />
+        <UserProvider>
+            <App />
+        </UserProvider>
     </Router>
 );
-
 export default AppWrapper;

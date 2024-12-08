@@ -9,4 +9,4 @@ const CareerPage = () => {
     );
 };
 
-export default WithSidebar(CareerPage);
+export default CareerPage;

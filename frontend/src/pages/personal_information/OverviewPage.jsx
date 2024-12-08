@@ -9,4 +9,4 @@ const OverviewPage = () => {
     );
 };
 
-export default WithSidebar(OverviewPage);
+export default OverviewPage;

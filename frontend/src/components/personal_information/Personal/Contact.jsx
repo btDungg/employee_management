@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
-import { EmployeeContext } from "../EmployeeProvider.jsx";
+import React from "react";
 
-const Contact = () => {
-    const { employee } = useContext(EmployeeContext);
-    console.log(employee)
+const Contact = (props) => {
+    const employee = props.employee;
     const homeAddresses = employee?.addresses?.filter(addr => addr.usage_type === "yes") || [];
     const phones = employee?.phones || [];
     const emails = employee?.emails || [];

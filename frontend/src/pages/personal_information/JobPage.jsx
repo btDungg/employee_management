@@ -9,4 +9,4 @@ const JobPage = () => {
     );
 };
 
-export default WithSidebar(JobPage);
+export default JobPage;
