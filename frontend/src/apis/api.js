@@ -154,3 +154,16 @@ export const sendLeaveRequest = async (leaveRequest) => {
         throw error;
     }
 };
+
+export const getListDayOffType = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-list-type`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error send leave request:', error);
+        throw error;
+    }
+};

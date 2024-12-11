@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import uni.hcmus.employeemanagement.dto.Request.LeaveRequestDto;
+import uni.hcmus.employeemanagement.dto.Response.DayOffTypeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Response.LeaveRequestResponseDto;
 import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
 import uni.hcmus.employeemanagement.entity.*;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
@@ -26,9 +28,22 @@ public class LeaveRequestController {
     private IEmployeeService employeeService;
     
     @PostMapping("/new")
-    public ResponseEntity<LeaveRequest> sendLeaveRequest(Principal principal, @RequestBody LeaveRequestDto leaveRequest) {
+    public ResponseEntity<LeaveRequestResponseDto> sendLeaveRequest(Principal principal, @RequestBody LeaveRequestDto leaveRequest) {
         String email = principal.getName();
-        LeaveRequest result = leaveRequestService.sendLeaveRequest(email, leaveRequest);
+        LeaveRequestResponseDto result = leaveRequestService.sendLeaveRequest(email, leaveRequest);
+
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+    
+    @GetMapping("/get-list-type")
+    public ResponseEntity<List<DayOffTypeDto>> getListDayOffType(Principal principal) {
+        String email = principal.getName();
+        List<DayOffTypeDto> result = leaveRequestService.getListDayOffType();
 
         if (result != null) {
             return ResponseEntity.ok(result);

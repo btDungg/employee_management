@@ -11,6 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface DayOffTypeRepository extends JpaRepository<DayOffType, Long> {
+	//Lấy DayOffTypeId từ tên DayOffType
 	@Query("SELECT e.id FROM DayOffType e where e.type = :typeName")
 	Long findByTypeName(@Param("typeName") String typeName);
+	
+	//Lấy danh sách các DayOffType hiện có
+	@Query("SELECT type FROM DayOffType")
+	List<String> findByTypeName();
 }

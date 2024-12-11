@@ -8,7 +8,7 @@ import uni.hcmus.employeemanagement.dto.Request.*;
 import uni.hcmus.employeemanagement.entity.*;
 
 public interface ILeaveRequestService {
-	//List<DayOffTypeDto> getListDayOffType();
-	LeaveRequest sendLeaveRequest(String MyEmail, LeaveRequestDto leaveRequest);
+	List<DayOffTypeDto> getListDayOffType();
+	LeaveRequestResponseDto sendLeaveRequest(String MyEmail, LeaveRequestDto leaveRequest);
 	//ApprovedLeaveRequestResponseDto approveLeaveRequest(String MyEmail, ApproveLeaveRequestDto approveRequest);
 }

@@ -25,8 +25,8 @@ public class LeaveRequest extends MetaData {
     // Liên kết tới bảng EmployeeDayOff
     @ManyToOne
     @JoinColumns({
-        @JoinColumn(name = "employee_id", referencedColumnName = "employee", insertable = false, updatable = false),
-        @JoinColumn(name = "day_off_type", referencedColumnName = "day_off_type", insertable = false, updatable = false)
+        @JoinColumn(name = "employee_id", referencedColumnName = "employee", insertable = true, updatable = true),
+        @JoinColumn(name = "day_off_type", referencedColumnName = "day_off_type", insertable = true, updatable = true)
     })
     private EmployeeDayOff employeeDayOff;
 

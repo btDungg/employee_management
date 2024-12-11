@@ -12,8 +12,8 @@ import PointHistoryPage from './pages/PointHistoryPage.jsx';
 import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
-import LeaveRequestForm from './pages/LeaveRequestForm.jsx';
-
+import LeaveRequestPage from './pages/LeaveRequestPage.jsx';
+import '../public/css/app.css';
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,7 +51,7 @@ const App = () => {
                     <Route path="/view-other-points" element={<PrivateRoute element={ViewOtherPointsPage} />} />
                     <Route path="/point-history" element={<PrivateRoute element={PointHistoryPage} />} />
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
-                    <Route path="/leave-request" element={<PrivateRoute element={LeaveRequestForm} />} />
+                    <Route path="/leave-request" element={<PrivateRoute element={LeaveRequestPage} />} />
                 </Routes>
             </div>
         </div>
