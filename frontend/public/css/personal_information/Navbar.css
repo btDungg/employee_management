@@ -8,7 +8,9 @@
     color: #1d4ed8; /* Default text color */
     transition: color 0.3s ease;
     text-decoration: none;
-    margin-right: 20px; /* Add space between links */
+    margin-right: 10px; /* Add space between links */
+    margin-left: 10px;
+    padding: 5px 10px; /* Add padding to maintain consistent spacing */
 }
 
 .personal-nav-link:last-child {
@@ -30,11 +32,10 @@
     border: 2px solid #2f5742; /* Add border with the specified color */
     padding: 2px;
     width: 1200px; /* Set the width to 100% */
-    max-width: 1200px; /* Set the maximum width */
 }
 
 .personal-nav-link.active {
     color: #2f5742; /* Active link color */
     font-weight: bold; /* Optional: make the active link bold */
+    padding: 5px 10px; /* Ensure padding is consistent with non-active state */
 }
-

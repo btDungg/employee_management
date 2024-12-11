@@ -23,7 +23,7 @@ const NavBar = ({ showNavBar, showLinks }) => {
                         to="/personal-info/personal/personal-infomation"
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        thông tin cá nhân
+                        Thông tin cá nhân
                     </NavLink>
                 )}
                 {showLinks.emergency && (
@@ -31,7 +31,7 @@ const NavBar = ({ showNavBar, showLinks }) => {
                         to="/personal-info/personal/emergency"
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        liên lạc khẩn cấp
+                        Liên lạc khẩn cấp
                     </NavLink>
                 )}
             </div>

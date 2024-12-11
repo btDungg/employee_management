@@ -78,8 +78,8 @@ const ProfileSidebar = ({ employee }) => {
                 </ul>
             </div>
             <div className="mt-4">
-                <button className="btn btn-primary w-100 mb-2" onClick={handleHomeClick}>Home</button>
-                <button className="btn btn-danger w-100" onClick={handleLogout}>Logout</button>
+                <button className="btn btn-primary w-100 mb-2" onClick={handleHomeClick}>Trang chủ</button>
+                <button className="btn btn-danger w-100" onClick={handleLogout}>Đăng xuất</button>
             </div>
         </div>
     );

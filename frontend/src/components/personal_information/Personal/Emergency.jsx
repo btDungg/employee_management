@@ -3,7 +3,7 @@ import React from "react";
 const Emergency = (props) => {
     const employee = props.employee;
     const emergencyContacts = employee?.emergencyContacts || [];
-    console.log(emergencyContacts)
+
     return (
         <div className="p-6">
             <h2 className="text-xl font-bold mb-4">Emergency</h2>
