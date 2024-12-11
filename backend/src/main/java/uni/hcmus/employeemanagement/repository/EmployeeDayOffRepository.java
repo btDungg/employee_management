@@ -16,4 +16,9 @@ public interface EmployeeDayOffRepository extends JpaRepository<EmployeeDayOff, 
 	EmployeeDayOff findByEmployeeIdAndDayOffType(
 			@Param("employeeId") Long employeeId,
 			@Param("dayOffType") Long dayOffType);
+	
+	@Query(value = "SELECT * from employee_day_off e WHERE e.employee = :employeeId", nativeQuery = true)
+	List<EmployeeDayOff> getRemainingDaysByEmployeeId(
+			@Param("employeeId") Long employeeId
+			);
 }

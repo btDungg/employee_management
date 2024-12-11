@@ -1,6 +1,4 @@
 .leave-request-form {
-
-   
     background-color: white;
     color: black;
     padding: 20px 80px 40px 80px; /* Increase padding */
@@ -68,9 +66,3 @@
     background-color: #86a089;
 }
 
-.search-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-}

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import uni.hcmus.employeemanagement.dto.Request.LeaveRequestDto;
 import uni.hcmus.employeemanagement.dto.Response.DayOffTypeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDayOffDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.LeaveRequestResponseDto;
 import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
@@ -40,11 +41,22 @@ public class LeaveRequestController {
         }
     }
     
+    @GetMapping("/get-my-day-off")
+    public ResponseEntity<List<EmployeeDayOffDto>> getMyDayOff(Principal principal) {
+        String email = principal.getName();
+        List<EmployeeDayOffDto> result = leaveRequestService.getMyDayOff(email);
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+    
     @GetMapping("/get-list-type")
     public ResponseEntity<List<DayOffTypeDto>> getListDayOffType(Principal principal) {
         String email = principal.getName();
         List<DayOffTypeDto> result = leaveRequestService.getListDayOffType();
-
         if (result != null) {
             return ResponseEntity.ok(result);
         }

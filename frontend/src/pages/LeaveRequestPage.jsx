@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import LeaveRequestForm from '../components/LeaveRequestForm';
 import NotificationPopup from '../components/NotificationPopup';
-import { sendLeaveRequest } from '../apis/api';
+import { getMyDayOff, sendLeaveRequest } from '../apis/api';
 import '../../public/css/Popup.css';
+import '../../public/css/LeaveRequestPage.css'
 
 const LeaveRequestPage = () => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [formData, setFormData] = useState({});
     const [notificationMessage, setNotificationMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
+    const [myDayOff, setMyDayOff] = useState([]);
 
+    useEffect(() => {
+        const fetchMyDayOff = async () => {
+            try {
+                const types = await getMyDayOff();
+                setMyDayOff(types); // Cập nhật danh sách vào state
+            } catch (error) {
+                console.error('Error fetching list my day-off: ', error);
+            }
+        };
+        fetchMyDayOff();
+    }, []);
 
     const handleCommit = (data) => {
         setFormData(data);
@@ -51,11 +64,35 @@ const LeaveRequestPage = () => {
 
     const handleCloseNotification = () => {
         setShowNotification(false);
+        window.location.reload();
     };
 
     return (
-        <div>
-            {<LeaveRequestForm onCommit={handleCommit}/>}
+        <div className="leave-request-page">
+            <div className="main-content">
+                <div className="form-container">
+                {<LeaveRequestForm onCommit={handleCommit} myDayOff={myDayOff}/>}
+                </div>
+                <div className="side-dialog">
+                    <h2>Số ngày nghỉ còn lại</h2>
+                    <table className="day-off-table">
+                        <thead>
+                            <tr>
+                                <th>Loại ngày nghỉ</th>
+                                <th>Số ngày còn lại</th>
+                            </tr>
+                        </thead>
+                <tbody>
+                    {myDayOff.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.typeName}</td>
+                            <td style={{ textAlign: 'center' }}>{item.remainingDays}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+                </div>
+            </div>
             {showConfirmation && (
                 <div className="popup-overlay">
                     <div className="popup-content">
@@ -63,6 +100,7 @@ const LeaveRequestPage = () => {
                         <p>Ngày bắt đầu: {formData.startDate}</p>
                         <p>Ngày kết thúc: {formData.endDate}</p>
                         <p>Loại ngày nghỉ: {formData.dayOffType}</p>
+                        <p></p>
                         <p>Lý do: {formData.reason}</p>
                         <div className="popup-buttons">
                             <button className="btn" onClick={handleConfirm}>Xác nhận</button>

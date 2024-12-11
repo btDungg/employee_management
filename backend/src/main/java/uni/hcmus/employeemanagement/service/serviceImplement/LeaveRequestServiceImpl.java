@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import uni.hcmus.employeemanagement.dto.Request.LeaveRequestDto;
 import uni.hcmus.employeemanagement.dto.Response.DayOffTypeDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDayOffDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
 import uni.hcmus.employeemanagement.dto.Response.LeaveRequestResponseDto;
@@ -102,4 +103,14 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
                 .collect(Collectors.toList());
 	}
 	
+	@Override
+	public List<EmployeeDayOffDto> getMyDayOff(String MyEmail)
+	{
+		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
+		List<EmployeeDayOff> listMyDayOff = employeeDayOffRepository.getRemainingDaysByEmployeeId(emp.getId());
+		return listMyDayOff.stream()
+                .map(myDayOff -> new EmployeeDayOffDto(myDayOff.getDay_off_type().getType(), myDayOff.getRemainingDays()))
+                .collect(Collectors.toList());
+	}
 }

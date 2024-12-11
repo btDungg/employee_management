@@ -1,0 +1,64 @@
+.leave-request-page {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.main-content {
+    display: flex;
+    gap: 50px; /* Khoảng cách giữa form và hộp thoại */
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.form-container {
+    position: relative;
+    width: 100%;
+}
+
+.side-dialog {
+    margin-top: 40px;
+    position: relative;
+    width: 500px; /* Cố định chiều rộng của hộp thoại */
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #86a089; /* Add border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.side-dialog h2 {
+    margin-bottom:  30px; /* Add some space below the title */
+    color: #333; /* Change color if needed */
+    text-align-last: center;
+}
+
+.day-off-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.day-off-table th,
+.day-off-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.day-off-table th {
+    background-color: #2f5742;
+    color: white;
+    font-weight: bold;
+}
+
+.day-off-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.day-off-table tr:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
