@@ -57,8 +57,7 @@
     flex: 1;
     padding: 0; /* Optional padding */
     margin-left: 200px; /* Matches sidebar width */
-    transition: margin-left 0.3s ease;
-    overflow-y: auto;
+    width: 1325px;
 }
 
 .content.expanded {

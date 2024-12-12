@@ -4,7 +4,7 @@ import Summary from "../../components/personal_information/Summary.jsx";
 const SummaryPage = ({employee}) => {
 
     return (
-        <div className="content bg-white">
+        <div className="content-personal">
             <Summary employee={employee}/>
         </div>
     );

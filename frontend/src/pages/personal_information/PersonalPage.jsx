@@ -9,7 +9,7 @@ import Information from "../../components/personal_information/Personal/Informat
 
 const PersonalPage = (props) => {
     return (
-        <div className="content-personal bg-white">
+        <div className="content-personal">
             <PersonalInfoNavbar showNavBar={true} showLinks={{ contact: true, personalInfomation: true, emergency: true }} />
             <Routes>
                 <Route path="/" element={<Navigate to="contact"/>} />

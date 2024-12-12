@@ -1,18 +1,21 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "../../../../public/css/personal_information/Navbar.css";
 
 const NavBar = ({ showNavBar, showLinks }) => {
+    const location = useLocation();
+    const basePath = location.pathname.includes('/profile') ? location.pathname.split('/personal')[0] : '/personal-info';
+
     if (!showNavBar) {
         return null;
     }
 
     return (
-        <div className="personal-navbar p-2 mb-3">
-            <div className="personal-navbar-flex text-sm">
+        <div className="personal-navbar p-2 mb-3 mt-3">
+            <div className="personal-na vbar-flex text-sm">
                 {showLinks.contact && (
                     <NavLink
-                        to="/personal-info/personal/contact"
+                        to={`${basePath}/personal/contact`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Thông tin liên lạc
@@ -20,7 +23,7 @@ const NavBar = ({ showNavBar, showLinks }) => {
                 )}
                 {showLinks.personalInfomation && (
                     <NavLink
-                        to="/personal-info/personal/personal-infomation"
+                        to={`${basePath}/personal/personal-infomation`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Thông tin cá nhân
@@ -28,7 +31,7 @@ const NavBar = ({ showNavBar, showLinks }) => {
                 )}
                 {showLinks.emergency && (
                     <NavLink
-                        to="/personal-info/personal/emergency"
+                        to={`${basePath}/personal/emergency`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Liên lạc khẩn cấp

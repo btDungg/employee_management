@@ -21,7 +21,7 @@ const WithSidebar = (WrappedComponent, isProfile) => {
             }
 
             return (
-                <div className="container-fluid">
+                <div className="bg-body-secondary">
                     <div className="row">
                         <PersonalInfoSidebar employee={user} />
                         <div className="d-flex flex-column align-items-center">
