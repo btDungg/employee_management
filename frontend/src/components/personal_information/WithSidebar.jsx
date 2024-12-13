@@ -21,12 +21,10 @@ const WithSidebar = (WrappedComponent, isProfile) => {
             }
 
             return (
-                <div className="bg-body-secondary">
-                    <div className="row">
-                        <PersonalInfoSidebar employee={user} />
-                        <div className="d-flex flex-column align-items-center">
-                            <WrappedComponent {...props} employee={user} />
-                        </div>
+                <div className="row">
+                    <PersonalInfoSidebar employee={user} />
+                    <div className="d-flex flex-column align-items-center">
+                        <WrappedComponent {...props} employee={user} />
                     </div>
                 </div>
             );
@@ -45,12 +43,10 @@ const WithSidebar = (WrappedComponent, isProfile) => {
             }
 
             return (
-                <div className="container-fluid">
-                    <div className="row">
-                        <ProfileSidebar employee={employee} />
-                        <div className="d-flex flex-column align-items-center">
-                            <WrappedComponent {...props} employee={employee} />
-                        </div>
+                <div className="row">
+                    <ProfileSidebar employee={employee} />
+                    <div className="d-flex flex-column align-items-center ">
+                        <WrappedComponent {...props} employee={employee} />
                     </div>
                 </div>
             );

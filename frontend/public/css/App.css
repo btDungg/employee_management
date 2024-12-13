@@ -54,10 +54,14 @@
 }
 
 .content-personal {
-    flex: 1;
     padding: 0; /* Optional padding */
     margin-left: 200px; /* Matches sidebar width */
-    width: 1325px;
+    width: 1320px;
+}
+
+.overflow-hidden-horizontal {
+    overflow-x: hidden; /* Ẩn scrollbar ngang */
+    overflow-y: auto;   /* Nếu muốn cho cuộn dọc */
 }
 
 .content.expanded {

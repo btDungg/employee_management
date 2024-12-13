@@ -52,10 +52,12 @@ const App = () => {
             {!hideSidebar && isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
             {showTopNavbar && <TopNavbarPoint />}
             {location.pathname.includes('/personal-info') || location.pathname.includes('/profile') ? (
-                <Routes>
-                    <Route path="/personal-info/*" element={<PersonalRoutes />} />
-                    <Route path="/profile/:id/*" element={<ProfileRoutes />} />
-                </Routes>
+                <div className="overflow-hidden-horizontal bg-body-secondary">
+                    <Routes>
+                        <Route path="/personal-info/*" element={<PersonalRoutes />} />
+                        <Route path="/profile/:id/*" element={<ProfileRoutes />} />
+                    </Routes>
+                </div>
             ) : (
                 <div className={`content ${isSidebarOpen ? "" : "expanded"}`} style={{ marginTop: showTopNavbar ? '60px' : '0' }}>
                     <Routes>

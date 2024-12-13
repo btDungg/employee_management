@@ -5,11 +5,10 @@ const Emergency = (props) => {
     const emergencyContacts = employee?.emergencyContacts || [];
 
     return (
-        <div className="p-6">
-            <h2 className="text-xl font-bold mb-4">Emergency</h2>
-            <button className="mb-4 px-4 py-2 rounded">Edit</button>
-
-            <div className="border p-4 rounded">
+        <div className="content-under-navbar bg-white rounded-1">
+            <div className="p-3">
+                <h2 className="text-xl font-bold mb-4">Emergency</h2>
+                <button className="mb-4 px-4 py-2 rounded">Edit</button>
                 <table className="table table-bordered">
                     <thead>
                     <tr>

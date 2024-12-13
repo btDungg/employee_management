@@ -11,12 +11,12 @@ const NavBar = ({ showNavBar, showLinks }) => {
     }
 
     return (
-        <div className="personal-navbar p-2 mb-3 mt-3">
-            <div className="personal-na vbar-flex text-sm">
+        <div className="personal-navbar p-2 mb-3 mt-3 text-muted bg-white rounded-1">
+            <div className="personal-navbar-flex text-sm">
                 {showLinks.contact && (
                     <NavLink
                         to={`${basePath}/personal/contact`}
-                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                        className={({ isActive } ) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Thông tin liên lạc
                     </NavLink>

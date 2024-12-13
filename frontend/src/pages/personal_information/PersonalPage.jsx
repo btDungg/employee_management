@@ -1,6 +1,4 @@
 import React from 'react';
-import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
-import Summary from "../../components/personal_information/Summary.jsx";
 import Contact from "../../components/personal_information/Personal/Contact.jsx";
 import PersonalInfoNavbar from "../../components/personal_information/Bar/PersonalInfoNavbar.jsx";
 import {Route, Routes, Navigate} from "react-router-dom";
@@ -9,7 +7,7 @@ import Information from "../../components/personal_information/Personal/Informat
 
 const PersonalPage = (props) => {
     return (
-        <div className="content-personal">
+        <div className="content-personal bg-body-secondary">
             <PersonalInfoNavbar showNavBar={true} showLinks={{ contact: true, personalInfomation: true, emergency: true }} />
             <Routes>
                 <Route path="/" element={<Navigate to="contact"/>} />

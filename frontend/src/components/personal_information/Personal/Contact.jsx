@@ -1,4 +1,5 @@
 import React from "react";
+import "../../../../public/css/personal_information/Navbar.css"
 
 const Contact = (props) => {
     const employee = props.employee;
@@ -7,13 +8,14 @@ const Contact = (props) => {
     const emails = employee?.emails || [];
 
     return (
-        <div className="p-6">
-            <h2 className="text-xl font-bold mb-4">Contact</h2>
-            <button className="mb-4 px-4 py-2 rounded">Edit</button>
-            {/* Home Addresses */}
-            <div className="border p-4 rounded">
+        <div className="content-under-navbar bg-white rounded-1">
+            <div className="p-3">
+                <h1 className="text-xl font-bold mb-4 ">Contact</h1>
+                <button className="mb-4 px-4 py-2 rounded">Edit</button>
+                <h2 className="text-xl font-bold">Home contact information</h2>
+                {/* Home Addresses */}
                 <div className="mb-6 ">
-                    <h3 className="text-lg font-semibold">Home Addresses</h3>
+                    <p className="text-lg font-semibold fs-4">Home Addresses</p>
                     <table className="table table-bordered">
                         <thead>
                         <tr>
@@ -36,7 +38,7 @@ const Contact = (props) => {
 
                 {/* Home Phones */}
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold">Home Phones</h3>
+                    <p className="text-lg font-semibold fs-4">Home Phones</p>
                     <table className="table table-bordered">
                         <thead>
                         <tr>
@@ -57,7 +59,7 @@ const Contact = (props) => {
 
                 {/* Home Emails */}
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold">Home Emails</h3>
+                    <p className="text-lg font-semibold fs-4">Home Emails</p>
                     <table className="table table-bordered">
                         <thead>
                         <tr>
@@ -76,9 +78,10 @@ const Contact = (props) => {
                     </table>
                 </div>
 
+                <h2 className="text-xl font-bold">Home contact information</h2>
                 {/* Work Addresses */}
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold">Work Addresses</h3>
+                    <p className="text-lg font-semibold fs-4">Work Addresses</p>
                     <table className="table table-bordered">
                         <thead>
                         <tr>
@@ -99,7 +102,7 @@ const Contact = (props) => {
 
                 {/* Work Emails */}
                 <div>
-                    <h3 className="text-lg font-semibold">Work Emails</h3>
+                    <p className="text-lg font-semibold fs-4">Work Emails</p>
                     <table className="table table-bordered">
                         <thead>
                         <tr>

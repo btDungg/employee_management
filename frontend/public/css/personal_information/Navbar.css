@@ -5,7 +5,7 @@
 }
 
 .personal-nav-link {
-    color: #1d4ed8; /* Default text color */
+    color: black; /* Default text color */
     transition: color 0.3s ease;
     text-decoration: none;
     margin-right: 10px; /* Add space between links */
@@ -29,13 +29,18 @@
 }
 
 .personal-navbar {
-    border: 2px solid #2f5742; /* Add border with the specified color */
-    padding: 2px;
-    width: 1200px; /* Set the width to 100% */
+    max-width: 1200px;
+    width: 100%;
+    margin-left: 30px;
+}
+
+.content-under-navbar {
+    max-width: 1200px;
+    width: 100%;
+    margin-left: 30px;
 }
 
 .personal-nav-link.active {
     color: #2f5742; /* Active link color */
     font-weight: bold; /* Optional: make the active link bold */
-    padding: 5px 10px; /* Ensure padding is consistent with non-active state */
 }
