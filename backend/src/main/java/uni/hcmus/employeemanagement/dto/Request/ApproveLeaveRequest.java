@@ -1,4 +1,4 @@
-package uni.hcmus.employeemanagement.dto.Response;
+package uni.hcmus.employeemanagement.dto.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,15 +9,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class LeaveRequestResponseDto {
+public class ApproveLeaveRequest {
 	private Long employeeId;
-	private String employeeName;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private float requestDays;
-	private String reason;
 	private String status;
 	private String reasonApprove;
-	private String dayOffType;
-	private Long managerId;
 }

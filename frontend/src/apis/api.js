@@ -180,3 +180,29 @@ export const getMyDayOff = async () => {
         throw error;
     }
 };
+
+export const getMyApproveLeaveRequest = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-my-approve-lr`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error send leave request:', error);
+        throw error;
+    }
+};
+
+export const approveLeaveRequest = async (approveLeaveRequest) => {
+    try {
+        const response = await axios.post(
+            `${LEAVE_REQUEST_URL}/approve`, approveLeaveRequest,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error send leave request:', error);
+        throw error;
+    }
+};

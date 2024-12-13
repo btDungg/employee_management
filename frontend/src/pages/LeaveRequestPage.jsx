@@ -35,6 +35,7 @@ const LeaveRequestPage = () => {
             const leaveRequest = {
                 startDate: formData.startDate,
                 endDate: formData.endDate,
+                requestDays: formData.requestDays,
                 dayOffType: formData.dayOffType,
                 reason: formData.reason
             };
@@ -74,7 +75,7 @@ const LeaveRequestPage = () => {
                 {<LeaveRequestForm onCommit={handleCommit} myDayOff={myDayOff}/>}
                 </div>
                 <div className="side-dialog">
-                    <h2>Số ngày nghỉ còn lại</h2>
+                    <h2>Số ngày nghỉ trong năm</h2>
                     <table className="day-off-table">
                         <thead>
                             <tr>

@@ -8,6 +8,9 @@ import lombok.Setter;
 
 
 @Entity
+@Table(
+		uniqueConstraints = {}
+	)
 @Getter
 @Setter
 @AllArgsConstructor

@@ -12,12 +12,13 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeDayOffRepository extends JpaRepository<EmployeeDayOff, Long>{
-	@Query(value = "SELECT * from employee_day_off e WHERE e.employee = :employeeId AND e.day_off_type = :dayOffType", nativeQuery = true)
+	@Query(value = "SELECT * from employee_day_off e WHERE e.employee = :employeeId AND e.day_off_type = :dayOffType AND e.year = YEAR(CURDATE())", nativeQuery = true)
 	EmployeeDayOff findByEmployeeIdAndDayOffType(
 			@Param("employeeId") Long employeeId,
 			@Param("dayOffType") Long dayOffType);
 	
-	@Query(value = "SELECT * from employee_day_off e WHERE e.employee = :employeeId", nativeQuery = true)
+	//Lấy danh sách ngày nghỉ còn lại của nhân viên trong năm hiện tại
+	@Query(value = "SELECT * from employee_day_off e WHERE e.employee = :employeeId AND e.year = YEAR(CURDATE())", nativeQuery = true)
 	List<EmployeeDayOff> getRemainingDaysByEmployeeId(
 			@Param("employeeId") Long employeeId
 			);

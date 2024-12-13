@@ -17,7 +17,7 @@ public class LeaveRequest extends MetaData {
 
     private LocalDate startDate;
     private LocalDate endDate;
-
+    private float requestDays;
     private String reason;
     private String status;
     private String reasonApprove;
@@ -26,7 +26,8 @@ public class LeaveRequest extends MetaData {
     @ManyToOne
     @JoinColumns({
         @JoinColumn(name = "employee_id", referencedColumnName = "employee", insertable = true, updatable = true),
-        @JoinColumn(name = "day_off_type", referencedColumnName = "day_off_type", insertable = true, updatable = true)
+        @JoinColumn(name = "day_off_type", referencedColumnName = "day_off_type", insertable = true, updatable = true),
+        @JoinColumn(name = "year", referencedColumnName = "year", insertable = true, updatable = true)
     })
     private EmployeeDayOff employeeDayOff;
 

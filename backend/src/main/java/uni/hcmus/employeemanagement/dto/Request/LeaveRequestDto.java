@@ -12,8 +12,7 @@ import java.time.LocalDate;
 public class LeaveRequestDto {
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private float days;
-	private float remainingDays;
+	private float requestDays;
 	private String reason;
 	private String dayOffType;
 }

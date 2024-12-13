@@ -51,6 +51,10 @@
     font-size: 16px; /* Increase font size */
 }
 
+.leave-request-form input:disabled {
+    opacity: 0.7; /* Làm mờ */
+}
+
 .btn {
     padding: 15px 30px; /* Increase padding */
     font-size: 18px; /* Increase font size */
@@ -66,3 +70,7 @@
     background-color: #86a089;
 }
 
+.submit-warning {
+    color: red;
+    margin-top: 10px;
+}

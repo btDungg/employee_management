@@ -8,8 +8,9 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
     const [dayOffType, setDayOffType] = useState('');
     const [reason, setReason] = useState('');
     const [dayOffTypes, setDayOffTypes] = useState([]);
-    const [remainingDays, setRemainingDays] = useState(null);
+    const [remainingDays, setRemainingDays] = useState(0);
     const [submitWarning, setSubmitWarning] = useState('');
+    const [isEndDateDisabled, setIsEndDateDisabled] = useState(false);
 
     // Gọi API để lấy danh sách các loại ngày nghỉ
     useEffect(() => {
@@ -25,13 +26,25 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
         fetchDayOffTypes();
     }, []);
 
+    // Theo dõi thay đổi của startDate và cập nhật endDate nếu yêu cầu nghỉ nửa ngày
+    useEffect(() => {
+        if (isEndDateDisabled && startDate) {
+            setEndDate(startDate);
+        }
+    }, [startDate, isEndDateDisabled]);
 
+    // Tính số ngày yêu cầu nghỉ
     const calculateDayOffRequest = (start, end) => {
         const startDate = new Date(start);
         const endDate = new Date(end);
-
+        const currentDate = new Date();
+        if (startDate.getFullYear() < currentDate.getFullYear())
+            return null;
+        //Nếu yêu cầu nửa ngày thì cố định số ngày yêu cầu nghỉ là 0.5
+        if (isEndDateDisabled)
+            return 0.5;
         const days = endDate.getTime() - startDate.getTime();
-        return Math.ceil(days / (1000 * 60 * 60 * 24)); // Chuyển đổi mili-giây sang số ngày
+        return Math.ceil(days / (1000 * 60 * 60 * 24)) + 1; // Chuyển đổi mili-giây sang số ngày
     };
 
     const handleDayOffTypeChange = (e) => {
@@ -40,31 +53,60 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
 
         // Tìm loại ngày nghỉ trong danh sách và cập nhật số ngày còn lại
         const selectedTypeData = myDayOff.find(item => item.typeName === selectedType);
-        console.log(selectedTypeData);
         if (selectedTypeData) {
             setRemainingDays(selectedTypeData.remainingDays);
         } else {
             setRemainingDays(null); // Không tìm thấy loại ngày nghỉ
         }
+        
+        if (selectedType.toLowerCase().includes('nửa ngày')) {
+            setIsEndDateDisabled(true);
+            setEndDate(startDate); // Đặt ngày kết thúc bằng ngày bắt đầu
+        } else {
+            setIsEndDateDisabled(false);
+        }
     };
     
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
         if (startDate > endDate) {
           setSubmitWarning('Ngày bắt đầu phải nhỏ hơn ngày kết thúc!');
+          setTimeout(() => {
+            setSubmitWarning('');
+        }, 2000);
           return;
         };
-        const requestedDays = calculateDayOffRequest(startDate, endDate);
-
-        if (remainingDays !== null && requestedDays > remainingDays) {
-            alert("Số ngày yêu cầu vượt quá số ngày nghỉ còn lại!");
+        const requestDays = calculateDayOffRequest(startDate, endDate);
+        if (requestDays == null)
+        {
+            setSubmitWarning('Vui lòng chọn ngày nghỉ trong năm hiện tại!');
+            /*setTimeout(() => {
+                setSubmitWarning('');
+            }, 2000);*/
             return;
         }
-
+        if (remainingDays === null)
+        {
+            setSubmitWarning('Không có dữ liệu về số ngày nghỉ của bạn với loại ngày nghỉ này!');
+            setTimeout(() => {
+                setSubmitWarning('');
+            }, 2000);
+            return;
+        }
+        if (requestDays > remainingDays) {
+            setSubmitWarning("Số ngày yêu cầu vượt quá số ngày nghỉ còn lại!");
+            setTimeout(() => {
+                setSubmitWarning('');
+            }, 2000);
+            return;
+        }
         setSubmitWarning('');
         onCommit({
             startDate,
             endDate,
+            requestDays,
             dayOffType,
             reason,
         });
@@ -91,14 +133,15 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
                         id="endDate"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
+                        disabled={isEndDateDisabled} // Vô hiệu hóa nếu loại "nửa ngày"
+                        className={isEndDateDisabled ? 'disabled' : ''} // Áp dụng class nếu cần thêm
                         required
                     />
                 </div>
-                <div className="form-group">
+                {calculateDayOffRequest(startDate, endDate) > 0 && <div className="form-group">
                     <label htmlFor="endDate">Số ngày nghỉ</label>
                     <p>{calculateDayOffRequest(startDate, endDate)}</p>
-                
-                </div>
+                </div>}
                 <div className="form-group">
                     <label htmlFor="dayOffType">Loại thay đổi</label>
                     <select
@@ -115,11 +158,11 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
                         ))}
                     </select>
                 </div>
-                <div className="form-group">
+                {calculateDayOffRequest(startDate, endDate) > 0 && remainingDays > 0 && <div className="form-group">
                     <label htmlFor="endDate">Số ngày nghỉ còn lại</label>
                     <p>{remainingDays - calculateDayOffRequest(startDate, endDate)}</p>
                 
-                </div>
+                </div>}
                 <div className="form-group">
                     <label htmlFor="reason">Lý do</label>
                     <textarea

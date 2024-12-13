@@ -20,4 +20,17 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
 	List<LeaveRequest> isExistsLeaveRequest(@Param("employeeId") Long employeeId, 
                                 @Param("startDate") LocalDate startDate, 
                                 @Param("endDate") LocalDate endDate);
+	
+	//Tìm yêu cầu nghỉ phép theo nhân viên và thời gian yêu cầu
+	@Query(value = "SELECT * FROM leave_request lr WHERE lr.employee_id = :employeeId AND " +
+            "lr.start_date = :startDate AND " +
+            "lr.end_date = :endDate" , nativeQuery = true)
+	LeaveRequest findByEmployeeIdAndRequestTime(@Param("employeeId") Long employeeId, 
+                                @Param("startDate") LocalDate startDate, 
+                                @Param("endDate") LocalDate endDate);
+	
+	
+	//Lấy toàn bộ các yêu cầu nghỉ phép của nhân viên do mình quản lý
+	@Query(value = "SELECT * FROM leave_request lr WHERE lr.manager_id = :employeeId", nativeQuery = true)
+	List<LeaveRequest> findByManagerId(@Param("employeeId") Long employeeId);
 }

@@ -10,7 +10,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 
 public class ApprovedLeaveRequestResponseDto {
-	private Long id;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private float requestDays;
+	private String reason;
+	private String dayOffType;
 	private String status;
 	private String reasonApprove;
 }

@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import uni.hcmus.employeemanagement.dto.Request.ApproveLeaveRequest;
 import uni.hcmus.employeemanagement.dto.Request.LeaveRequestDto;
+import uni.hcmus.employeemanagement.dto.Response.ApprovedLeaveRequestResponseDto;
 import uni.hcmus.employeemanagement.dto.Response.DayOffTypeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDayOffDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
@@ -57,6 +59,32 @@ public class LeaveRequestController {
     public ResponseEntity<List<DayOffTypeDto>> getListDayOffType(Principal principal) {
         String email = principal.getName();
         List<DayOffTypeDto> result = leaveRequestService.getListDayOffType();
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+    
+    @PostMapping("/approve")
+    public ResponseEntity<ApprovedLeaveRequestResponseDto> approveLeaveRequest(Principal principal, @RequestBody ApproveLeaveRequest leaveRequest) {
+        String email = principal.getName();
+        ApprovedLeaveRequestResponseDto result = leaveRequestService.approveLeaveRequest(email, leaveRequest);
+
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+    
+    @GetMapping("/get-my-approve-lr")
+    public ResponseEntity<List<LeaveRequestResponseDto>> getMyListApproveLeaveRequest(Principal principal) {
+        String email = principal.getName();
+        List<LeaveRequestResponseDto> result = leaveRequestService.getMyApproveLeaveRequest(email);
+
         if (result != null) {
             return ResponseEntity.ok(result);
         }
