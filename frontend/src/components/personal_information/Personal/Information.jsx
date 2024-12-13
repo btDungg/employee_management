@@ -19,21 +19,23 @@ const Information = (props) => {
     ];
 
     return (
-        <div className="p-6">
-            <h2 className="text-xl font-bold mb-4">Personal Information</h2>
-            <button className="mb-4 px-4 py-2 rounded">Edit</button>
-
-            <div className="border p-4 rounded">
-                <ul className="list-none">
+        <div className="content-under-navbar bg-white rounded-1">
+            <div className="px-5 pt-5 pb-3">
+                <h1 className="text-xl font-bold mb-2">Personal Information</h1>
+                <button className="mb-4 px-3 py-2 rounded">Edit</button>
+                <ul className="list-unstyled">
                     {employeeData.map(
                         (item, index) =>
-                            item.value && ( // Ensure only non-null/undefined values are displayed
+                            item.value && (
                                 <li key={index} className="py-2 border-b border-gray-300">
-                                    <span className="font-bold">{item.label}: </span>
-                                    <span>{item.value}</span>
+                                    <div className="row">
+                                        <span className="font-bold fw-bold col-2">{item.label} </span>
+                                        <span className="col-1">{item.value}</span>
+                                    </div>
                                 </li>
                             )
-                    )}
+                    )
+                    }
                 </ul>
             </div>
         </div>

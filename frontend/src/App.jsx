@@ -51,8 +51,8 @@ const App = () => {
         <div className="app">
             {!hideSidebar && isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
             {showTopNavbar && <TopNavbarPoint />}
-            {location.pathname.includes('/personal-info') || location.pathname.includes('/profile') ? (
-                <div className="overflow-hidden-horizontal bg-body-secondary">
+            {location.pathname.includes('/personal-info/') || location.pathname.includes('/profile/') ? (
+                <div className="overflow-hidden-horizontal overflow-hidden-vertical bg-body-secondary px-3">
                     <Routes>
                         <Route path="/personal-info/*" element={<PersonalRoutes />} />
                         <Route path="/profile/:id/*" element={<ProfileRoutes />} />

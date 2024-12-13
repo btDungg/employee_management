@@ -54,14 +54,22 @@
 }
 
 .content-personal {
-    padding: 0; /* Optional padding */
     margin-left: 200px; /* Matches sidebar width */
     width: 1320px;
 }
 
 .overflow-hidden-horizontal {
     overflow-x: hidden; /* Ẩn scrollbar ngang */
-    overflow-y: auto;   /* Nếu muốn cho cuộn dọc */
+}
+
+.overflow-hidden-vertical {
+    overflow-y: scroll; /* Vẫn cho phép cuộn dọc */
+    scrollbar-width: none; /* Ẩn scrollbar dọc trên Firefox */
+    -ms-overflow-style: none; /* Ẩn scrollbar trên IE và Edge */
+}
+
+.overflow-hidden-vertical::-webkit-scrollbar {
+    display: none; /* Ẩn scrollbar dọc trên Chrome, Safari và Edge */
 }
 
 .content.expanded {

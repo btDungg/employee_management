@@ -9,9 +9,9 @@ const Contact = (props) => {
 
     return (
         <div className="content-under-navbar bg-white rounded-1">
-            <div className="p-3">
-                <h1 className="text-xl font-bold mb-4 ">Contact</h1>
-                <button className="mb-4 px-4 py-2 rounded">Edit</button>
+            <div className="px-5 pt-5 pb-3">
+                <h1 className="text-xl font-bold mb-2">Contact</h1>
+                <button className="mb-4 px-3 py-2 rounded">Edit</button>
                 <h2 className="text-xl font-bold">Home contact information</h2>
                 {/* Home Addresses */}
                 <div className="mb-6 ">
