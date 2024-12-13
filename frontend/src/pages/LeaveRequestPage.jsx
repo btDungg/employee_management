@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LeaveRequestForm from '../components/LeaveRequestForm';
 import NotificationPopup from '../components/NotificationPopup';
 import { getMyDayOff, sendLeaveRequest } from '../apis/api';
@@ -11,6 +12,7 @@ const LeaveRequestPage = () => {
     const [notificationMessage, setNotificationMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
     const [myDayOff, setMyDayOff] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMyDayOff = async () => {
@@ -42,6 +44,9 @@ const LeaveRequestPage = () => {
             await sendLeaveRequest(leaveRequest);
             setNotificationMessage("Gửi yêu cầu nghỉ phép thành công");
             setShowNotification(true);
+            setTimeout(() => {
+                navigate('/leave-request/history'); // Chuyển hướng tới trang lịch sử yêu cầu nghỉ phép
+            }, 2000);
         } catch (error) {
             if (error.response && error.response.data) {
                 const { errors } = error.response.data; // Truy cập trường "errors"
