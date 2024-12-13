@@ -3,7 +3,7 @@ import { getMyApproveLeaveRequest } from '../apis/api';
 import '../../public/css/ApproveLeaveRequestPage.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-const ApproveLeaveRequestForm = ({ onCommit }) => {
+const ViewMyApproveLRPage = ({ onCommit }) => {
 	const [leaveRequests, setLeaveRequests] = useState([]);
     const [isDenied, setIsDenied] = useState(false);
     const [submitWarning, setSubmitWarning] = useState('');
@@ -121,6 +121,6 @@ const ApproveLeaveRequestForm = ({ onCommit }) => {
 	);
 };
 
-export default ApproveLeaveRequestForm;
+export default ViewMyApproveLRPage;
 
 

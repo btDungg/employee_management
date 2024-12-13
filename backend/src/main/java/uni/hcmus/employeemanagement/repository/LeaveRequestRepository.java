@@ -33,4 +33,8 @@ public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long
 	//Lấy toàn bộ các yêu cầu nghỉ phép của nhân viên do mình quản lý
 	@Query(value = "SELECT * FROM leave_request lr WHERE lr.manager_id = :employeeId", nativeQuery = true)
 	List<LeaveRequest> findByManagerId(@Param("employeeId") Long employeeId);
+	
+	//Lấy toàn bộ các yêu cầu nghỉ phép của mình 
+	@Query(value = "SELECT * FROM leave_request lr WHERE lr.employee_id = :employeeId", nativeQuery = true)
+	List<LeaveRequest> findByEmloyeeId(@Param("employeeId") Long employeeId);
 }

@@ -165,4 +165,37 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
                 															))
                 .collect(Collectors.toList()); 
 	}
+	
+	@Override
+	public List<LeaveRequestResponseDto> getMyLeaveRequest (String MyEmail)
+	{
+		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
+        List<LeaveRequest> myListApproveLeaveRequest = leaveRequestRepository.findByEmloyeeId(emp.getId());
+        return myListApproveLeaveRequest.stream()
+                .map(myApproveLeaveRequest -> new LeaveRequestResponseDto(myApproveLeaveRequest.getEmployeeDayOff().getEmployee().getId(),
+                															myApproveLeaveRequest.getEmployeeDayOff().getEmployee().getName(),
+                															myApproveLeaveRequest.getStartDate(),
+                															myApproveLeaveRequest.getEndDate(),
+                															myApproveLeaveRequest.getRequestDays(),
+                															myApproveLeaveRequest.getReason(),
+                															myApproveLeaveRequest.getStatus(),
+                															myApproveLeaveRequest.getReasonApprove(),
+                															myApproveLeaveRequest.getEmployeeDayOff().getDay_off_type().getType(),
+                															emp.getId()
+                															))
+                .collect(Collectors.toList()); 
+	}
+	
+	@Override
+	public void deleteLeaveRequest (String MyEmail, LeaveRequestDto leaveRequest)
+	{
+		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
+		LeaveRequest deleteLeaveRequest = leaveRequestRepository.findByEmployeeIdAndRequestTime(emp.getId(), leaveRequest.getStartDate(), leaveRequest.getEndDate());
+		System.out.println(deleteLeaveRequest.getRequestDays());
+		if (deleteLeaveRequest == null)
+			throw new DataNotFoundException("Không có yêu cầu nghỉ phép từ ngày " + leaveRequest.getStartDate() + " đến ngày " + leaveRequest.getEndDate() + "!");
+		leaveRequestRepository.deleteById(deleteLeaveRequest.getId());
+	}
 }

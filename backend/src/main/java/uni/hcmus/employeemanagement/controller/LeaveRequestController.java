@@ -92,4 +92,28 @@ public class LeaveRequestController {
             return ResponseEntity.badRequest().body(result);
         }
     }
+    
+    @GetMapping("/get-my-leave-request")
+    public ResponseEntity<List<LeaveRequestResponseDto>> getMyListLeaveRequest(Principal principal) {
+        String email = principal.getName();
+        List<LeaveRequestResponseDto> result = leaveRequestService.getMyLeaveRequest(email);
+
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+    
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteLeaveRequest(Principal principal, @RequestBody LeaveRequestDto leaveRequest) {
+        String email = principal.getName();
+        try {
+        	leaveRequestService.deleteLeaveRequest(email, leaveRequest);
+            return ResponseEntity.ok("Yêu cầu nghỉ phép đã được xóa thành công!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
 }

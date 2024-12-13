@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import TopNavBarLeaveRequest from "../components/TopNavBarLeaveRequest";
 import LeaveRequestPage from "./LeaveRequestPage";
 import ApproveLeaveRequestPage from "./ApproveLeaveRequestPage"
-// import LeaveRequestHistory from "./LeaveRequestHistory"; // Uncomment nếu cần
+import DeleteLeaveRequestPage from "./DeleteLeaveRequestPage"; // Uncomment nếu cần
 
 const LeaveRequestManagementPage = () => {
   return (
@@ -15,6 +15,7 @@ const LeaveRequestManagementPage = () => {
         <Route path="new" element={<LeaveRequestPage />} />
         <Route path="" element={<LeaveRequestPage />} />
         <Route path="approve" element={<ApproveLeaveRequestPage />} />
+        <Route path="history" element={<DeleteLeaveRequestPage />} />
       </Routes>
     </div>
   );

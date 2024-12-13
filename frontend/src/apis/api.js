@@ -163,7 +163,7 @@ export const getListDayOffType = async () => {
         );
         return response.data;
     } catch (error) {
-        console.error('Error send leave request:', error);
+        console.error('Error get list day off type:', error);
         throw error;
     }
 };
@@ -176,7 +176,7 @@ export const getMyDayOff = async () => {
         );
         return response.data;
     } catch (error) {
-        console.error('Error send leave request:', error);
+        console.error('Error get my list day off:', error);
         throw error;
     }
 };
@@ -189,7 +189,7 @@ export const getMyApproveLeaveRequest = async () => {
         );
         return response.data;
     } catch (error) {
-        console.error('Error send leave request:', error);
+        console.error('Error get my approve leave request:', error);
         throw error;
     }
 };
@@ -202,7 +202,39 @@ export const approveLeaveRequest = async (approveLeaveRequest) => {
         );
         return response.data;
     } catch (error) {
-        console.error('Error send leave request:', error);
+        console.error('Error approve leave request:', error);
+        throw error;
+    }
+};
+
+export const getMyLeaveRequest = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-my-leave-request`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get my leave request:', error);
+        throw error;
+    }
+};
+
+export const deleteLeaveRequest = async (leaveRequest) => {
+    try {
+        const response = await axios.delete(
+            `${LEAVE_REQUEST_URL}/delete`, 
+            {
+                headers: {
+                    ...getAuthHeaders(), // Headers xác thực (nếu có)
+                    'Content-Type': 'application/json', // Định nghĩa kiểu dữ liệu
+                },
+                data: leaveRequest,
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error delete leave request:', error);
         throw error;
     }
 };

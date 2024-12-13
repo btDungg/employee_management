@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import ApproveLeaveRequestForm from '../pages/ViewMyApproveLRPage';
-import NotificationPopup from './NotificationPopup';
-import { getMyDayOff, sendLeaveRequest } from '../apis/api';
+import ViewMyApproveLRPage from '../pages/ViewMyApproveLRPage';
 import '../../public/css/Popup.css';
 import '../../public/css/ApproveLeaveRequestPage.css'
 
-const AcceptLeaveRequestForm = ({onCommit}) =>
+const ApproveLeaveRequestForm = ({onCommit}) =>
 {
     const [formData, setFormData] = useState({});
     const [showApprove, setShowApprove] = useState(false);
@@ -31,7 +29,7 @@ const AcceptLeaveRequestForm = ({onCommit}) =>
     return (
         <div>
             {!showApprove && (
-                <ApproveLeaveRequestForm onCommit={handleCommit} />
+                <ViewMyApproveLRPage onCommit={handleCommit} />
             )}
             {showApprove &&
                 <form className="approve-lr-info" onSubmit={handleSubmit}>
@@ -64,4 +62,4 @@ const AcceptLeaveRequestForm = ({onCommit}) =>
     
 }
 
-export default AcceptLeaveRequestForm;
+export default ApproveLeaveRequestForm;

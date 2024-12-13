@@ -82,9 +82,9 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
         if (requestDays == null)
         {
             setSubmitWarning('Vui lòng chọn ngày nghỉ trong năm hiện tại!');
-            /*setTimeout(() => {
+            setTimeout(() => {
                 setSubmitWarning('');
-            }, 2000);*/
+            }, 2000);
             return;
         }
         if (remainingDays === null)

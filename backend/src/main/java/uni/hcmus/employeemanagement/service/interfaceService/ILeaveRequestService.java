@@ -12,5 +12,7 @@ public interface ILeaveRequestService {
 	List<EmployeeDayOffDto> getMyDayOff(String MyEmail);
 	LeaveRequestResponseDto sendLeaveRequest(String MyEmail, LeaveRequestDto leaveRequest);
 	List<LeaveRequestResponseDto> getMyApproveLeaveRequest (String MyEmail);
+	List<LeaveRequestResponseDto> getMyLeaveRequest (String MyEmail);
+	void deleteLeaveRequest (String MyEmail, LeaveRequestDto leaveRequest);
 	ApprovedLeaveRequestResponseDto approveLeaveRequest(String MyEmail, ApproveLeaveRequest approveRequest);
 }
