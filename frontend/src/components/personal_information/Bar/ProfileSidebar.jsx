@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../../../../public/css/personal_information/Sidebar.css';
 import { logout } from "../../../apis/api.js";
+import TooltipWithClick from "./TooltipWithClick.jsx";
 
 const ProfileSidebar = ({ employee }) => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const ProfileSidebar = ({ employee }) => {
     };
 
     return (
-        <div className="sidebar d-flex flex-column justify-content-between">
+        <div className="sidebar sidebar-personal d-flex flex-column justify-content-between">
             <div>
                 <div className="profile-section text-center py-2">
                     <div className="avatar mb-1">
@@ -30,7 +31,7 @@ const ProfileSidebar = ({ employee }) => {
                     <h5>{employee?.name || "Guest"}</h5>
                     <p>{employee?.type || "Unknown"}</p>
                     <div className="profile-icons">
-                        <button className="icon-button me-2"><i className="fas fa-envelope"></i></button>
+                        <TooltipWithClick emailCompany={employee?.emailCompany}/>
                         <button className="icon-button" onClick={() => navigate(`/profile/${employeeId}/members`)}><i className="fas fa-users"></i></button>
                     </div>
                 </div>
@@ -76,10 +77,10 @@ const ProfileSidebar = ({ employee }) => {
                         </NavLink>
                     </li>
                 </ul>
-            </div>
-            <div className="mt-4">
-                <button className="btn btn-primary w-100 mb-2" onClick={handleHomeClick}>Trang chủ</button>
-                <button className="btn btn-danger w-100" onClick={handleLogout}>Đăng xuất</button>
+                <NavLink to="/"
+                         className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
+                    <i className="fas fa-home me-2"></i>Trang chủ
+                </NavLink>
             </div>
         </div>
     );

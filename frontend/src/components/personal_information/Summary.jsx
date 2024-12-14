@@ -4,7 +4,7 @@ const Summary = ({ employee }) => {
     if (!employee) {
         return <div className="text-center mt-5">No employee data available.</div>;
     }
-
+    console.log(employee);
     return (
         <div className="p-4">
             <div className="">
@@ -57,7 +57,7 @@ const Summary = ({ employee }) => {
                             <a href="#">Edit</a>
                         </div>
                     </div>
-                    {/* Job History */}
+                    {/* JobDetail History */}
                     <div className="col-md-6 mb-4">
                         <div className="card p-3 shadow-sm">
                             <h6 className="text-muted mb-3">Job History</h6>

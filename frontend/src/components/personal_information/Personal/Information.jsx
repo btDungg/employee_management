@@ -34,7 +34,7 @@ const Information = (props) => {
                                     </div>
                                 </li>
                             )
-                    )
+                        )
                     }
                 </ul>
             </div>

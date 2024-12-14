@@ -24,7 +24,7 @@
 
 .personal-nav-link:active,
 .personal-nav-link:focus {
-    color: #2f5742; /* Active color */
+    color: #0f964f; /* Active color */
     text-decoration: none;
 }
 
@@ -41,6 +41,6 @@
 }
 
 .personal-nav-link.active {
-    color: #2f5742; /* Active link color */
+    color: #0f964f; /* Active link color */
     font-weight: bold; /* Optional: make the active link bold */
 }

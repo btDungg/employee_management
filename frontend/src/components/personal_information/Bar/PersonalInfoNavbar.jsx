@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "../../../../public/css/personal_information/Navbar.css";
 
-const NavBar = ({ showNavBar, showLinks }) => {
+const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false, emergency: false, job: false } }) => {
     const location = useLocation();
     const basePath = location.pathname.includes('/profile') ? location.pathname.split('/personal')[0] : '/personal-info';
 
@@ -16,9 +16,9 @@ const NavBar = ({ showNavBar, showLinks }) => {
                 {showLinks.contact && (
                     <NavLink
                         to={`${basePath}/personal/contact`}
-                        className={({ isActive } ) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        Thông tin liên lạc
+                        Contact
                     </NavLink>
                 )}
                 {showLinks.personalInfomation && (
@@ -26,7 +26,7 @@ const NavBar = ({ showNavBar, showLinks }) => {
                         to={`${basePath}/personal/personal-infomation`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        Thông tin cá nhân
+                        Personal Information
                     </NavLink>
                 )}
                 {showLinks.emergency && (
@@ -34,7 +34,15 @@ const NavBar = ({ showNavBar, showLinks }) => {
                         to={`${basePath}/personal/emergency`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        Liên lạc khẩn cấp
+                        Emergency Contact
+                    </NavLink>
+                )}
+                {showLinks.job && (
+                    <NavLink
+                        to={`${basePath}/job`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Job Detail
                     </NavLink>
                 )}
             </div>

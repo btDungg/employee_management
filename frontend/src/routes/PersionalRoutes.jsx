@@ -18,7 +18,7 @@ const PersonalRoutes = () => (
         <Routes>
             <Route path="summary" element={<PrivateRoute element={WithSidebar(SummaryPage, false)} />} />
             <Route path="overview" element={<PrivateRoute element={WithSidebar(OverviewPage, false)} />} />
-            <Route path="job" element={<PrivateRoute element={WithSidebar(JobPage, false)} />} />
+            <Route path="job/*" element={<PrivateRoute element={WithSidebar(JobPage, false)} />} />
             <Route path="compensation" element={<PrivateRoute element={WithSidebar(CompensationPage, false)} />} />
             <Route path="personal/*" element={<PrivateRoute element={WithSidebar(PersonalPage, false)} />} />
             <Route path="performance" element={<PrivateRoute element={WithSidebar(PerformancePage, false)} />} />

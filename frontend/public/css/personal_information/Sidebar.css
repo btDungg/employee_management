@@ -38,3 +38,15 @@
     width: 100px;
     height: 100px;
 }
+
+.sidebar-personal {
+    width: 200px; /* Sidebar width */
+    background-color: #0f964f;
+    color: white;
+    padding: 10px;
+    position: fixed; /* Sidebar stays fixed on the side */
+    height: 100vh; /* Full height */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
