@@ -55,7 +55,6 @@ public class ProfileController {
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String organization,
             @RequestParam(required = false) String nameOrganization,
             Principal principal) {
 
@@ -63,7 +62,7 @@ public class ProfileController {
         String hrEmail = principal.getName();
 
         // Gọi service để tìm kiếm nhân viên
-        List<EmployeePublicDto_v1> employees = employeeService.searchEmployees(id, name, email, organization, nameOrganization, hrEmail)
+        List<EmployeePublicDto_v1> employees = employeeService.searchEmployees(id, name, email, nameOrganization, hrEmail)
                 .orElse(Collections.emptyList()); // Nếu không có kết quả, trả về danh sách rỗng
 
         // Trả về kết quả

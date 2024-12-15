@@ -350,15 +350,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Override
     public Optional<List<EmployeePublicDto_v1>> searchEmployees(String id, String name,
-                                                                String email, String organization,
+                                                                String email,
                                                                 String nameOrganization, String hrEmail) {
 
         // Cơ sở truy vấn SQL ban đầu
-        String baseQuery = "`SELECT e FROM Employee e WHERE 1=1`";
+        String baseQuery = "SELECT e FROM Employee e join e.organization o WHERE 1=1";
         Map<String, Object> parameters = new HashMap<>();
 
         // Thêm điều kiện động
         if (id != null) {
+            if (!id.matches("\\d+")) {  // Nếu id không phải là số nguyên (chứa chữ hoặc ký tự đặc biệt)
+                return Optional.empty();  // Trả về Optional.empty() hoặc null tùy yêu cầu
+            }
+
             baseQuery += " AND e.id = :id";
             parameters.put("id", id);
         }
@@ -367,15 +371,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
             parameters.put("name", "%" + name + "%");
         }
         if (email != null) {
-            baseQuery += " AND e.email = :email";
-            parameters.put("email", email);
-        }
-        if (organization != null) {
-            baseQuery += " AND e.organization LIKE :organization";
-            parameters.put("organization", "%" + organization + "%");
+            baseQuery += " AND e.emailCompany LIKE :email";
+            parameters.put("email", "%" + email + "%");
         }
         if (nameOrganization != null) {
-            baseQuery += " AND e.nameOrganization LIKE :nameOrganization";
+            baseQuery += " AND o.name LIKE :nameOrganization";
             parameters.put("nameOrganization", "%" + nameOrganization + "%");
         }
 
