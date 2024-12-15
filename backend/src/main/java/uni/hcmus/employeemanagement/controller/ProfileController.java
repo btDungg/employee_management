@@ -3,15 +3,13 @@ package uni.hcmus.employeemanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePublicDto_v1;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +49,26 @@ public class ProfileController {
 
         return ResponseEntity.ok(employee);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<EmployeePublicDto_v1>> searchEmployees(
+            @RequestParam(required = false) String id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String organization,
+            @RequestParam(required = false) String nameOrganization,
+            Principal principal) {
+
+        // Xác định email của HR từ Principal
+        String hrEmail = principal.getName();
+
+        // Gọi service để tìm kiếm nhân viên
+        List<EmployeePublicDto_v1> employees = employeeService.searchEmployees(id, name, email, organization, nameOrganization, hrEmail)
+                .orElse(Collections.emptyList()); // Nếu không có kết quả, trả về danh sách rỗng
+
+        // Trả về kết quả
+        return ResponseEntity.ok(employees);
+    }
+
 
 }
