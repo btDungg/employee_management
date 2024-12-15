@@ -1,9 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import {NavLink} from "react-router-dom";
+import {UserContext} from "./UserProvider.jsx";
 
 const Summary = ({ employee }) => {
+    const { user } = useContext(UserContext);
     if (!employee) {
         return <div className="text-center mt-5">No employee data available.</div>;
     }
+    //TODO: Fix this
+    console.log(user);
+    const managerUrl = employee.manager === user?.id
+        ? '/personal-info/summary'
+        : `/profile/${employee.managerID}/summary`;
     console.log(employee);
     return (
         <div className="p-4">
@@ -30,7 +38,9 @@ const Summary = ({ employee }) => {
                                     <h6 className="mb-2 text-muted">
                                         <i className="fas fa-user-tie"></i> Manager
                                     </h6>
-                                    <p>{employee.managerName || "N/A"}</p>
+                                    <NavLink to={managerUrl}>
+                                        <p>{employee.managerName || "N/A"}</p>
+                                    </NavLink>
                                 </div>
                                 <div className="col-md-6">
                                     <h6 className="mb-2 text-muted">

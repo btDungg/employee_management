@@ -3,7 +3,7 @@ import "../../../../public/css/personal_information/Navbar.css"
 
 const Contact = (props) => {
     const employee = props.employee;
-    const homeAddresses = employee?.addresses?.filter(addr => addr.usage_type === "yes") || [];
+    const addresses = employee?.addresses || [];
     const phones = employee?.phones || [];
     const emails = employee?.emails || [];
 
@@ -25,7 +25,7 @@ const Contact = (props) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {homeAddresses.map((address) => (
+                        {addresses.map((address) => (
                             <tr key={address.id}>
                                 <td>{address.address}</td>
                                 <td>{new Date(address.effectiveDate).toLocaleDateString()}</td>
