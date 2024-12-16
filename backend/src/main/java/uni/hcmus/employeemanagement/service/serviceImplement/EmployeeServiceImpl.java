@@ -222,11 +222,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
         ManagerDto_v1 managerDto = new ManagerDto_v1(managerId, managerName);
 
-        List<Object[]> employees = employeeRepository.findTeamMate(orgId);
-        if (employees.isEmpty()) {
-            return Optional.empty();
-        }
+
         if ("HR".equals(emp.getType())) {
+
+            List<Object[]> employees = employeeRepository.getAllByHR();
+            if (employees.isEmpty()) {
+                return Optional.empty();
+            }
             return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
                     (Long) employee[0],
                     (String) employee[1],
@@ -263,6 +265,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
             )).collect(Collectors.toList()));
 
         } else {
+            List<Object[]> employees = employeeRepository.findTeamMate(orgId);
+            if (employees.isEmpty()) {
+                return Optional.empty();
+            }
             return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
                     (Long) employee[0],
                     (String) employee[1],
@@ -300,9 +306,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
         if (manager.length == 0) {
             return Optional.empty();
         }
-        Object[] managerDetails = (Object[]) manager[0]; // manager[0] là Object[], cần cast
-        Long managerId = (Long) managerDetails[0];      // Lấy phần tử đầu tiên (kiểu Long)
-        String managerName = (String) managerDetails[1];// Lấy phần tử thứ hai (kiểu String)
+        Object[] managerDetails = (Object[]) manager[0];
+        Long managerId = (Long) managerDetails[0];
+        String managerName = (String) managerDetails[1];
 
 
         ManagerDto_v1 managerDto = new ManagerDto_v1(managerId, managerName);

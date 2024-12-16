@@ -45,6 +45,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "WHERE e.organization_id = :id", nativeQuery = true)
     List<Object[]> findTeamMate(@Param("id") Long id);
 
+    @Query(value = "SELECT e.id,e.employee_name,e.point,e.type, e.email_company," +
+            "e.organization_id, e.date_of_birth, e.age, e.gender, " +
+            "e.primary_nationality, e.location, e.hire_date,e.religion, e.marital, e.ethnicty, e.avatar, o.name," +
+            "e.country_of_birth, e.region_of_birth, e.city_of_birth,  e.citizenship_status,   " +
+            "e.job, e.business_title, e.job_profile, e.time_type " +
+            "FROM employee e " +
+            "JOIN organization o ON e.organization_id = o.id ", nativeQuery = true)
+    List<Object[]> getAllByHR();
+
 
     @Query(value = "SELECT e.id, e.employee_name " +
             "FROM organization o " +
