@@ -25,6 +25,7 @@ import FeedbackPage from "./pages/personal_information/FeedbackPage.jsx";
 import MembersPage from './pages/personal_information/MembersPage.jsx';
 // import ProfilePage from './pages/personal_information/ProfilePage.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import {EmployeeProvider} from "./components/personal_information/EmployeeProvider.jsx";
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -70,15 +71,22 @@ const App = () => {
                     <Route path="/point-history" element={<PrivateRoute element={PointHistoryPage} />} />
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
                     <Route path="/personal-info-navigation" element={<PrivateRoute element={InfoNavigationPage} />} />
-                    <Route path="/personal-info/summary" element={<PrivateRoute element={SummaryPage} />} />
-                    <Route path="/personal-info/overview" element={<PrivateRoute element={OverviewPage} />} />
-                    <Route path="/personal-info/job" element={<PrivateRoute element={JobPage} />} />
-                    <Route path="/personal-info/compensation" element={<PrivateRoute element={CompensationPage} />} />
-                    <Route path="/personal-info/personal" element={<PrivateRoute element={PersonalPage} />} />
-                    <Route path="/personal-info/performance" element={<PrivateRoute element={PerformancePage} />} />
-                    <Route path="/personal-info/career" element={<PrivateRoute element={CareerPage} />} />
-                    <Route path="/personal-info/feedback" element={<PrivateRoute element={FeedbackPage} />} />
-                    <Route path="/personal-info/members" element={<PrivateRoute element={MembersPage} />} />
+                    <Route path="/personal-info/*" element={
+                        <EmployeeProvider>
+                            <Routes>
+                                <Route path="summary" element={<PrivateRoute element={SummaryPage} />} />
+                                <Route path="overview" element={<PrivateRoute element={OverviewPage} />} />
+                                <Route path="job" element={<PrivateRoute element={JobPage} />} />
+                                <Route path="compensation" element={<PrivateRoute element={CompensationPage} />} />
+                                <Route path="personal/*" element={<PrivateRoute element={PersonalPage} />} />
+                                <Route path="performance" element={<PrivateRoute element={PerformancePage} />} />
+                                <Route path="career" element={<PrivateRoute element={CareerPage} />} />
+                                <Route path="feedback" element={<PrivateRoute element={FeedbackPage} />} />
+                                <Route path="members" element={<PrivateRoute element={MembersPage} />} />
+                                <Route path=":id/teammates/*" element={<PrivateRoute element={PersonalPage} />} />
+                            </Routes>
+                        </EmployeeProvider>
+                    } />
                     {/* <Route path="/profile/:id" element={<PrivateRoute element={ProfilePage} />} /> */}
                 </Routes>
             </div>

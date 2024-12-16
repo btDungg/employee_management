@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MembersList from "../../components/personal_information/MembersList.jsx";
+import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 
 const MembersPage = () => {
 
@@ -12,4 +13,4 @@ const MembersPage = () => {
     );
 };
 
-export default MembersPage;
+export default WithSidebar(MembersPage);

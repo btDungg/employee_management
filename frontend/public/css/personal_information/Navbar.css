@@ -1,0 +1,40 @@
+.personal-navbar .personal-navbar-flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.personal-nav-link {
+    color: #1d4ed8; /* Default text color */
+    transition: color 0.3s ease;
+    text-decoration: none;
+    margin-right: 20px; /* Add space between links */
+}
+
+.personal-nav-link:last-child {
+    margin-right: 0; /* Remove margin from the last link */
+}
+
+.personal-nav-link:hover {
+    color: #86a089; /* Hover color */
+    text-decoration: none;
+}
+
+.personal-nav-link:active,
+.personal-nav-link:focus {
+    color: #2f5742; /* Active color */
+    text-decoration: none;
+}
+
+.personal-navbar {
+    border: 2px solid #2f5742; /* Add border with the specified color */
+    padding: 2px;
+    width: 1200px; /* Set the width to 100% */
+    max-width: 1200px; /* Set the maximum width */
+}
+
+.personal-nav-link.active {
+    color: #2f5742; /* Active link color */
+    font-weight: bold; /* Optional: make the active link bold */
+}
+

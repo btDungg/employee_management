@@ -30,6 +30,9 @@ public class EmployeeDetailInfoDto {
     @JsonProperty("organizationId")
     private Long organizationId;
 
+    @JsonProperty("emailCompany")
+    private String emailCompany;
+
     // Personal Information
     @JsonProperty("avatar")
     private String avatar;
@@ -118,7 +121,8 @@ public class EmployeeDetailInfoDto {
                                  String primaryNationality, List<Phone> phones, List<Email> emails,
                                  List<Address> addresses, List<EmergencyContact> emergencyContacts,
                                  String job, String businessTitle, String jobProfile,
-                                 String timeType, String location, Date hireDate, String organizationName, Long managerID, String managerName) {
+                                 String timeType, String location, Date hireDate, String organizationName, Long managerID, String managerName,
+                                 String emailCompany) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -148,6 +152,6 @@ public class EmployeeDetailInfoDto {
         this.organizationName = organizationName;
         this.managerID = managerID;
         this.managerName = managerName;
-
+        this.emailCompany = emailCompany;
     }
 }
