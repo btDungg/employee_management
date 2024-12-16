@@ -178,3 +178,15 @@ export const getDetailTeamMates = async (id) => {
     }
 }
 
+export const searchEmployee = async (params = {}) => {
+    try {
+        const response = await axios.get(`${PROFILE_URL}/search`, {
+            headers: getAuthHeaders(),
+            params, 
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching team mates:', error);
+        throw error;
+    }
+};
