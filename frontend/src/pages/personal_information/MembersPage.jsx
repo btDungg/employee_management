@@ -5,7 +5,7 @@ import WithSidebar from "../../components/personal_information/WithSidebar.jsx";
 const MembersPage = (props) => {
 
     return (
-        <div className="content bg-white">
+        <div className="content-personal bg-body-secondary">
             <div className="row">
                 <MembersList employee={props.employee}/>
             </div>

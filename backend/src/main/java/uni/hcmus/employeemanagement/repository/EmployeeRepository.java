@@ -55,6 +55,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Object[]> getAllByHR();
 
 
+
     @Query(value = "SELECT e.id, e.employee_name " +
             "FROM organization o " +
             "JOIN employee e ON e.id = o.manager_id " +

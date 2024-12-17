@@ -223,13 +223,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
         ManagerDto_v1 managerDto = new ManagerDto_v1(managerId, managerName);
 
+        List<Object[]> employees = employeeRepository.findTeamMate(orgId);
+        if (employees.isEmpty()) {
+            return Optional.empty();
+        }
 
         if ("HR".equals(emp.getType())) {
 
-            List<Object[]> employees = employeeRepository.getAllByHR();
-            if (employees.isEmpty()) {
-                return Optional.empty();
-            }
             return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
                     (Long) employee[0],
                     (String) employee[1],
@@ -266,10 +266,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
             )).collect(Collectors.toList()));
 
         } else {
-            List<Object[]> employees = employeeRepository.findTeamMate(orgId);
-            if (employees.isEmpty()) {
-                return Optional.empty();
-            }
+
             return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
                     (Long) employee[0],
                     (String) employee[1],
@@ -291,6 +288,55 @@ public class EmployeeServiceImpl implements IEmployeeService {
         }
 
     }
+
+
+    @Override
+    public Optional<EmployeePublicDto_v1> getDetailEmployeesByHR(String email, Long id) {
+        Optional<Employee> emp = employeeRepository.findByEmailCompany(email);
+        if (emp.isEmpty() || !"HR".equals(emp.get().getType())) {
+            return Optional.empty();
+        }
+
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isEmpty()) {
+            return Optional.empty();
+        }
+        EmployeePublicDto_v1 detail = new EmployeePublicDto_v1(
+                employee.get().getId(),
+                employee.get().getName(),
+                employee.get().getPoint(),
+                employee.get().getType(),
+                employee.get().getEmailCompany(),
+                employee.get().getOrganization().getId(),
+                employee.get().getDateOfBirth() != null ? employee.get().getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null,
+                employee.get().getAge(),
+                employee.get().getGender() != null && employee.get().getGender() ? "Nam" : "Nữ",
+                employee.get().getPrimaryNationality(),
+                employee.get().getLocation(),
+                employee.get().getHireDate() != null ? employee.get().getHireDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null,
+                employee.get().getReligion(),
+                employee.get().getMarital(),
+                employee.get().getEthnicty(),
+                employee.get().getAvatar(),
+                employee.get().getOrganization().getName(),
+                employee.get().getCountryOfBirth(),
+                employee.get().getRegionOfBirth(),
+                employee.get().getCityOfBirth(),
+                employee.get().getCitizenshipStatus(),
+                employee.get().getJob(),
+                employee.get().getBusinessTitle(),
+                employee.get().getJobProfile(),
+                employee.get().getTimeType(),
+                employee.get().getOrganization().getManager_id().getName(),
+                employee.get().getOrganization().getManager_id().getId(),
+                phoneRepository.findByEmployeeId(employee.get().getId()),
+                emailRepository.findByEmployeeId(employee.get().getId()),
+                addressRepository.findByEmployeeId(employee.get().getId()),
+                emergencyContactRepository.findByEmployeeId(employee.get().getId())
+                );
+    return Optional.of(detail);
+    }
+
 
 
     @Override

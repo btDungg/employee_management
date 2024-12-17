@@ -44,7 +44,7 @@ const MembersList = () => {
     }
 
     return (
-        <div>
+        <div className="bg-white">
             <h4>Team Mates:</h4>
             {teamMates && teamMates.length > 0 ? (
                 <table className="table table-bordered table-hover">
