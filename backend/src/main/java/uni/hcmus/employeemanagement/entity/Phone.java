@@ -19,12 +19,12 @@ import lombok.Setter;
 public class Phone extends MetaData {
     @JsonProperty("phone")
     private String phone;
-    @JsonProperty("usage_type")
+    @JsonProperty("usageType")
     private String usage_type;
 
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employeeId", nullable = false)
     private Employee employee;
 }

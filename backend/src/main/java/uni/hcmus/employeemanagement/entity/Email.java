@@ -19,11 +19,11 @@ public class Email extends MetaData {
 
     @JsonProperty("email")
     private String email;
-    @JsonProperty("usage_type")
+    @JsonProperty("usageType")
     private String usage_type;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employeeId", nullable = false)
     private Employee employee;
 }

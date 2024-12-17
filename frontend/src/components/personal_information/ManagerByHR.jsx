@@ -107,7 +107,7 @@ const ManagerByHR = ({ employee }) => {
                     </thead>
                     <tbody>
                         {listEmployee.map((emp) => {
-                            const primaryEmails = emp.emails?.filter(email => email.usage_type?.includes("Primary")) || [];
+                            const primaryEmails = emp.emails?.filter(email => email.usageType?.includes("Primary")) || [];
                             const personalEmail = primaryEmails[0] || emp.emails?.[0];
 
                             return (
@@ -115,12 +115,12 @@ const ManagerByHR = ({ employee }) => {
                                     <td>{emp.id}</td>
                                     <td>{emp.name}</td>
                                     <td>{emp.gender}</td>
-                                    <td>{emp.email_company}</td>
+                                    <td>{emp.emailCompany}</td>
                                     <td>{personalEmail?.email || "No Email"}</td>
-                                    <td>{emp.organization_name}</td>
-                                    <td>{emp.hire_date}</td>
+                                    <td>{emp.organizationName}</td>
+                                    <td>{emp.hireDate}</td>
                                     <td>{emp.type}</td>
-                                    <td>{emp.manager_name}</td>
+                                    <td>{emp.managerName}</td>
                                 </tr>
                             );
                         })}

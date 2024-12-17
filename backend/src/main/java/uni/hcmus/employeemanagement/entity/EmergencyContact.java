@@ -31,6 +31,6 @@ public class EmergencyContact extends MetaData {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employeeId", nullable = false)
     private Employee employee;
 }
