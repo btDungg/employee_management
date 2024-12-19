@@ -27,22 +27,22 @@ public class EmployeePublicDto_v1 {
     private int point; //
     @JsonProperty("type")
     private String type;//
-    @JsonProperty("email_company")
+    @JsonProperty("emailCompany")
     private String emailCompany;
-    @JsonProperty("organization")
+    @JsonProperty("organizationId")
     private Long organization;//
-    @JsonProperty("birth_date")
+    @JsonProperty("dateOfBirth")
     private LocalDate birthDate;//
     @JsonProperty("age")
     private int age;//
     @JsonProperty("gender")
     private String gender;//
-    @JsonProperty("nationality")
+    @JsonProperty("primaryNationality")
     private String nationality;
 
     @JsonProperty("location")
     private String Location;
-    @JsonProperty("hire_date")
+    @JsonProperty("hireDate")
     private LocalDate hireDate;//
 
     @JsonProperty("religion")
@@ -53,29 +53,29 @@ public class EmployeePublicDto_v1 {
     private String ethnicity;//
     @JsonProperty("avatar")
     private String avatar;//
-    @JsonProperty("organization_name")
+    @JsonProperty("organizationName")
     private String organizationName;
 
 
-    @JsonProperty("country_of_birth")
+    @JsonProperty("countryOfBirth")
     private String contryOfBirth;//
-    @JsonProperty("region_of_birth")
+    @JsonProperty("regionOfBirth")
     private String regionOfBirth;//
-    @JsonProperty("city_of_birth")
+    @JsonProperty("cityOfBirth")
     private String cityOfBirth;//
-    @JsonProperty("citizenship_status")
+    @JsonProperty("citizenshipStatus")
     private String citizenshipStatus;//
     @JsonProperty("job")
     private String job;
-    @JsonProperty("business_title")
+    @JsonProperty("businessTitle")
     private String bussissTitle;
-    @JsonProperty("job_profile")
+    @JsonProperty("jobProfile")
     private String jobProfile;
-    @JsonProperty("time_type")
+    @JsonProperty("timeType")
     private String timeType;
 
 
-    @JsonProperty("manager_name")
+    @JsonProperty("managerName")
     private String managerName;
     @JsonProperty("manager")
     private Long manager;
@@ -92,7 +92,7 @@ public class EmployeePublicDto_v1 {
     private List<Address> addresses;
 
 
-    @JsonProperty("emergency_contacts")
+    @JsonProperty("emergencyContacts")
     private List<EmergencyContact> emergencyContacts;
 
     public EmployeePublicDto_v1(Long id, String name, int point, String type, String emailCompany, Long organization,

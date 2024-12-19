@@ -38,6 +38,10 @@ public class ProfileController {
         if (emp.isPresent()) {
             return ResponseEntity.ok(emp.get());
         }
+        Optional<EmployeePublicDto_v1> temp = employeeService.getDetailEmployeesByHR(email, id);
+        if(temp.isPresent()){
+            return ResponseEntity.ok(temp.get());
+        }
 
         List<EmployeePublicDto_v1> employees = employeeService.getTeamMate(email)
                 .orElseThrow(() -> new DataNotFoundException("No employees found."));

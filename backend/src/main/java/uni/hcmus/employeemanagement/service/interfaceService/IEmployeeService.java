@@ -28,4 +28,7 @@ public interface IEmployeeService {
     Optional<EmployeePublicDto_v1> getMyselft(String email, Long id); //lay thong tin cua nhan vien dang dang nhap
 
     Optional<List<EmployeePublicDto_v1>> searchEmployees(String id, String name, String email, String nameOrganization, String hrEmail);
+
+    Optional<EmployeePublicDto_v1> getDetailEmployeesByHR(String email,Long id);
+
 }

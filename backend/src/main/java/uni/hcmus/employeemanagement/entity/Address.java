@@ -21,12 +21,12 @@ public class Address extends MetaData {
 
     @JsonProperty("address")
     private String addressFull;
-    @JsonProperty("usage_type")
+    @JsonProperty("usageType")
     private String usage_type;
     @JsonProperty("effectiveDate")
     private Date effectiveDate;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "employeeId", nullable = false)
     private Employee employee;
 }

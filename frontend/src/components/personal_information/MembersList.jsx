@@ -44,7 +44,7 @@ const MembersList = () => {
     }
 
     return (
-        <div>
+        <div className="bg-white">
             <h4>Team Mates:</h4>
             {teamMates && teamMates.length > 0 ? (
                 <table className="table table-bordered table-hover">
@@ -64,9 +64,9 @@ const MembersList = () => {
                             <td>{mate.id}</td>
                             <td>{mate.name}</td>
                             <td>{mate.type}</td>
-                            <td>{mate.email_company}</td>
-                            <td>{mate.organization}</td>
-                            <td>{mate.manager_name}</td>
+                            <td>{mate.emailCompany}</td>
+                            <td>{mate.organizationName}</td>
+                            <td>{mate.managerName}</td>
                         </tr>
                     ))}
                     </tbody>

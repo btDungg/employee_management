@@ -29,7 +29,7 @@ const Contact = (props) => {
                             <tr key={address.id}>
                                 <td>{address.address}</td>
                                 <td>{new Date(address.effectiveDate).toLocaleDateString()}</td>
-                                <td>{address.usage_type}</td>
+                                <td>{address.usageType}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -50,7 +50,7 @@ const Contact = (props) => {
                         {phones.map((phone) => (
                             <tr key={phone.id}>
                                 <td>{phone.phone}</td>
-                                <td>{phone.usage_type}</td>
+                                <td>{phone.usageType}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -71,7 +71,7 @@ const Contact = (props) => {
                         {emails.map((email) => (
                             <tr key={email.id}>
                                 <td>{email.email}</td>
-                                <td>{email.usage_type}</td>
+                                <td>{email.usageType}</td>
                             </tr>
                         ))}
                         </tbody>
