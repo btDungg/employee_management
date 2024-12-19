@@ -10,6 +10,7 @@ import CareerPage from '../pages/personal_information/CareerPage.jsx';
 import FeedbackPage from '../pages/personal_information/FeedbackPage.jsx';
 import MembersPage from '../pages/personal_information/MembersPage.jsx';
 import PrivateRoute from '../components/PrivateRoute.jsx';
+import ManagerByHRPage from '../pages/personal_information/ManagerByHRPage.jsx';
 import WithSidebar from '../components/personal_information/WithSidebar.jsx';
 import { UserProvider } from '../components/personal_information/UserProvider.jsx';
 
@@ -25,6 +26,7 @@ const PersonalRoutes = () => (
             <Route path="career" element={<PrivateRoute element={WithSidebar(CareerPage, false)} />} />
             <Route path="feedback" element={<PrivateRoute element={WithSidebar(FeedbackPage, false)} />} />
             <Route path="members" element={<PrivateRoute element={WithSidebar(MembersPage, false)} />} />
+            <Route path="manager" element={<PrivateRoute element={WithSidebar(ManagerByHRPage, false)} />} />
         </Routes>
     </UserProvider>
 );

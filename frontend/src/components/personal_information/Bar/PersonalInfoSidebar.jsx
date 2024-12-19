@@ -88,6 +88,13 @@ const PersonalInfoSidebar = ({ employee }) => {
                             <i className="fas fa-comments me-2"></i>Phản hồi
                         </NavLink>
                     </li>
+                    {employee.type === "HR" && (
+                        <li className="nav-item">
+                            <NavLink to="/personal-info/manager" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                                <i className="fas fa-user-tie me-2"></i>Quản lý
+                            </NavLink>
+                        </li>
+                    )}
                 </ul>
                 <NavLink to="/"
                          className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>

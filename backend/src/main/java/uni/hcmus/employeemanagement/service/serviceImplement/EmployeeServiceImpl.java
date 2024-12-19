@@ -1,5 +1,8 @@
 package uni.hcmus.employeemanagement.service.serviceImplement;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,9 @@ import uni.hcmus.employeemanagement.repository.*;
 import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
 
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,6 +41,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
     private AddressRepository addressRepository;
     @Autowired
     private EmergencyContactRepository emergencyContactRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Employee addEmployee(Employee employee) {
@@ -215,11 +223,13 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
         ManagerDto_v1 managerDto = new ManagerDto_v1(managerId, managerName);
 
-        List<Object[]> employees = employeeRepository.findTeamMate(orgId);
-        if (employees.isEmpty()) {
-            return Optional.empty();
-        }
+
         if ("HR".equals(emp.getType())) {
+
+            List<Object[]> employees = employeeRepository.getAllByHR();
+            if (employees.isEmpty()) {
+                return Optional.empty();
+            }
             return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
                     (Long) employee[0],
                     (String) employee[1],
@@ -256,6 +266,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
             )).collect(Collectors.toList()));
 
         } else {
+            List<Object[]> employees = employeeRepository.findTeamMate(orgId);
+            if (employees.isEmpty()) {
+                return Optional.empty();
+            }
             return Optional.of(employees.stream().map(employee -> new EmployeePublicDto_v1(
                     (Long) employee[0],
                     (String) employee[1],
@@ -293,9 +307,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
         if (manager.length == 0) {
             return Optional.empty();
         }
-        Object[] managerDetails = (Object[]) manager[0]; // manager[0] là Object[], cần cast
-        Long managerId = (Long) managerDetails[0];      // Lấy phần tử đầu tiên (kiểu Long)
-        String managerName = (String) managerDetails[1];// Lấy phần tử thứ hai (kiểu String)
+        Object[] managerDetails = (Object[]) manager[0];
+        Long managerId = (Long) managerDetails[0];
+        String managerName = (String) managerDetails[1];
 
 
         ManagerDto_v1 managerDto = new ManagerDto_v1(managerId, managerName);
@@ -339,6 +353,89 @@ public class EmployeeServiceImpl implements IEmployeeService {
         ));
 
 
+    }
+
+    @Override
+    public Optional<List<EmployeePublicDto_v1>> searchEmployees(String id, String name,
+                                                                String email,
+                                                                String nameOrganization, String hrEmail) {
+
+        // Cơ sở truy vấn SQL ban đầu
+        String baseQuery = "SELECT e FROM Employee e join e.organization o WHERE 1=1";
+        Map<String, Object> parameters = new HashMap<>();
+
+        // Thêm điều kiện động
+        if (id != null) {
+            if (!id.matches("\\d+")) {  // Nếu id không phải là số nguyên (chứa chữ hoặc ký tự đặc biệt)
+                return Optional.empty();  // Trả về Optional.empty() hoặc null tùy yêu cầu
+            }
+
+            baseQuery += " AND e.id = :id";
+            parameters.put("id", id);
+        }
+        if (name != null) {
+            baseQuery += " AND e.name LIKE :name";
+            parameters.put("name", "%" + name + "%");
+        }
+        if (email != null) {
+            baseQuery += " AND e.emailCompany LIKE :email";
+            parameters.put("email", "%" + email + "%");
+        }
+        if (nameOrganization != null) {
+            baseQuery += " AND o.name LIKE :nameOrganization";
+            parameters.put("nameOrganization", "%" + nameOrganization + "%");
+        }
+
+        // Thực thi truy vấn
+        TypedQuery<Employee> query = entityManager.createQuery(baseQuery, Employee.class);
+        parameters.forEach(query::setParameter);
+
+        List<Employee> employees = query.getResultList();
+
+        if (employees.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Chuyển đổi kết quả sang DTO
+        List<EmployeePublicDto_v1> result = employees.stream()
+                .map(employee -> new EmployeePublicDto_v1(
+                        employee.getId(),
+                        employee.getName(),
+                        employee.getPoint(),
+                        employee.getType(),
+                        employee.getEmailCompany(),
+                        employee.getOrganization().getId(),
+                        employee.getDateOfBirth() != null ? employee.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null, // Chuyển đổi Date -> LocalDate
+                        employee.getAge(),
+                        employee.getGender() != null && employee.getGender() ? "Nam" : "Nữ",
+                        employee.getPrimaryNationality(),
+                        employee.getLocation(),
+                        employee.getHireDate() != null ? employee.getHireDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null,
+                        employee.getReligion(),
+                        employee.getMarital(),
+                        employee.getEthnicty(),
+                        employee.getAvatar(),
+                        employee.getOrganization().getName(),
+                        employee.getCountryOfBirth(),
+                        employee.getRegionOfBirth(),
+                        employee.getCityOfBirth(),
+
+                        employee.getCitizenshipStatus(),
+                        employee.getJob(),
+                        employee.getBusinessTitle(),
+                        employee.getJobProfile(),
+                        employee.getTimeType(),
+                        employee.getOrganization().getManager_id().getName(),
+                        employee.getOrganization().getManager_id().getId(),
+                        phoneRepository.findByEmployeeId(employee.getId()),
+                        emailRepository.findByEmployeeId(employee.getId()),
+                        addressRepository.findByEmployeeId(employee.getId()),
+                        emergencyContactRepository.findByEmployeeId(employee.getId())
+
+                ))
+                .collect(Collectors.toList());
+
+        return Optional.of(result);
     }
 
 }
