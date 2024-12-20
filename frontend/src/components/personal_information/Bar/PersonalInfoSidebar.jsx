@@ -10,7 +10,7 @@ const PersonalInfoSidebar = ({ employee }) => {
 
     return (
         <div className="sidebar sidebar-personal d-flex flex-column justify-content-between">
-            <div>
+            <div className="flex-grow-1">
                 <div className="profile-section text-center py-2">
                     {/* Avatar */}
                     <div className="avatar mb-1">
@@ -77,12 +77,15 @@ const PersonalInfoSidebar = ({ employee }) => {
                     </li>
                     {employee.type === "HR" && (
                         <li className="nav-item">
-                            <NavLink to="/personal-info/manager" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                            <NavLink to="/personal-info/manager"
+                                     className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
                                 <i className="fas fa-user-tie me-2"></i>Quản lý
                             </NavLink>
                         </li>
                     )}
                 </ul>
+            </div>
+            <div className="mt-auto">
                 <NavLink to="/"
                          className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
                     <i className="fas fa-home me-2"></i>Trang chủ

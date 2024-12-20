@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { UserContext } from '../components/personal_information/UserProvider.jsx';
 
 const PrivateRoute = ({ element: Component, requiredRoles, ...rest }) => {
-    const { user } = useContext(UserContext);
     const token = localStorage.getItem('token');
     let isAuthenticated = false;
 
@@ -22,7 +21,9 @@ const PrivateRoute = ({ element: Component, requiredRoles, ...rest }) => {
         return <Navigate to="/login" />;
     }
 
-    if (requiredRoles && !requiredRoles.includes(user.type)) {
+    const { user } = useContext(UserContext);
+    console.log(user);
+    if (requiredRoles && (!user || !requiredRoles.includes(user.type))) {
         return <div>You do not have permission to view this page.</div>;
     }
 

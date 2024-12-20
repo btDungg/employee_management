@@ -39,7 +39,7 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                 )}
                 {showLinks.job && (
                     <NavLink
-                        to={`${basePath}/job`}
+                        to={`${basePath}/job/job-detail`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Job Detail

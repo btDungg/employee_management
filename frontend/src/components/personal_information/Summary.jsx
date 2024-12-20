@@ -7,9 +7,6 @@ const Summary = ({ employee }) => {
     if (!employee) {
         return <div className="text-center mt-5">No employee data available.</div>;
     }
-    //TODO: Fix this
-    console.log(user);
-    console.log(employee);
     const managerUrl = employee.managerID === user?.id
         ? '/personal-info/summary'
         : `/profile/${employee.managerID}/summary`;

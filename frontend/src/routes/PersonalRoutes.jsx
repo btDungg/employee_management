@@ -26,7 +26,7 @@ const PersonalRoutes = () => (
             <Route path="career" element={<PrivateRoute element={WithSidebar(CareerPage, false)} />} />
             <Route path="feedback" element={<PrivateRoute element={WithSidebar(FeedbackPage, false)} />} />
             <Route path="members" element={<PrivateRoute element={WithSidebar(MembersPage, false)} />} />
-            <Route path="manager" element={<PrivateRoute element={WithSidebar(ManagerByHRPage, false)} />} />
+            <Route path="manager" element={<PrivateRoute element={WithSidebar(ManagerByHRPage, false)} requiredRoles={["HR"]} />} />
         </Routes>
     </UserProvider>
 );
