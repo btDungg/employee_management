@@ -20,10 +20,10 @@ const ProfileRoutes = () => {
             <Routes>
                 <Route path="summary" element={<PrivateRoute element={WithSidebar(SummaryPage, true)} />} />
                 <Route path="overview" element={<PrivateRoute element={WithSidebar(OverviewPage, true)} />} />
-                <Route path="job/*" element={<PrivateRoute element={WithSidebar(JobPage, true)} />} />
-                <Route path="compensation" element={<PrivateRoute element={WithSidebar(CompensationPage, true)} />} />
-                <Route path="personal/*" element={<PrivateRoute element={WithSidebar(PersonalPage, true)} />} />
-                <Route path="performance" element={<PrivateRoute element={WithSidebar(PerformancePage, true)} />} />
+                <Route path="job/*" element={<PrivateRoute element={WithSidebar(JobPage, true)} requiredRoles={["HR", "Manager"]} />} />
+                <Route path="compensation" element={<PrivateRoute element={WithSidebar(CompensationPage, true)} requiredRoles={["HR", "Manager"]} />} />
+                <Route path="personal/*" element={<PrivateRoute element={WithSidebar(PersonalPage, true)} requiredRoles={["HR"]} />} />
+                <Route path="performance" element={<PrivateRoute element={WithSidebar(PerformancePage, true)} requiredRoles={["HR", "Manager"]} />} />
                 <Route path="career" element={<PrivateRoute element={WithSidebar(CareerPage, true)} />} />
                 <Route path="feedback" element={<PrivateRoute element={WithSidebar(FeedbackPage, true)} />} />
                 <Route path="members" element={<PrivateRoute element={WithSidebar(MembersPage, true)} />} />

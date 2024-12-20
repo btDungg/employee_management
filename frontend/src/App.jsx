@@ -17,7 +17,7 @@ import InfoNavigationPage from "./pages/InfoNavigationPage.jsx";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { UserProvider } from "./components/personal_information/UserProvider.jsx";
 import ProfileRoutes from "./routes/ProfileRoutes.jsx";
-import PersonalRoutes from "./routes/PersionalRoutes.jsx";
+import PersonalRoutes from "./routes/PersonalRoutes.jsx";
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
