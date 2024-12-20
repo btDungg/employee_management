@@ -77,7 +77,7 @@ public class EmployeePublicDto_v1 {
 
     @JsonProperty("managerName")
     private String managerName;
-    @JsonProperty("manager")
+    @JsonProperty("managerID")
     private Long manager;
 
     @JsonProperty("phones")

@@ -9,10 +9,10 @@ const Summary = ({ employee }) => {
     }
     //TODO: Fix this
     console.log(user);
-    const managerUrl = employee.manager === user?.id
+    console.log(employee);
+    const managerUrl = employee.managerID === user?.id
         ? '/personal-info/summary'
         : `/profile/${employee.managerID}/summary`;
-    console.log(employee);
     return (
         <div className="p-4">
             <div className="">

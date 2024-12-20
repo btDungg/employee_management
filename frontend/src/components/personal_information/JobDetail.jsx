@@ -7,7 +7,7 @@ const JobDetail = (props) => {
     // Explicitly map desired keys and values
     const employeeData = [
         { label: "Employee ID", value: employee?.id?.toString().padStart(8, '0') },
-        { label: "Supervisory Organization", value: "N/A" },
+        { label: "Supervisory Organization", value: employee?.organizationName },
         { label: "Business Title", value: employee?.businessTitle },
         { label: "Job Profile", value: employee?.jobProfile },
         { label: "Employee Type", value: employee?.marital },

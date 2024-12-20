@@ -1,25 +1,12 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../../../../public/css/personal_information/Sidebar.css';
-import { logout } from "../../../apis/api.js";
 import TooltipWithClick from "./TooltipWithClick.jsx";
 
 
 const PersonalInfoSidebar = ({ employee }) => {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        try {
-            logout();
-            navigate('/login', { replace: true });
-        } catch (error) {
-            console.error('Đăng xuất thất bại:', error);
-        }
-    };
-
-    const handleHomeClick = () => {
-        navigate('/');
-    };
 
     return (
         <div className="sidebar sidebar-personal d-flex flex-column justify-content-between">
