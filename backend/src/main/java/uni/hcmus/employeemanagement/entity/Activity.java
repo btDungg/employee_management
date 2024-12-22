@@ -20,6 +20,7 @@ public class Activity extends MetaData  {
     private LocalDate startDate;
     private LocalDate endDate;
     private int numberOfParticipants;
+    private int numberOfRegistered;
     private LocalDate createdDate;
     private LocalDate registrationOpenDate;
     private LocalDate registrationCloseDate;

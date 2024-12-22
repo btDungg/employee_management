@@ -4,10 +4,8 @@ package uni.hcmus.employeemanagement.controller;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import uni.hcmus.employeemanagement.dto.Request.RegisterRequest;
 import uni.hcmus.employeemanagement.dto.Response.ActivityDTO;
 import uni.hcmus.employeemanagement.dto.Response.DetailActivityDTO;
 import uni.hcmus.employeemanagement.repository.ActivityRepository;
@@ -48,6 +46,20 @@ public class ActivityController {
         DetailActivityDTO detailActivityDTO = activityService.getDetailActivity(id, email)
                 .orElse(null);
         return ResponseEntity.ok(detailActivityDTO);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<DetailActivityDTO> registerActivity(@RequestBody RegisterRequest request,Principal principal) {
+        String email = principal.getName();
+        Optional<DetailActivityDTO> result = activityService.registerActivity(request.getActivityId(),email );
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
+    @PostMapping("/unregister")
+    public ResponseEntity<DetailActivityDTO> unregisterActivity(@RequestBody RegisterRequest request,Principal principal) {
+        String email = principal.getName();
+        Optional<DetailActivityDTO> result = activityService.unregisterActivity(request.getActivityId(), email);
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
 

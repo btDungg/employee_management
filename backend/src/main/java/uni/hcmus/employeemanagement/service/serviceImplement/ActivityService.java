@@ -29,6 +29,7 @@ public class ActivityService implements IActivityService {
     private DetailActivityRepository detailActivityRepository;
     @Autowired
     private ActivityRepository activityRepository;
+
     @Override
     public Optional<List<ActivityDTO>> getActivities(String name, String email) {
         // Kiểm tra quyền truy cập của nhân viên
@@ -60,6 +61,7 @@ public class ActivityService implements IActivityService {
                                 activity.getStartDate(),
                                 activity.getEndDate(),
                                 activity.getNumberOfParticipants(),
+                                activity.getNumberOfRegistered(),
                                 activity.getCreatedDate(),
                                 activity.getRegistrationOpenDate(),
                                 activity.getRegistrationCloseDate(),
@@ -102,6 +104,7 @@ public class ActivityService implements IActivityService {
                             activity.getStartDate(),
                             activity.getEndDate(),
                             activity.getNumberOfParticipants(),
+                            activity.getNumberOfRegistered(),
                             activity.getCreatedDate(),
                             activity.getRegistrationOpenDate(),
                             activity.getRegistrationCloseDate(),
@@ -129,6 +132,7 @@ public class ActivityService implements IActivityService {
         // Tìm kiếm chi tiết hoạt động (đã đăng ký hoặc chưa đăng ký)
         Optional<ActivityDetail> detailActivity = detailActivityRepository.findByEmployeeIdAndActivityId(emp.getId(), id);
 
+
         // Nếu tìm thấy chi tiết hoạt động
         if (detailActivity.isPresent()) {
             ActivityDetail activity = detailActivity.get();
@@ -141,6 +145,7 @@ public class ActivityService implements IActivityService {
                     activity.getActivity().getStartDate(),
                     activity.getActivity().getEndDate(),
                     activity.getActivity().getNumberOfParticipants(),
+                    activity.getActivity().getNumberOfRegistered(),
                     activity.getActivity().getCreatedDate(),
                     activity.getActivity().getRegistrationOpenDate(),
                     activity.getActivity().getRegistrationCloseDate(),
@@ -175,10 +180,9 @@ public class ActivityService implements IActivityService {
         } else {
             // Nếu không tìm thấy chi tiết đăng ký, chỉ trả về thông tin về hoạt động
 
+        Optional<Activity> activity = activityRepository.findById(id);
 
-            Optional<Activity> activity = activityRepository.findById(id);
-
-            if (activity.isPresent()) {
+        if (activity.isPresent()&&activity.get().getIsViewed()) {
                 ActivityDTO activityDTO = new ActivityDTO(
                         activity.get().getId(),
                         activity.get().getName(),
@@ -186,6 +190,7 @@ public class ActivityService implements IActivityService {
                         activity.get().getStartDate(),
                         activity.get().getEndDate(),
                         activity.get().getNumberOfParticipants(),
+                        activity.get().getNumberOfRegistered(),
                         activity.get().getCreatedDate(),
                         activity.get().getRegistrationOpenDate(),
                         activity.get().getRegistrationCloseDate(),
@@ -215,9 +220,172 @@ public class ActivityService implements IActivityService {
                         null
                 ));
             } else {
-                return Optional.empty();  // Nếu không tìm thấy hoạt động, trả về Optional.empty()
+            return Optional.empty();  // Nếu không tìm thấy hoạt động, trả về Optional.empty()
+        }
+        }
+    }
+
+
+    @Override
+    public Optional<DetailActivityDTO> registerActivity(Long id, String email) {
+        // Tìm nhân viên theo email
+        Employee emp = employeeRepository.findByEmailCompany(email).orElse(null);
+        if (emp == null) {
+            return Optional.empty(); // Nhân viên không tồn tại
+        }
+
+        // Tìm hoạt động theo id
+        Activity activity = activityRepository.findById(id).orElse(null);
+        if (activity == null) {
+            return Optional.empty(); // Hoạt động không tồn tại
+        }
+
+
+        //Hr có thể đăng ký hoạt động bất cứ lúc nào
+        if(!emp.getType().equals("HR")){
+
+
+            // Kiểm tra số lượng đăng ký
+            if (activity.getNumberOfRegistered() >= activity.getNumberOfParticipants()) {
+                throw new IllegalArgumentException("Hoạt động đã đầy, không thể đăng ký thêm."); // Ném ngoại lệ nếu đầy
+            }
+            if(activity.getRegistrationOpenDate().isAfter(LocalDate.now())||activity.getRegistrationCloseDate().isBefore(LocalDate.now())){
+                throw new IllegalArgumentException("Không thể đăng ký hoạt động này."); // Nếu đã đăng ký, ném ngoại lệ
+            }
+
+
+
+        }
+        // Kiểm tra xem đã đăng ký chưa
+        Optional<ActivityDetail> existingRegistration = detailActivityRepository.findByEmployeeIdAndActivityId(emp.getId(), id);
+        if (existingRegistration.isPresent()) {
+            throw new IllegalArgumentException("Nhân viên đã đăng ký hoạt động này."); // Nếu đã đăng ký, ném ngoại lệ
+        }
+        // Tạo mới bản ghi đăng ký
+        ActivityDetail detailActivity = new ActivityDetail();
+        detailActivity.setActivity(activity);
+        detailActivity.setEmployee(emp);
+        detailActivity.setStatus("Registered");
+        detailActivity.setRegisteredDate(LocalDate.now());
+
+        // Lưu bản ghi vào cơ sở dữ liệu
+        ActivityDetail savedDetail = detailActivityRepository.save(detailActivity);
+
+        // Cập nhật số lượng đã đăng ký cho hoạt động
+        activity.setNumberOfRegistered(activity.getNumberOfRegistered() + 1);
+        activityRepository.save(activity);
+
+        // Chuyển đổi sang DTO
+        DetailActivityDTO dto = new DetailActivityDTO(
+                savedDetail.getId(),
+                new ActivityDTO(
+                        activity.getId(),
+                        activity.getName(),
+                        activity.getActivityType(),
+                        activity.getStartDate(),
+                        activity.getEndDate(),
+                        activity.getNumberOfParticipants(),
+                        activity.getNumberOfRegistered(),
+                        activity.getCreatedDate(),
+                        activity.getRegistrationOpenDate(),
+                        activity.getRegistrationCloseDate(),
+                        activity.getStatus(),
+                        activity.getDescription(),
+                        activity.getIsViewed(),
+                        activity.getCreatedBy() != null ? activity.getCreatedBy().getId() : null,
+                        activity.getCreatedBy() != null ? activity.getCreatedBy().getUsername() : null
+                ),
+                new EmployeePublicDto_v1(
+                        emp.getId(),
+                        emp.getName(),
+                        emp.getType(),
+                        emp.getEmailCompany(),
+                        emp.getOrganization().getId()
+                ),
+                savedDetail.getResult(),
+                savedDetail.getEvidence(),
+                savedDetail.getRanking(),
+                savedDetail.getStatus(),
+                savedDetail.getRegisteredDate()
+        );
+
+        return Optional.of(dto); // Trả về DTO
+    }
+
+
+    @Override
+    public Optional<DetailActivityDTO> unregisterActivity(Long id, String email) {
+        // Tìm nhân viên theo email
+        Employee emp = employeeRepository.findByEmailCompany(email).orElse(null);
+        if (emp == null) {
+            return Optional.empty(); // Nhân viên không tồn tại
+        }
+
+        // Tìm hoạt động theo id
+        Activity activity = activityRepository.findById(id).orElse(null);
+        if (activity == null) {
+            return Optional.empty(); // Hoạt động không tồn tại
+        }
+
+
+        // Tìm bản ghi đăng ký của nhân viên cho hoạt động này
+        Optional<ActivityDetail> existingRegistration = detailActivityRepository.findByEmployeeIdAndActivityId(emp.getId(), id);
+        if (existingRegistration.isEmpty()) {
+            throw new IllegalArgumentException("Nhân viên chưa đăng ký hoạt động này."); // Nếu chưa đăng ký, ném ngoại lệ
+        }
+
+        // Xóa bản ghi đăng ký
+        ActivityDetail detailActivity = existingRegistration.get();
+        if (!emp.getType().equals("HR")) {
+            if (detailActivity.getActivity().getRegistrationOpenDate().isAfter(LocalDate.now())) {
+                throw new IllegalArgumentException("Hoạt động này chưa mở đăng ký, không thể hủy.");
+            }
+            if (detailActivity.getActivity().getRegistrationCloseDate().isBefore(LocalDate.now())) {
+                throw new IllegalArgumentException("Hoạt động này đã đóng đăng ký, không thể hủy.");
             }
         }
+
+        detailActivityRepository.delete(detailActivity);
+
+        // Cập nhật số lượng đã đăng ký của hoạt động
+        activity.setNumberOfRegistered(activity.getNumberOfRegistered() - 1);
+        activityRepository.save(activity);
+
+        // Chuyển đổi ActivityDetail thành DTO (nếu cần trả về thông tin)
+        DetailActivityDTO dto = new DetailActivityDTO(
+                detailActivity.getId(),
+                new ActivityDTO(
+                        activity.getId(),
+                        activity.getName(),
+                        activity.getActivityType(),
+                        activity.getStartDate(),
+                        activity.getEndDate(),
+                        activity.getNumberOfParticipants(),
+                        activity.getNumberOfRegistered(),
+                        activity.getCreatedDate(),
+                        activity.getRegistrationOpenDate(),
+                        activity.getRegistrationCloseDate(),
+                        activity.getStatus(),
+                        activity.getDescription(),
+                        activity.getIsViewed(),
+                        activity.getCreatedBy() != null ? activity.getCreatedBy().getId() : null,
+                        activity.getCreatedBy() != null ? activity.getCreatedBy().getUsername() : null
+                ),
+                new EmployeePublicDto_v1(
+                        emp.getId(),
+                        emp.getName(),
+                        emp.getType(),
+                        emp.getEmailCompany(),
+                        emp.getOrganization().getId()
+                ),
+                detailActivity.getResult(),
+                detailActivity.getEvidence(),
+                detailActivity.getRanking(),
+                detailActivity.getStatus(),
+                detailActivity.getRegisteredDate()
+        );
+
+        return Optional.of(dto);
     }
 
 

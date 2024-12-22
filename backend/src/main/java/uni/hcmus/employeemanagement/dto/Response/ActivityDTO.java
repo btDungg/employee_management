@@ -32,6 +32,9 @@ public class ActivityDTO {
     @JsonProperty("numberOfParticipants")
     private int numberOfParticipants;
 
+    @JsonProperty("numberOfRegistered")
+    private int numberOfRegistered;
+
     @JsonProperty("createdDate")
     private LocalDate createdDate;
 
