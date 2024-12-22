@@ -26,6 +26,7 @@ public class Activity extends MetaData  {
     private String status;
     private String description;
     private String activityType;
+    private Boolean isViewed;
 
 
     @OneToOne

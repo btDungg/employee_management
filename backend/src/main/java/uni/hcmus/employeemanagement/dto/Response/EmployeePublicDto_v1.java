@@ -157,4 +157,14 @@ public class EmployeePublicDto_v1 {
 
     }
 
+
+    public EmployeePublicDto_v1(Long id, String name, String type, String emailCompany, Long organization)
+    {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.emailCompany = emailCompany;
+        this.organization = organization;
+    }
+
 }
