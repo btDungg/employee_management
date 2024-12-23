@@ -1,6 +1,7 @@
 stages:
   - build-frontend
   - build-backend
+  - deploy
 
 services:
   - name: mysql:latest
@@ -10,7 +11,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
 
 variables:
-  DB_URL_EM: ${DB_URL_EM}
+  DB_URL_EM: jdbc:mysql://mysql:3306/employee_management_db
   DB_USERNAME: ${DB_USERNAME}
   DB_PASSWORD: ${DB_PASSWORD}
   EXPIRATION: ${EXPIRATION}
@@ -43,3 +44,18 @@ build-backend:
     paths:
       - backend/target/*.jar
     expire_in: 1 week
+
+deploy:
+  stage: deploy
+  image: openjdk:17
+  dependencies:
+    - build-frontend
+    - build-backend
+  script:
+    - echo "Starting deployment"
+    - echo "Deploying backend"
+    - cp backend/target/*.jar ./app.jar
+    - java -jar app.jar --spring.datasource.url=$DB_URL_EM --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD &
+    - echo "Deploying frontend"
+    - cp -r frontend/build/* /var/www/html/
+    - echo "Deployment completed"
