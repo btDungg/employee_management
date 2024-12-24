@@ -29,7 +29,7 @@ build-frontend:
     - npm run build
   artifacts:
     paths:
-      - frontend/build/
+      - frontend/dest/
     expire_in: 1 week
 
 build-backend:
