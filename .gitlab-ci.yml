@@ -57,5 +57,5 @@ deploy:
     - cp backend/target/*.jar ./app.jar
     - java -jar app.jar --spring.datasource.url=$DB_URL_EM --spring.datasource.username=$DB_USERNAME --spring.datasource.password=$DB_PASSWORD &
     - echo "Deploying frontend"
-    - cp -r frontend/build/* /var/www/html/
+    - cp -r frontend/dist/* /var/www/html/
     - echo "Deployment completed"
