@@ -30,56 +30,56 @@ const PersonalInfoSidebar = ({ employee }) => {
                     <li className="nav-item">
                         <NavLink to="/personal-info/summary"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-chart-pie me-2"></i>Tóm tắt
+                            <i className="fas fa-chart-pie me-2"></i>Summary
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/overview"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-info-circle me-2"></i>Tổng quan
+                            <i className="fas fa-info-circle me-2"></i>Overview
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/job"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-briefcase me-2"></i>Công việc
+                            <i className="fas fa-briefcase me-2"></i>Job
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/compensation"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-dollar-sign me-2"></i>Lương thưởng
+                            <i className="fas fa-dollar-sign me-2"></i>Compensation
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/personal"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-user me-2"></i>Cá nhân
+                            <i className="fas fa-user me-2"></i>Personal
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/performance"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-chart-line me-2"></i>Hiệu suất
+                            <i className="fas fa-chart-line me-2"></i>Performance
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/career"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-graduation-cap me-2"></i>Sự nghiệp
+                            <i className="fas fa-graduation-cap me-2"></i>Career
                         </NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/personal-info/feedback"
                                  className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                            <i className="fas fa-comments me-2"></i>Phản hồi
+                            <i className="fas fa-comments me-2"></i>Feedback
                         </NavLink>
                     </li>
                     {employee.type === "HR" && (
                         <li className="nav-item">
                             <NavLink to="/personal-info/manager"
                                      className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                                <i className="fas fa-user-tie me-2"></i>Quản lý
+                                <i className="fas fa-user-tie me-2"></i>Manager
                             </NavLink>
                         </li>
                     )}
@@ -88,7 +88,7 @@ const PersonalInfoSidebar = ({ employee }) => {
             <div className="mt-auto">
                 <NavLink to="/"
                          className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                    <i className="fas fa-home me-2"></i>Trang chủ
+                    <i className="fas fa-home me-2"></i>Homepage
                 </NavLink>
             </div>
         </div>

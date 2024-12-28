@@ -1,7 +1,7 @@
 import React from 'react';
 import PersonalInfoNavbar from "../../components/personal_information/Bar/PersonalInfoNavbar.jsx";
 import {Route, Routes, Navigate} from "react-router-dom";
-import JobDetail from "../../components/personal_information/JobDetail.jsx";
+import JobDetail from "../../components/personal_information/Job/JobDetail.jsx";
 
 const JobPage = (props) => {
     return (
