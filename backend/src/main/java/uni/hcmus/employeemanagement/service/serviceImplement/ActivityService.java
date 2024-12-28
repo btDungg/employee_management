@@ -262,7 +262,7 @@ public class ActivityService implements IActivityService {
             ));
         }
         else {
-            return Optional.empty();  // Nếu không tìm thấy hoạt động, trả về Optional.empty()
+           throw new ActivityNotFoundException("Activity not found!");
         }
         }
     }
