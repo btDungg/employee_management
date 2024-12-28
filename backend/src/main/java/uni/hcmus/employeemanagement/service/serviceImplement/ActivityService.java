@@ -11,6 +11,8 @@ import uni.hcmus.employeemanagement.entity.Activity;
 import uni.hcmus.employeemanagement.entity.ActivityDetail;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.MetaData;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.ActivityNotFoundException;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.RegistrationNotAllowedException;
 import uni.hcmus.employeemanagement.repository.ActivityRepository;
 import uni.hcmus.employeemanagement.repository.DetailActivityRepository;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
@@ -219,7 +221,47 @@ public class ActivityService implements IActivityService {
                         "Not Registered",
                         null
                 ));
-            } else {
+            }
+        if(activity.isPresent()&&"HR".equals(emp.getType()))
+        {
+            ActivityDTO activityDTO = new ActivityDTO(
+                    activity.get().getId(),
+                    activity.get().getName(),
+                    activity.get().getActivityType(),
+                    activity.get().getStartDate(),
+                    activity.get().getEndDate(),
+                    activity.get().getNumberOfParticipants(),
+                    activity.get().getNumberOfRegistered(),
+                    activity.get().getCreatedDate(),
+                    activity.get().getRegistrationOpenDate(),
+                    activity.get().getRegistrationCloseDate(),
+                    activity.get().getStatus(),
+                    activity.get().getDescription(),
+                    activity.get().getIsViewed(),
+                    activity.get().getCreatedBy() != null ? activity.get().getCreatedBy().getId() : null,
+                    activity.get().getCreatedBy() != null ? activity.get().getCreatedBy().getUsername() : null
+            );
+
+            EmployeePublicDto_v1 myself = new EmployeePublicDto_v1(
+                    emp.getId(),
+                    emp.getName(),
+                    emp.getType(),
+                    emp.getEmailCompany(),
+                    emp.getOrganization().getId()
+            );
+            // Trả về thông tin hoạt động mà nhân viên chưa đăng ký
+            return Optional.of(new DetailActivityDTO(
+                    null,
+                    activityDTO,
+                    myself,
+                    null,
+                    null,
+                    0,
+                    "Not Registered",
+                    null
+            ));
+        }
+        else {
             return Optional.empty();  // Nếu không tìm thấy hoạt động, trả về Optional.empty()
         }
         }
@@ -235,10 +277,8 @@ public class ActivityService implements IActivityService {
         }
 
         // Tìm hoạt động theo id
-        Activity activity = activityRepository.findById(id).orElse(null);
-        if (activity == null) {
-            return Optional.empty(); // Hoạt động không tồn tại
-        }
+        Activity activity = activityRepository.findById(id).orElseThrow(()->new ActivityNotFoundException("Activity not found!")); // Nếu không tìm thấy, ném ngoại lệ
+
 
 
         //Hr có thể đăng ký hoạt động bất cứ lúc nào
@@ -247,10 +287,10 @@ public class ActivityService implements IActivityService {
 
             // Kiểm tra số lượng đăng ký
             if (activity.getNumberOfRegistered() >= activity.getNumberOfParticipants()) {
-                throw new IllegalArgumentException("Hoạt động đã đầy, không thể đăng ký thêm."); // Ném ngoại lệ nếu đầy
+                throw new RegistrationNotAllowedException("The activity is full and no more registrations are allowed."); // Ném ngoại lệ nếu đầy
             }
             if(activity.getRegistrationOpenDate().isAfter(LocalDate.now())||activity.getRegistrationCloseDate().isBefore(LocalDate.now())){
-                throw new IllegalArgumentException("Không thể đăng ký hoạt động này."); // Nếu đã đăng ký, ném ngoại lệ
+                throw new RegistrationNotAllowedException("Registration for this activity is not allowed."); // Nếu đã đăng ký, ném ngoại lệ
             }
 
 
@@ -259,7 +299,7 @@ public class ActivityService implements IActivityService {
         // Kiểm tra xem đã đăng ký chưa
         Optional<ActivityDetail> existingRegistration = detailActivityRepository.findByEmployeeIdAndActivityId(emp.getId(), id);
         if (existingRegistration.isPresent()) {
-            throw new IllegalArgumentException("Nhân viên đã đăng ký hoạt động này."); // Nếu đã đăng ký, ném ngoại lệ
+            throw new RegistrationNotAllowedException("The employee has already registered for this activity."); // Nếu đã đăng ký, ném ngoại lệ
         }
         // Tạo mới bản ghi đăng ký
         ActivityDetail detailActivity = new ActivityDetail();
@@ -322,26 +362,23 @@ public class ActivityService implements IActivityService {
         }
 
         // Tìm hoạt động theo id
-        Activity activity = activityRepository.findById(id).orElse(null);
-        if (activity == null) {
-            return Optional.empty(); // Hoạt động không tồn tại
-        }
+        Activity activity = activityRepository.findById(id).orElseThrow(()->new ActivityNotFoundException("Activity not found!")); // Nếu không tìm thấy, ném ngoại lệ
 
 
         // Tìm bản ghi đăng ký của nhân viên cho hoạt động này
         Optional<ActivityDetail> existingRegistration = detailActivityRepository.findByEmployeeIdAndActivityId(emp.getId(), id);
         if (existingRegistration.isEmpty()) {
-            throw new IllegalArgumentException("Nhân viên chưa đăng ký hoạt động này."); // Nếu chưa đăng ký, ném ngoại lệ
+            throw new RegistrationNotAllowedException("The employee has not registered for this activity."); // Nếu chưa đăng ký, ném ngoại lệ
         }
 
         // Xóa bản ghi đăng ký
         ActivityDetail detailActivity = existingRegistration.get();
         if (!emp.getType().equals("HR")) {
             if (detailActivity.getActivity().getRegistrationOpenDate().isAfter(LocalDate.now())) {
-                throw new IllegalArgumentException("Hoạt động này chưa mở đăng ký, không thể hủy.");
+                throw new RegistrationNotAllowedException("Registration for this activity has not opened yet, cancellation is not allowed.");
             }
             if (detailActivity.getActivity().getRegistrationCloseDate().isBefore(LocalDate.now())) {
-                throw new IllegalArgumentException("Hoạt động này đã đóng đăng ký, không thể hủy.");
+                throw new RegistrationNotAllowedException("Registration for this activity has closed, cancellation is not allowed.");
             }
         }
 
