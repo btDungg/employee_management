@@ -4,6 +4,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import uni.hcmus.employeemanagement.dto.Request.ActivityRequestDto;
 import uni.hcmus.employeemanagement.dto.Response.ActivityDTO;
 import uni.hcmus.employeemanagement.dto.Response.DetailActivityDTO;
 import uni.hcmus.employeemanagement.dto.Response.EmployeePublicDto_v1;
@@ -11,7 +13,9 @@ import uni.hcmus.employeemanagement.entity.Activity;
 import uni.hcmus.employeemanagement.entity.ActivityDetail;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.MetaData;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.ActivityNotFoundException;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.CanNotSaveException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.RegistrationNotAllowedException;
 import uni.hcmus.employeemanagement.repository.ActivityRepository;
 import uni.hcmus.employeemanagement.repository.DetailActivityRepository;
@@ -309,11 +313,22 @@ public class ActivityService implements IActivityService {
         detailActivity.setRegisteredDate(LocalDate.now());
 
         // Lưu bản ghi vào cơ sở dữ liệu
-        ActivityDetail savedDetail = detailActivityRepository.save(detailActivity);
+        ActivityDetail savedDetail;
+        try {
+            savedDetail= detailActivityRepository.save(detailActivity);
+        } catch (Exception e) {
+            throw new CanNotSaveException("Cannot save detail activity");
+        }
 
         // Cập nhật số lượng đã đăng ký cho hoạt động
         activity.setNumberOfRegistered(activity.getNumberOfRegistered() + 1);
-        activityRepository.save(activity);
+
+        try {
+            activityRepository.save(activity);
+        } catch (Exception e) {
+            throw new CanNotSaveException("Cannot save number of registered of activity");
+        }
+
 
         // Chuyển đổi sang DTO
         DetailActivityDTO dto = new DetailActivityDTO(
@@ -373,7 +388,7 @@ public class ActivityService implements IActivityService {
 
         // Xóa bản ghi đăng ký
         ActivityDetail detailActivity = existingRegistration.get();
-        if (!emp.getType().equals("HR")) {
+        if (!"HR".equals(emp.getType())) {
             if (detailActivity.getActivity().getRegistrationOpenDate().isAfter(LocalDate.now())) {
                 throw new RegistrationNotAllowedException("Registration for this activity has not opened yet, cancellation is not allowed.");
             }
@@ -382,12 +397,20 @@ public class ActivityService implements IActivityService {
             }
         }
 
-        detailActivityRepository.delete(detailActivity);
+        try {
+            detailActivityRepository.delete(detailActivity);
+        } catch (Exception e) {
+            throw new CanNotSaveException("Cannot delete detail activity");
+        }
 
         // Cập nhật số lượng đã đăng ký của hoạt động
         activity.setNumberOfRegistered(activity.getNumberOfRegistered() - 1);
-        activityRepository.save(activity);
+        try {
+            activityRepository.save(activity);
+        } catch (Exception e) {
+            throw new CanNotSaveException("Cannot save activity");
 
+        }
         // Chuyển đổi ActivityDetail thành DTO (nếu cần trả về thông tin)
         DetailActivityDTO dto = new DetailActivityDTO(
                 detailActivity.getId(),
@@ -426,4 +449,63 @@ public class ActivityService implements IActivityService {
     }
 
 
+    @Override
+    public Optional<ActivityDTO> createActivity (ActivityRequestDto activityDTO, String email) {
+        // Tìm nhân viên theo email
+        Employee emp = employeeRepository.findByEmailCompany(email).orElse(null);
+        if (emp == null) {
+            return null; // Nhân viên không tồn tại
+        }
+
+       if(!"HR".equals(emp.getType())) {
+           throw new AccessDeniedException("Just HR can create activity");
+       }
+
+       Activity activity = new Activity();
+        activity.setName(activityDTO.getName());
+        activity.setActivityType(activityDTO.getType());
+        activity.setStartDate(activityDTO.getStartDate());
+        activity.setEndDate(activityDTO.getEndDate());
+        activity.setNumberOfParticipants(activityDTO.getNumberOfParticipants());
+        activity.setNumberOfRegistered(0);
+        activity.setCreatedDate(LocalDate.now());
+        activity.setRegistrationOpenDate(activityDTO.getRegistrationOpenDate());
+        activity.setRegistrationCloseDate(activityDTO.getRegistrationCloseDate());
+        activity.setStatus(activityDTO.getStatus());
+        activity.setDescription(activityDTO.getDescription());
+        activity.setIsViewed(activityDTO.getIsViewed());
+        activity.setCreatedBy(emp);
+
+
+        Activity savedActivity;
+        // Lưu hoạt động vào cơ sở dữ liệu
+        try {
+            // Lưu hoạt động vào cơ sở dữ liệu và kiểm tra kết quả
+            savedActivity = activityRepository.save(activity);
+        }
+        catch (Exception e) {
+            // Nếu có lỗi, ném ngoại lệ CanNotSaveException
+            throw new CanNotSaveException("Cannot save activity");
+        }
+
+        ActivityDTO dto = new ActivityDTO(
+                savedActivity.getId(),
+                savedActivity.getName(),
+                savedActivity.getActivityType(),
+                savedActivity.getStartDate(),
+                savedActivity.getEndDate(),
+                savedActivity.getNumberOfParticipants(),
+                savedActivity.getNumberOfRegistered(),
+                savedActivity.getCreatedDate(),
+                savedActivity.getRegistrationOpenDate(),
+                savedActivity.getRegistrationCloseDate(),
+                savedActivity.getStatus(),
+                savedActivity.getDescription(),
+                savedActivity.getIsViewed(),
+                savedActivity.getCreatedBy() != null ? savedActivity.getCreatedBy().getId() : null,
+                savedActivity.getCreatedBy() != null ? savedActivity.getCreatedBy().getUsername() : null
+        );
+        return Optional.of(dto);
+
+    }
 }

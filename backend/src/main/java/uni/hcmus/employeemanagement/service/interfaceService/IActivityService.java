@@ -1,5 +1,6 @@
 package uni.hcmus.employeemanagement.service.interfaceService;
 
+import uni.hcmus.employeemanagement.dto.Request.ActivityRequestDto;
 import uni.hcmus.employeemanagement.dto.Response.ActivityDTO;
 import uni.hcmus.employeemanagement.dto.Response.DetailActivityDTO;
 
@@ -11,4 +12,5 @@ public interface IActivityService {
     Optional<DetailActivityDTO> getDetailActivity(Long id,String email);
     Optional<DetailActivityDTO> registerActivity(Long id,String email);
     Optional<DetailActivityDTO> unregisterActivity(Long id, String email);
+    Optional<ActivityDTO> createActivity(ActivityRequestDto activityDTO, String email);
 }
