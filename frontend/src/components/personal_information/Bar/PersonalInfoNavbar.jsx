@@ -2,9 +2,15 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "../../../../public/css/personal_information/Navbar.css";
 
-const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false, emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false, languages: false, achievements: false} }) => {
+const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false, emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false, languages: false, achievements: false } }) => {
     const location = useLocation();
-    const basePath = location.pathname.includes('/profile') ? location.pathname.split('/personal')[0] : '/personal-info';
+    const basePath = (() => {
+        const regex = /^(.+?)\/(job|career|personal)/; // Tìm đoạn trước '/job', '/career', hoặc '/personal'
+        const match = location.pathname.match(regex);
+        return match ? match[1] : '/personal-info'; // Nếu khớp, trả về đoạn trước '/job', '/career', hoặc '/personal'
+    })();
+
+
 
     if (!showNavBar) {
         return null;

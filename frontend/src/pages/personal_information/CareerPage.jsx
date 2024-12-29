@@ -1,11 +1,11 @@
 import React from 'react';
 import PersonalInfoNavbar from "../../components/personal_information/Bar/PersonalInfoNavbar.jsx";
 import {Navigate, Route, Routes} from "react-router-dom";
-import Skills from "../../components/personal_information/Overview/Skills.jsx";
-import JobHistory from "../../components/personal_information/Overview/JobHistory.jsx";
-import InternalProjects from "../../components/personal_information/Overview/InternalProjects.jsx";
-import Languages from "../../components/personal_information/Overview/Languages.jsx";
-import Achievements from "../../components/personal_information/Overview/Achievements.jsx";
+import Skills from "../../components/personal_information/Career/Skills.jsx";
+import JobHistory from "../../components/personal_information/Career/JobHistory.jsx";
+import InternalProjects from "../../components/personal_information/Career/InternalProjects.jsx";
+import Languages from "../../components/personal_information/Career/Languages.jsx";
+import Achievements from "../../components/personal_information/Career/Achievements.jsx";
 
 const CareerPage = (props) => {
     return (

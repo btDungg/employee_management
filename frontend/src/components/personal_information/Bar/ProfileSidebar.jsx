@@ -42,7 +42,7 @@ const ProfileSidebar = ({ employee }) => {
                         <li className="nav-item">
                             <NavLink to={`/profile/${employeeId}/job`}
                                      className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>
-                                <i className="fas fa-briefcase me-2"></i>Personal
+                                <i className="fas fa-briefcase me-2"></i>Job
                             </NavLink>
                         </li>
                     )}
