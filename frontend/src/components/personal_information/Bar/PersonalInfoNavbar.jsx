@@ -2,12 +2,14 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "../../../../public/css/personal_information/Navbar.css";
 
-const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false, emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false, languages: false, achievements: false } }) => {
+const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false,
+    emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false,
+    languages: false, achievements: false, feedbackReceived: false, feedbackGiven: false} }) => {
     const location = useLocation();
     const basePath = (() => {
-        const regex = /^(.+?)\/(job|career|personal)/; // Tìm đoạn trước '/job', '/career', hoặc '/personal'
+        const regex = /^(.+?)\/(job|career|personal|feedback)/;
         const match = location.pathname.match(regex);
-        return match ? match[1] : '/personal-info'; // Nếu khớp, trả về đoạn trước '/job', '/career', hoặc '/personal'
+        return match ? match[1] : '/personal-info';
     })();
 
 
@@ -92,6 +94,23 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Achievements
+                    </NavLink>
+                )}
+                {/* Feedback */}
+                {showLinks.feedbackReceived && (
+                    <NavLink
+                        to={`${basePath}/feedback/received`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Feedback Received
+                    </NavLink>
+                )}
+                {showLinks.feedbackGiven && (
+                    <NavLink
+                        to={`${basePath}/feedback/given`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Feedback Given
                     </NavLink>
                 )}
                 {/* Compensation */}
