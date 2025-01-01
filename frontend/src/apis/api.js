@@ -245,4 +245,16 @@ export const unregister = async (registerRequest) => {
         console.error('Error unregistering activity:', error);
         throw error;
     }
+ };
+
+ export const addActivity = async (activityData) => {
+    try {
+        const response = await axios.post(`${ACTIVITY_URL}/create`, activityData, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding activity:', error);
+        throw error;
+    }
 };

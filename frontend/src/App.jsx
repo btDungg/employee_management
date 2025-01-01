@@ -20,12 +20,14 @@ import { UserProvider } from "./components/personal_information/UserProvider.jsx
 import ProfileRoutes from "./routes/ProfileRoutes.jsx";
 import PersonalRoutes from "./routes/PersonalRoutes.jsx";
 
+
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const location = useLocation();
     const showTopNavbar = ['/point-info', '/view-other-points', '/point-history', '/change-points'].includes(location.pathname);
     const hideSidebar = location.pathname.includes('/personal-info/') || location.pathname.includes('/profile/');
     const isLoggedIn = !!localStorage.getItem('token');
+    
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);

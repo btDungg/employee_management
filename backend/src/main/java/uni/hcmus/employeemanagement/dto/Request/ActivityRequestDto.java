@@ -41,8 +41,7 @@ public class ActivityRequestDto {
     @NotNull(message = "Status cannot be null.")
     private String status;
 
-    @NotNull(message = "Description cannot be null.")
-    @Size(min = 10, max = 500, message = "Description must be between 10 and 500 characters.")
+
     private String description;
 
     private Boolean isViewed; // Optional or can be a boolean (true/false)
