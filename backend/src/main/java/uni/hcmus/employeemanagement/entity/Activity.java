@@ -30,7 +30,7 @@ public class Activity extends MetaData  {
     private Boolean isViewed;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="created_by", nullable = false)
     private Employee createdBy;
 

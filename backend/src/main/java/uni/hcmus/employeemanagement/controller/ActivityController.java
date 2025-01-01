@@ -40,7 +40,7 @@ public class ActivityController {
     // lấy chi tiết hoạt động theo id hoạt động và email người dùng
     @GetMapping("{id}")
     public ResponseEntity<DetailActivityDTO> getDetailActivity(
-            @RequestParam Long id,
+            @PathVariable Long id,
             Principal principal) {
         String email = principal.getName();
         DetailActivityDTO detailActivityDTO = activityService.getDetailActivity(id, email)
@@ -50,6 +50,7 @@ public class ActivityController {
 
     @PostMapping("/register")
     public ResponseEntity<DetailActivityDTO> registerActivity(@RequestBody RegisterRequest request,Principal principal) {
+    	System.out.println("Received request body: " + request);
         String email = principal.getName();
         Optional<DetailActivityDTO> result = activityService.registerActivity(request.getActivityId(),email );
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());

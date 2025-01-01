@@ -4,6 +4,7 @@ const BASE_URL = 'http://localhost:8080/api/points';
 const AUTH_URL = 'http://localhost:8080/api/auth';
 const EMPLOYEE_URL = 'http://localhost:8080/api/employees';
 const PROFILE_URL = 'http://localhost:8080/api/profile';
+const ACTIVITY_URL = 'http://localhost:8080/api/activity';
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -187,6 +188,57 @@ export const searchEmployee = async (params = {}) => {
         return response.data;
     } catch (error) {
         console.error('Error fetching team mates:', error);
+        throw error;
+    }
+};
+
+export const getActivities = async (name) => {
+    try {
+        const url = name
+            ? `${ACTIVITY_URL}/activities?name=${encodeURIComponent(name)}`
+            : `${ACTIVITY_URL}/activities`;
+        const response = await axios.get(url, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error get activities:', error);
+        throw error;
+    }
+};
+
+export const getDetailActivity = async (activityId) => {
+    try {
+        const response = await axios.get(`${ACTIVITY_URL}/${activityId}`, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching detail activity:', error);
+        throw error;
+    }
+};
+
+export const register = async (registerRequest) => {
+    try {
+        const response = await axios.post(`${ACTIVITY_URL}/register`, registerRequest, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error register activity:', error);
+        throw error;
+    }
+};
+
+export const unregister = async (registerRequest) => {
+    try {
+        const response = await axios.post(`${ACTIVITY_URL}/unregister`, registerRequest, {
+            headers: getAuthHeaders()
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error register activity:', error);
         throw error;
     }
 };

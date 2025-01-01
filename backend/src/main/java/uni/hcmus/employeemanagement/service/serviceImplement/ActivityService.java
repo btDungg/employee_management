@@ -11,6 +11,7 @@ import uni.hcmus.employeemanagement.entity.Activity;
 import uni.hcmus.employeemanagement.entity.ActivityDetail;
 import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.MetaData;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.repository.ActivityRepository;
 import uni.hcmus.employeemanagement.repository.DetailActivityRepository;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
@@ -247,10 +248,13 @@ public class ActivityService implements IActivityService {
 
             // Kiểm tra số lượng đăng ký
             if (activity.getNumberOfRegistered() >= activity.getNumberOfParticipants()) {
-                throw new IllegalArgumentException("Hoạt động đã đầy, không thể đăng ký thêm."); // Ném ngoại lệ nếu đầy
+                throw new AccessDeniedException("Hoạt động đã đầy, không thể đăng ký thêm."); // Ném ngoại lệ nếu đầy
             }
-            if(activity.getRegistrationOpenDate().isAfter(LocalDate.now())||activity.getRegistrationCloseDate().isBefore(LocalDate.now())){
-                throw new IllegalArgumentException("Không thể đăng ký hoạt động này."); // Nếu đã đăng ký, ném ngoại lệ
+            if(activity.getRegistrationOpenDate().isAfter(LocalDate.now())){
+                throw new AccessDeniedException("Hoạt động chưa mở đăng ký, không thể đăng ký hoạt động này."); // Nếu chưa mở đăng ký, ném ngoại lệ
+            }
+            if(activity.getRegistrationCloseDate().isBefore(LocalDate.now())){
+                throw new AccessDeniedException("Hoạt động đã đóng đăng ký, Không thể đăng ký hoạt động này."); // Nếu đã đóng đăng ký, ném ngoại lệ
             }
 
 
@@ -338,10 +342,10 @@ public class ActivityService implements IActivityService {
         ActivityDetail detailActivity = existingRegistration.get();
         if (!emp.getType().equals("HR")) {
             if (detailActivity.getActivity().getRegistrationOpenDate().isAfter(LocalDate.now())) {
-                throw new IllegalArgumentException("Hoạt động này chưa mở đăng ký, không thể hủy.");
+                throw new AccessDeniedException("Hoạt động này chưa mở đăng ký, không thể hủy.");
             }
             if (detailActivity.getActivity().getRegistrationCloseDate().isBefore(LocalDate.now())) {
-                throw new IllegalArgumentException("Hoạt động này đã đóng đăng ký, không thể hủy.");
+                throw new AccessDeniedException("Hoạt động này đã đóng đăng ký, không thể hủy.");
             }
         }
 
