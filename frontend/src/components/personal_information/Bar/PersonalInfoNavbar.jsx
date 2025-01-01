@@ -8,11 +8,12 @@ import PerformanceReviews from "../Performance/PerformanceReviews.jsx";
 const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false,
     emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false,
     languages: false, achievements: false, feedbackReceived: false, feedbackGiven: false,
-    archivedGoals: false, individualGoals: false, performanceReviews: false,
-    managementChain: false, managerHistory: false, retirementDate: false} }) => {
+    archivedGoals: false, individualGoals: false, performanceReviews: false, bankAccount: false,
+    managementChain: false, managerHistory: false, retirementDate: false, compensation: false,
+    payHistory: false} }) => {
     const location = useLocation();
     const basePath = (() => {
-        const regex = /^(.+?)\/(job|career|personal|feedback|performance)/;
+        const regex = /^(.+?)\/(job|career|personal|feedback|performance|overview|compensation)/;
         const match = location.pathname.match(regex);
         return match ? match[1] : '/personal-info';
     })();
@@ -168,6 +169,30 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                     </NavLink>
                 )}
                 {/* Compensation */}
+                {showLinks.compensation && (
+                    <NavLink
+                        to={`${basePath}/compensation/compensation-detail`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Compensation
+                    </NavLink>
+                )}
+                {showLinks.bankAccount && (
+                    <NavLink
+                        to={`${basePath}/compensation/bank-account`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Bank Account
+                    </NavLink>
+                )}
+                {showLinks.payHistory && (
+                    <NavLink
+                        to={`${basePath}/compensation/pay-history`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Pay History
+                    </NavLink>
+                )}
             </div>
         </div>
     );

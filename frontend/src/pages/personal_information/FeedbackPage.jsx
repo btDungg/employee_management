@@ -9,7 +9,7 @@ import FeedbackGiven from "../../components/personal_information/Feedback/Feedba
 const FeedbackPage = (props) => {
     return (
         <div className="content-personal bg-body-secondary">
-            <PersonalInfoNavbar showNavBar={true} showLinks={{feedbackReceived: true, feedbackGiven: true}}/>
+            <PersonalInfoNavbar showNavBar={true} showLinks={{ feedbackReceived: true, feedbackGiven: true }}/>
             <Routes>
                 <Route path="/" element={<Navigate to="received"/>}/>
                 <Route path="received" element={<FeedbackReceived employee={props.employee}/>}/>
