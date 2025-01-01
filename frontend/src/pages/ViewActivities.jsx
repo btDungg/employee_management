@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getActivities,addActivity } from '../apis/api';
+import { getActivities,addActivity,getEmployeeDetailsByEmail } from '../apis/api';
 import '../../public/css/ActivityPage.css';
-
 const ViewActivities = ({ onCommit }) => {
-
-    
+	const [user, setUser] = useState(null);
 	const [activities, setActivities] = useState([]);
 	const [name, setName] = useState('');
     const [isDenied, setIsDenied] = useState(false);
@@ -23,8 +21,23 @@ const ViewActivities = ({ onCommit }) => {
 		description: '',
 		isViewed: true,
 	  });
+	// Fetch user details when the component is mounted
+	useEffect(() => {
+		const fetchUserDetails = async () => {
+			try {
+				const userDetails = await getEmployeeDetailsByEmail();
+				setUser(userDetails);
+				console.log('User details:', userDetails);
+			} catch (err) {
+				console.error('Error fetching user details:', err);
+				setError('Không thể tải thông tin người dùng.');
+			} finally {
+				setLoading(false);
+			}
+		};
 
-
+		fetchUserDetails();
+	}, []);
 	
 
 	const handleSearch = async () => {
@@ -106,13 +119,13 @@ const ViewActivities = ({ onCommit }) => {
 		  </div>
 		  {searchWarning && <div className="search-warning">{searchWarning}</div>}
 
-		  {/* { 'HR' === user.type && ( */}
-                        <div className="add-activity">
-                            <button className="btn_add_activity" type="button" onClick={() => setShowAddPopup(true)}>
-								<i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-		  {/* )} */}
+		  {user && user.type === 'HR' && (
+			<div className="add-activity">
+				<button className="btn_add_activity" type="button" onClick={() => setShowAddPopup(true)}>
+					<i className="fa-solid fa-plus"></i>
+				</button>
+			</div>
+		)}
 		  <div className="activity-grid">
 			{activities.map((activity, index) => (
 				<div key={index} className="activity-card" type="button" onClick={() => handleDetail(activity)}>
