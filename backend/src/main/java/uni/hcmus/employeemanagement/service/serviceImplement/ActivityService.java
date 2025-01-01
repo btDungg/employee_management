@@ -294,7 +294,7 @@ public class ActivityService implements IActivityService {
                 throw new RegistrationNotAllowedException("The activity is full and no more registrations are allowed."); // Ném ngoại lệ nếu đầy
             }
             if(activity.getRegistrationOpenDate().isAfter(LocalDate.now())||activity.getRegistrationCloseDate().isBefore(LocalDate.now())){
-                throw new RegistrationNotAllowedException("Registration for this activity is not allowed."); // Nếu đã đăng ký, ném ngoại lệ
+                throw new RegistrationNotAllowedException("Registration for this activity is not allowed.");
             }
 
 

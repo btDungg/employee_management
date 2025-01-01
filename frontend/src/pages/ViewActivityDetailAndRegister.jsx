@@ -132,19 +132,45 @@ const ViewActivityDetailAndRegister = () => {
         <div>
             <div className="activity-info">
                 <h2>Thông tin hoạt động</h2>
-                <p><strong>Tên hoạt động: {activityName}</strong></p>
-                <p><strong>Loại hoạt động: </strong>{activityType}</p>
-                <p><strong>Số người tham gia: </strong>{numberOfRegistered}/{numberOfParticipants}</p>
-				<p><strong>Ngày bắt đầu: </strong>{startDate}</p>
-                <p><strong>Ngày kết thúc: </strong>{endDate}</p>
-                <p><strong>Ngày mở đăng ký: </strong>{registrationOpenDate}</p>
-                <p><strong>Ngày đóng đăng ký: </strong>{registrationCloseDate}</p>
-                <p><strong>Trạng thái đăng ký: </strong>{status}</p>
-                <p><strong>Mô tả:</strong></p>
-                <textarea rows="3" cols="100"
-                        readOnly
-                        value={description}
-                />
+                <div className="activity-body">
+        <div className="activity-row">
+            <span className="label">Tên hoạt động:</span>
+            <span className="value">{activityName}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Loại hoạt động:</span>
+            <span className="value">{activityType}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Số người tham gia:</span>
+            <span className="value">{numberOfRegistered}/{numberOfParticipants}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Ngày bắt đầu:</span>
+            <span className="value">{startDate}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Ngày kết thúc:</span>
+            <span className="value">{endDate}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Ngày mở đăng ký:</span>
+            <span className="value">{registrationOpenDate}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Ngày đóng đăng ký:</span>
+            <span className="value">{registrationCloseDate}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Trạng thái đăng ký:</span>
+            <span className="value">{status}</span>
+        </div>
+        <div className="activity-row">
+            <span className="label">Mô tả:</span>
+        </div>
+        <textarea rows="3" cols="100" readOnly value={description}></textarea>
+                </div>
+                <div className="activity-buttons">
                 <button className="btn" type="button" style={{ backgroundColor: 'green'}}>Kết quả hoạt động</button>
                 {isRegistered ? <button className="btn" type="button" style={{ marginLeft: '20px'}} onClick={handleUnregisterConfirmation}>Hủy đăng ký</button>
                 : <button className="btn" type="button" style={{ backgroundColor: 'red', marginLeft: '20px'}} onClick={handleRegisterConfirmation}>Đăng ký</button>}
@@ -176,6 +202,7 @@ const ViewActivityDetailAndRegister = () => {
                     onClose={handleCloseNotification}
                 />
                 )}
+            </div>
             </div>
             
         </div>

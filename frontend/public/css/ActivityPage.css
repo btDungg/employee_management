@@ -115,6 +115,79 @@ color: #ffffff;
   background-color: #d3d3d3;
 }
 
+.activity-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.activity-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.activity-row .label {
+  color: #555;
+  font-weight: bold;
+  flex: 1;
+  text-align: left;
+}
+
+.activity-row .value {
+  color: #333;
+  flex: 1;
+  text-align: right;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none;
+  background-color: #f7f7f7;
+}
+
+textarea:read-only {
+  background-color: #eaeaea;
+  color: #555;
+}
+
+
+.activity-buttons {
+  
+  margin-top: 40px;
+  width: 100%;
+  top: 20px;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+  .activity-buttons .btn {
+    background-color: #007bff;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+.activity-buttons .btn:hover {
+  background-color: #0056b3;
+}
+
+
 
 .popup-content_add {
   background: white;
@@ -218,4 +291,12 @@ color: #ffffff;
 .add-activity{
   margin: 40px;
   text-align: right;
+}
+
+.error {
+  color: red;  /* Màu chữ đỏ */
+  font-size: 11px;  /* Kích thước chữ nhỏ */
+  margin-top: -10px;  /* Khoảng cách giữa trường và thông báo lỗi */
+  text-align: right;
+  margin-right: 5px;
 }
