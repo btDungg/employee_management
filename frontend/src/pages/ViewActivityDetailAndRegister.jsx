@@ -1,35 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../../public/css/ActivityPage.css';
 import '../../public/css/Popup.css';
-import ViewActivities from './ViewActivities';
 import NotificationPopup from '../components/NotificationPopup';
 import { getDetailActivity, register, unregister } from '../apis/api';
 
-const ViewActivityDetailAndRegister = ({ onCommit }) => {
-    const [formData, setFormData] = useState({});
-    const [showApprove, setShowApprove] = useState(false);
+const ViewActivityDetailAndRegister = () => {
+    const { activityId } = useParams();
+    const [activityName, setActivityName] = useState('');
+    const [activityType, setActivityType] = useState('');
+    const [numberOfRegistered, setNumberOfRegistered] = useState('');
+    const [numberOfParticipants, setNumberOfParticipants] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [registrationOpenDate, setRegistrationOpenDate] = useState('');
+    const [registrationCloseDate, setRegistrationCloseDate] = useState('');
+    const [status, setStatus] = useState('');
+    const [description, setDescription] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
     const [showRegisterConfirmation, setShowRegisterConfirmation] = useState(false);
     const [showUnregisterConfirmation, setShowUnregisterConfirmation] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
     const [notificationMessage, setNotificationMessage] = useState('');
 
-    const handleCommit = (data) => {
-        setFormData(data);
-        setShowApprove(true);
-    };
-
-    const fetchDetailActivity = async (activityId) => {
-        const detailActivity = await getDetailActivity(activityId);
-        if (detailActivity.status != "Not Registered")
-            setIsRegistered(true);
-    };
     
+
     useEffect(() => {
-        if (showApprove) {
-            fetchDetailActivity(formData.activityId);
-        }
-    }, [showApprove]); 
+        const fetchDetailActivity = async () => {
+          try {
+            const detailActivity = await getDetailActivity(activityId); // Fetch activity details
+            setActivityName(detailActivity.activity.activityName);
+            setActivityType(detailActivity.activity.activityType);
+            setNumberOfParticipants(detailActivity.activity.numberOfParticipants);
+            setNumberOfRegistered(detailActivity.activity.numberOfRegistered);
+            setStartDate(detailActivity.activity.startDate);
+            setEndDate(detailActivity.activity.endDate);
+            setRegistrationOpenDate(detailActivity.activity.registrationOpenDate);
+            setRegistrationCloseDate(detailActivity.activity.registrationCloseDate);
+            setStatus(detailActivity.activity.status);
+            setDescription(detailActivity.activity.description);
+            setIsRegistered(detailActivity.status !== 'Not Registered');
+            //console.log(detailActivity.activity.activityName);
+          } catch (error) {
+            console.error('Error fetching activity details:', error);
+          }
+        };
+    
+        fetchDetailActivity();
+      }, {});
     
     const handleRegisterConfirmation = () => {
         setShowRegisterConfirmation(true);
@@ -54,7 +72,7 @@ const ViewActivityDetailAndRegister = ({ onCommit }) => {
         setShowRegisterConfirmation(false);
         try {
             const registerRequest = {
-                activityId: formData.activityId
+                activityId: activityId
             };
             await register(registerRequest);
             setNotificationMessage("Bạn đã đăng ký thành công");
@@ -84,7 +102,7 @@ const ViewActivityDetailAndRegister = ({ onCommit }) => {
         setShowRegisterConfirmation(false);
         try {
             const registerRequest = {
-                activityId: formData.activityId
+                activityId: activityId
             };
             await unregister(registerRequest);
             setNotificationMessage("Bạn đã hủy đăng ký thành công");
@@ -112,22 +130,20 @@ const ViewActivityDetailAndRegister = ({ onCommit }) => {
 
     return (
         <div>
-            {!showApprove && <ViewActivities onCommit={handleCommit} />}
-            {showApprove && 
             <div className="activity-info">
                 <h2>Thông tin hoạt động</h2>
-                <p><strong>Tên hoạt động: {formData.activityName}</strong></p>
-                <p><strong>Loại hoạt động: </strong>{formData.activityType}</p>
-                <p><strong>Số người tham gia: </strong>{formData.numberOfRegistered}/{formData.numberOfParticipants}</p>
-				<p><strong>Ngày bắt đầu: </strong>{formData.startDate}</p>
-                <p><strong>Ngày kết thúc: </strong>{formData.endDate}</p>
-                <p><strong>Ngày mở đăng ký: </strong>{formData.registrationOpenDate}</p>
-                <p><strong>Ngày đóng đăng ký: </strong>{formData.registrationCloseDate}</p>
-                <p><strong>Trạng thái đăng ký: </strong>{formData.status}</p>
+                <p><strong>Tên hoạt động: {activityName}</strong></p>
+                <p><strong>Loại hoạt động: </strong>{activityType}</p>
+                <p><strong>Số người tham gia: </strong>{numberOfRegistered}/{numberOfParticipants}</p>
+				<p><strong>Ngày bắt đầu: </strong>{startDate}</p>
+                <p><strong>Ngày kết thúc: </strong>{endDate}</p>
+                <p><strong>Ngày mở đăng ký: </strong>{registrationOpenDate}</p>
+                <p><strong>Ngày đóng đăng ký: </strong>{registrationCloseDate}</p>
+                <p><strong>Trạng thái đăng ký: </strong>{status}</p>
                 <p><strong>Mô tả:</strong></p>
                 <textarea rows="3" cols="100"
                         readOnly
-                        value={formData.description}
+                        value={description}
                 />
                 <button className="btn" type="button" style={{ backgroundColor: 'green'}}>Kết quả hoạt động</button>
                 {isRegistered ? <button className="btn" type="button" style={{ marginLeft: '20px'}} onClick={handleUnregisterConfirmation}>Hủy đăng ký</button>
@@ -161,7 +177,6 @@ const ViewActivityDetailAndRegister = ({ onCommit }) => {
                 />
                 )}
             </div>
-            }
             
         </div>
     );
