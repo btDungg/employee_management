@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getActivities,addActivity,getEmployeeDetailsByEmail } from '../apis/api';
+import { useNavigate } from 'react-router-dom';
 import '../../public/css/ActivityPage.css';
 const ViewActivities = ({ onCommit }) => {
 	const [user, setUser] = useState(null);
 	const [activities, setActivities] = useState([]);
 	const [name, setName] = useState('');
-    const [isDenied, setIsDenied] = useState(false);
+	const navigate = useNavigate();
 	const [searchWarning, setSearchWarning] = useState('');
     const [submitWarning, setSubmitWarning] = useState('');
 	const [showAddPopup, setShowAddPopup] = useState(false);
@@ -40,6 +41,8 @@ const ViewActivities = ({ onCommit }) => {
 	}, []);
 	
 
+	
+
 	const handleSearch = async () => {
         const activity = await getActivities(name);
         setActivities(activity);
@@ -51,23 +54,16 @@ const ViewActivities = ({ onCommit }) => {
 
 	useEffect(() => {
 	    const getListActivities = async () => {
-			try	{
-				const data = await getActivities();
-				setActivities(data);
-	        } catch (error) {
-                setIsDenied(true);
-                setSubmitWarning("Bạn không có quyền thực hiện chức năng này!");
-				console.error("Lỗi khi lấy danh sách yêu cầu nghỉ phép: ", error);
-			}
+			const data = await getActivities();
+			setActivities(data);
 		};
-        setIsDenied(false);
-        setSubmitWarning('');
 		getListActivities();
 	}, []);
 
 	const handleDetail = (activity) => {
         // Gửi dữ liệu của hoạt động đã chọn qua prop onCommit
-        onCommit(activity);
+        //onCommit(activity);
+		navigate(`/personal-activity/${activity.activityId}`);
     };
 
 	const handleAddActivity = async () => {

@@ -11,6 +11,7 @@ import ViewOtherPointsPage from './pages/ViewOtherPointsPage.jsx';
 import PointHistoryPage from './pages/PointHistoryPage.jsx';
 import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import ViewActivityDetailAndRegister from './pages/ViewActivityDetailAndRegister.jsx';
+import ViewActivities from './pages/ViewActivities.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import '../public/css/App.css';
@@ -74,7 +75,8 @@ const App = () => {
                         <Route path="/point-history" element={<PrivateRoute element={PointHistoryPage} />} />
                         <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
                         <Route path="/personal-info-navigation" element={<PrivateRoute element={InfoNavigationPage} />} />
-                        <Route path="/personal-activity" element={<PrivateRoute element={ViewActivityDetailAndRegister} />} />
+                        <Route path="/personal-activity" element={<PrivateRoute element={ViewActivities} />} />
+                        <Route path="/personal-activity/:activityId" element={<PrivateRoute element={ViewActivityDetailAndRegister} />} />
                     </Routes>
                 </div>
             )}
