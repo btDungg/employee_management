@@ -1,13 +1,18 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "../../../../public/css/personal_information/Navbar.css";
+import ArchivedGoals from "../Performance/ArchivedGoals.jsx";
+import IndividualGoals from "../Performance/IndividualGoals.jsx";
+import PerformanceReviews from "../Performance/PerformanceReviews.jsx";
 
 const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false,
     emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false,
-    languages: false, achievements: false, feedbackReceived: false, feedbackGiven: false} }) => {
+    languages: false, achievements: false, feedbackReceived: false, feedbackGiven: false,
+    archivedGoals: false, individualGoals: false, performanceReviews: false,
+    managementChain: false, managerHistory: false, retirementDate: false} }) => {
     const location = useLocation();
     const basePath = (() => {
-        const regex = /^(.+?)\/(job|career|personal|feedback)/;
+        const regex = /^(.+?)\/(job|career|personal|feedback|performance)/;
         const match = location.pathname.match(regex);
         return match ? match[1] : '/personal-info';
     })();
@@ -53,6 +58,30 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Job Detail
+                    </NavLink>
+                )}
+                {showLinks.managementChain && (
+                    <NavLink
+                        to={`${basePath}/job/management-chain`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Management Chain
+                    </NavLink>
+                )}
+                {showLinks.managerHistory && (
+                    <NavLink
+                        to={`${basePath}/job/manager-history`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Manager History
+                    </NavLink>
+                )}
+                {showLinks.retirementDate && (
+                    <NavLink
+                        to={`${basePath}/job/retirement-date`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Retirement Date
                     </NavLink>
                 )}
                 {/* Career */}
@@ -111,6 +140,31 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
                         Feedback Given
+                    </NavLink>
+                )}
+                {/* Performance */}
+                {showLinks.archivedGoals && (
+                    <NavLink
+                        to={`${basePath}/performance/archived-goals`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Archived Goals
+                    </NavLink>
+                )}
+                {showLinks.individualGoals && (
+                    <NavLink
+                        to={`${basePath}/performance/individual-goals`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Individual Goals
+                    </NavLink>
+                )}
+                {showLinks.performanceReviews && (
+                    <NavLink
+                        to={`${basePath}/performance/performance-reviews`}
+                        className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
+                    >
+                        Performance Reviews
                     </NavLink>
                 )}
                 {/* Compensation */}

@@ -84,6 +84,11 @@ const Summary = ({ employee }) => {
                     <div className="col-md-6 mb-4">
                         <div className="card p-3 shadow-sm">
                             <h6 className="text-muted mb-3">Feedback</h6>
+                            {employee.id !== user.id && (
+                                <div className="text-muted">
+                                    <button className="rounded">Give feedback</button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
