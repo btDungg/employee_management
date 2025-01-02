@@ -20,15 +20,17 @@ public class Activity extends MetaData  {
     private LocalDate startDate;
     private LocalDate endDate;
     private int numberOfParticipants;
+    private int numberOfRegistered;
     private LocalDate createdDate;
     private LocalDate registrationOpenDate;
     private LocalDate registrationCloseDate;
     private String status;
     private String description;
     private String activityType;
+    private Boolean isViewed;
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="created_by", nullable = false)
     private Employee createdBy;
 

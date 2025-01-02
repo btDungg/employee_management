@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -25,5 +27,6 @@ public class ActivityDetail extends MetaData {
     private String evidence;
     private int ranking;
     private String status;
+    private LocalDate registeredDate;
 
 }
