@@ -508,4 +508,62 @@ public class ActivityService implements IActivityService {
         return Optional.of(dto);
 
     }
+
+
+    @Override
+    public Optional<ActivityDTO> updateActivity(ActivityRequestDto activityDTO, String email) {
+        // Tìm nhân viên theo email
+        Employee emp = employeeRepository.findByEmailCompany(email).orElse(null);
+        if (emp == null) {
+            return null; // Nhân viên không tồn tại
+        }
+
+        if(!"HR".equals(emp.getType())) {
+            throw new AccessDeniedException("Just HR can update activity");
+        }
+
+        Activity activity = activityRepository.findById(activityDTO.getId()).orElseThrow(()->new ActivityNotFoundException("Activity not found!"));
+
+        activity.setName(activityDTO.getName());
+        activity.setActivityType(activityDTO.getType());
+        activity.setStartDate(activityDTO.getStartDate());
+        activity.setEndDate(activityDTO.getEndDate());
+        activity.setNumberOfParticipants(activityDTO.getNumberOfParticipants());
+        activity.setRegistrationOpenDate(activityDTO.getRegistrationOpenDate());
+        activity.setRegistrationCloseDate(activityDTO.getRegistrationCloseDate());
+        activity.setStatus(activityDTO.getStatus());
+        activity.setDescription(activityDTO.getDescription());
+        activity.setIsViewed(activityDTO.getIsViewed());
+        activity.setCreatedBy(emp);
+
+        Activity savedActivity;
+        // Lưu hoạt động vào cơ sở dữ liệu
+        try {
+            // Lưu hoạt động vào cơ sở dữ liệu và kiểm tra kết quả
+            savedActivity = activityRepository.save(activity);
+        }
+        catch (Exception e) {
+            // Nếu có lỗi, ném ngoại lệ CanNotSaveException
+            throw new CanNotSaveException("Cannot save activity");
+        }
+
+        ActivityDTO dto = new ActivityDTO(
+                savedActivity.getId(),
+                savedActivity.getName(),
+                savedActivity.getActivityType(),
+                savedActivity.getStartDate(),
+                savedActivity.getEndDate(),
+                savedActivity.getNumberOfParticipants(),
+                savedActivity.getNumberOfRegistered(),
+                savedActivity.getCreatedDate(),
+                savedActivity.getRegistrationOpenDate(),
+                savedActivity.getRegistrationCloseDate(),
+                savedActivity.getStatus(),
+                savedActivity.getDescription(),
+                savedActivity.getIsViewed(),
+                savedActivity.getCreatedBy() != null ? savedActivity.getCreatedBy().getId() : null,
+                savedActivity.getCreatedBy() != null ? savedActivity.getCreatedBy().getUsername() : null
+        );
+        return Optional.of(dto);
+    }
 }
