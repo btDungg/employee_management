@@ -258,3 +258,15 @@ export const unregister = async (registerRequest) => {
         throw error;
     }
 };
+
+export const updateActivity = async (activityData) => {
+    try {
+        const response = await axios.post(`${ACTIVITY_URL}/update`, activityData, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating activity:', error.response ? error.response.data : error);
+        throw error;
+    }
+};

@@ -113,6 +113,7 @@ color: #ffffff;
   resize: none;
   overflow-y: auto;
   background-color: #d3d3d3;
+  resize: vertical;
 }
 
 .activity-body {
@@ -230,11 +231,11 @@ textarea:read-only {
 
 .activity-page form .form-group_add {
   display: flex;
-  gap: 200px; 
+  gap: 150px; 
 }
 
 .activity-page form label {
-  min-width: 150px; 
+  min-width: 200px; 
   text-align: left; 
   font-weight: bold;
 }
@@ -242,11 +243,15 @@ textarea:read-only {
 .activity-page form input,
 .activity-page form select,
 .activity-page form textarea {
-  flex: 1;
-  padding: 8px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: 4px;
+  resize: none;
+  background-color: #f7f7f7;
 }
 
 
@@ -299,4 +304,99 @@ textarea:read-only {
   margin-top: -10px;  /* Khoảng cách giữa trường và thông báo lỗi */
   text-align: right;
   margin-right: 5px;
+}
+
+.btn_edit_activity{
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #2d695c;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  height: 40px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.edit_activity{
+  margin-right: 20px;
+  text-align: right;
+}
+
+.update-form {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.update-row {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.update-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.update-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.update-textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+
+.update-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.update-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.update-save {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.update-cancel {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.description-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.description-container {
+  width: 100%;
+}
+
+.description-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  resize: none;
 }
