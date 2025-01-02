@@ -1,23 +1,20 @@
 package uni.hcmus.employeemanagement.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
-import uni.hcmus.employeemanagement.dto.*;
-import uni.hcmus.employeemanagement.entity.PointChange;
+import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
+import uni.hcmus.employeemanagement.dto.Request.ModifyPointRequest;
+import uni.hcmus.employeemanagement.dto.Response.PointChangeDto;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
 import uni.hcmus.employeemanagement.utils.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import uni.hcmus.employeemanagement.dto.EmployeePointDto;
+import uni.hcmus.employeemanagement.dto.Response.EmployeePointDto;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -49,12 +46,11 @@ public class PointController {
 //    }
 
     @GetMapping
-    public ResponseEntity<?> getMyPoints(@RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+    public ResponseEntity<?> getMyPoints(Principal principal) {
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
-        String token = authorizationHeader.substring(7);
-        String email = jwtTokenUtil.extractUserIdentifier(token);
+        String email = principal.getName();
         return ResponseEntity.ok(pointService.ViewMyPoint(email));
     }
 
@@ -64,17 +60,17 @@ public class PointController {
     //Trả về danh sách các nhân viên và số điểm của họ.
     //Đươờng dẫn: /api/points/employees/point
     @GetMapping("/employees/point")
-    public ResponseEntity<List<EmployeePointDto>> getEmployeeWithBaseRole(@RequestHeader("Authorization") String authorizationHeader) {
-        // Kiểm tra token hợp lệ
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+    public ResponseEntity<List<EmployeePointDto>> getEmployeeWithBaseRole(Principal principal) {
+        // Kiểm tra xem principal có null không
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
 
-        // Lấy token từ header Authorization (loại bỏ "Bearer ")
-        String token = authorizationHeader.substring(7);
+        // Lấy tên người dùng (username) từ Principal
+        String useEmail = principal.getName();
 
-        // Truyền token xuống service để lấy danh sách điểm nhân viên
-        List<EmployeePointDto> employeePoints = pointService.getEmployeePointsBasedOnRole(token);
+        // Truyền tên người dùng vào service để lấy danh sách điểm nhân viên
+        List<EmployeePointDto> employeePoints = pointService.getEmployeePointsBasedOnRole(useEmail);
         return ResponseEntity.ok(employeePoints);
     }
 
@@ -82,12 +78,15 @@ public class PointController {
     //Trả về thông tin điểm của nhân viên.
     //Đường dẫn: /api/points/employee/{id}
     @GetMapping("/employee/{id}")
-    public ResponseEntity<EmployeePointDto> getDetailEmployeePoints(@PathVariable Long id, @RequestHeader("Authorization") String authorizationHeader) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+    public ResponseEntity<EmployeePointDto> getDetailEmployeePoints(@PathVariable Long id, Principal principal) {
+        // Kiểm tra xem principal có null không
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
-        String token = authorizationHeader.substring(7);
-        EmployeePointDto employeePoint = pointService.getEmployeePointDetailBasedOnRole(id, token);
+
+        // Lấy tên người dùng (username) từ Principal
+        String useEmail = principal.getName();
+        EmployeePointDto employeePoint = pointService.getEmployeePointDetailBasedOnRole(id, useEmail);
         return ResponseEntity.ok(employeePoint);
     }
 
@@ -103,13 +102,10 @@ public class PointController {
     }
 
     @PostMapping("/modify-points")
-    public ResponseEntity<String> modifyPoint(@RequestHeader("Authorization") String authorizationHeader, @RequestBody ModifyPointRequest modifyPoint) {
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
-        }
-        String token = authorizationHeader.substring(7);
-        String email = jwtTokenUtil.extractUserIdentifier(token);
+    public ResponseEntity<String> modifyPoint(Principal principal, @RequestBody ModifyPointRequest modifyPoint) {
+        String email = principal.getName();
         String result = pointService.modifyPoints(email, modifyPoint);
+
         if (result != null) {
             return ResponseEntity.ok(result);
         }
@@ -120,13 +116,12 @@ public class PointController {
 
    
     @PostMapping("/search")
-	public ResponseEntity<EmployeeDto> searchEmployeeById(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SearchEmployeeRequest searchRequest)
+	public ResponseEntity<EmployeeDto> searchEmployeeById(Principal principal, @RequestBody SearchEmployeeRequest searchRequest)
 	{
-		if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header is missing or invalid.");
+        if (principal == null) {
+            throw new IllegalArgumentException("Principal is missing. Unable to authenticate user.");
         }
-		String token = authorizationHeader.substring(7);
-		String email = jwtTokenUtil.extractUserIdentifier(token);
+		String email = principal.getName();
 		return ResponseEntity.ok(pointService.getEmployeeById(email, searchRequest));
 	}
     

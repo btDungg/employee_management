@@ -3,6 +3,7 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8080/api/points';
 const AUTH_URL = 'http://localhost:8080/api/auth';
 const EMPLOYEE_URL = 'http://localhost:8080/api/employees';
+const PROFILE_URL = 'http://localhost:8080/api/profile';
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -141,3 +142,51 @@ export const getEmployeeById = async (id) => {
     }
 };
 
+export const getEmployeeDetailsByEmail = async () => {
+    try {
+        const response = await axios.get(`${EMPLOYEE_URL}/details`, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching employee details:', error);
+        throw error;
+    }
+};
+
+export const getTeamMates = async () => {
+    try {
+        const response = await axios.get(`${PROFILE_URL}/all`, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching team mates:', error);
+        throw error;
+    }
+}
+
+export const getDetailTeamMates = async (id) => {
+    try {
+        const response = await axios.get(`${PROFILE_URL}/${id}`, {
+            headers: getAuthHeaders(),
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching team mates:', error);
+        throw error;
+    }
+}
+
+export const searchEmployee = async (params = {}) => {
+    try {
+        const response = await axios.get(`${PROFILE_URL}/search`, {
+            headers: getAuthHeaders(),
+            params, 
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching team mates:', error);
+        throw error;
+    }
+};

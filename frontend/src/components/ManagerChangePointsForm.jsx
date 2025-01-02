@@ -81,7 +81,7 @@ const ManagerChangePointsForm = ({ onCommit }) => {
                         onChange={(e) => setEmployeeId(e.target.value)}
                         required
                     />
-                    <button className="btn" type="button" onClick={handleSearch}>Tìm kiếm</button>
+                    <button className="btn-form" type="button" onClick={handleSearch}>Tìm kiếm</button>
                 </div>
                 {searchWarning && <div className="search-warning">{searchWarning}</div>}
                 <div className="form-group">
@@ -129,7 +129,7 @@ const ManagerChangePointsForm = ({ onCommit }) => {
                     />
                 </div>
                 {submitWarning && <div className="submit-warning">{submitWarning}</div>}
-                <button className="btn" type="submit">Xác nhận</button>
+                <button className="btn-form" type="submit">Xác nhận</button>
             </form>
         </div>
     );

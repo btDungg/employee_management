@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class UserRequest {
     private String username;
-    private Long ManagerId;
+    private Long organizationId;
     private String type;
     private String email;
     private String password;
