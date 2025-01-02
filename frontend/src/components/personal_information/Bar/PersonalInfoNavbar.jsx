@@ -8,7 +8,7 @@ import PerformanceReviews from "../Performance/PerformanceReviews.jsx";
 const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: false,
     emergency: false, job: false , skills: false, jobHistory: false, internalProjects: false,
     languages: false, achievements: false, feedbackReceived: false, feedbackGiven: false,
-    archivedGoals: false, individualGoals: false, performanceReviews: false, bankAccount: false,
+    performanceReviews: false, individualGoals: false, archivedGoals: false, bankAccount: false,
     managementChain: false, managerHistory: false, retirementDate: false, compensation: false,
     payHistory: false} }) => {
     const location = useLocation();
@@ -144,12 +144,12 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                     </NavLink>
                 )}
                 {/* Performance */}
-                {showLinks.archivedGoals && (
+                {showLinks.performanceReviews && (
                     <NavLink
-                        to={`${basePath}/performance/archived-goals`}
+                        to={`${basePath}/performance/performance-reviews`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        Archived Goals
+                        Performance Reviews
                     </NavLink>
                 )}
                 {showLinks.individualGoals && (
@@ -160,12 +160,12 @@ const NavBar = ({ showNavBar, showLinks = { contact: false, personalInfomation: 
                         Individual Goals
                     </NavLink>
                 )}
-                {showLinks.performanceReviews && (
+                {showLinks.archivedGoals && (
                     <NavLink
-                        to={`${basePath}/performance/performance-reviews`}
+                        to={`${basePath}/performance/archived-goals`}
                         className={({ isActive }) => isActive ? 'personal-nav-link active' : 'personal-nav-link'}
                     >
-                        Performance Reviews
+                        Archived Goals
                     </NavLink>
                 )}
                 {/* Compensation */}
