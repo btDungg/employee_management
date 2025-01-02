@@ -5,14 +5,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
-import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -84,5 +87,69 @@ public class GlobalExceptionHandler {
         error.addError(ex.getMessage());
         LOGGER.error("Access Denied: {}", ex.getMessage(), ex);
         return error;
+    }
+    @ExceptionHandler({EmployeeNotFoundException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorDTO handleEmployeeNotFoundException(HttpServletRequest request, EmployeeNotFoundException ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setPath(request.getServletPath());
+        error.setStatus(HttpStatus.FORBIDDEN.value());
+        error.addError(ex.getMessage());
+        LOGGER.error("Access Denied: {}", ex.getMessage(), ex);
+        return error;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ActivityNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorDTO handleActivityNotFoundException(HttpServletRequest request, ActivityNotFoundException ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setPath(request.getServletPath());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.addError(ex.getMessage());
+        LOGGER.error("Activity Not Found: {}", ex.getMessage(), ex);
+        return error;
+    }
+    @ExceptionHandler({RegistrationNotAllowedException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO handleRegistrationNotAllowedException(HttpServletRequest request, RegistrationNotAllowedException ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setPath(request.getServletPath());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError(ex.getMessage());
+        LOGGER.error("Registration Not Allowed: {}", ex.getMessage(), ex);
+        return error;
+    }
+
+    @ExceptionHandler({CanNotSaveException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorDTO handleCanNotSaveException(HttpServletRequest request, CanNotSaveException ex) {
+        ErrorDTO error = new ErrorDTO();
+        error.setTimestamp(new Date());
+        error.setPath(request.getServletPath());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError(ex.getMessage());
+        LOGGER.error("Can Not Save: {}", ex.getMessage(), ex);
+        return error;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage()));
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }
