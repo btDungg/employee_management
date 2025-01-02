@@ -11,6 +11,7 @@ import RetirementDate from "../../components/personal_information/Job/Retirement
 import {UserContext} from "../../components/personal_information/UserProvider.jsx";
 import Compensation from "../../components/personal_information/Compensation/Compensation.jsx";
 import PayHistory from "../../components/personal_information/Compensation/PayHistory.jsx";
+import BankAccount from "../../components/personal_information/Compensation/BankAccount.jsx";
 
 const CompensationPage = (props) => {
     const { user } = useContext(UserContext);
@@ -25,7 +26,7 @@ const CompensationPage = (props) => {
             <Routes>
                 <Route path="/" element={<Navigate to="compensation-detail"/>}/>
                 <Route path="/compensation-detail" element={<Compensation employee={props.employee}/>} />
-                <Route path="bank-account" element={<ManagementChain employee={props.employee}/>} />
+                <Route path="bank-account" element={<BankAccount employee={props.employee}/>} />
                 <Route path="pay-history" element={<PayHistory employee={props.employee}/>} />
             </Routes>
         </div>

@@ -80,17 +80,17 @@ public class EmployeePublicDto_v1 {
     @JsonProperty("managerID")
     private Long manager;
 
+    @JsonProperty("salary")
+    private int salary;
+
     @JsonProperty("phones")
     private List<Phone> phones;
-
 
     @JsonProperty("emails")
     private List<Email> emails;
 
-
     @JsonProperty("addresses")
     private List<Address> addresses;
-
 
     @JsonProperty("emergencyContacts")
     private List<EmergencyContact> emergencyContacts;
@@ -102,7 +102,7 @@ public class EmployeePublicDto_v1 {
                                 String cityOfBirth, String citizenshipStatus, String job, String BusinessTitle,
                                 String jobProfile, String timeType, String managerName, Long manager,
                                 List<Phone> phones, List<Email> emails, List<Address> addresses,
-                                List<EmergencyContact> emergencyContacts) {
+                                List<EmergencyContact> emergencyContacts, int salary) {
         this.id = id;
         this.name = name;
         this.point = point;
@@ -134,6 +134,7 @@ public class EmployeePublicDto_v1 {
         this.emails = emails;
         this.addresses = addresses;
         this.emergencyContacts = emergencyContacts;
+        this.salary = salary;
     }
 
     public EmployeePublicDto_v1(Long id, String name, String type, String emailCompany, Long organization,
@@ -154,7 +155,6 @@ public class EmployeePublicDto_v1 {
         this.bussissTitle = bussissTitle;
         this.jobProfile = jobProfile;
         this.timeType = timeType;
-
     }
 
 }

@@ -156,7 +156,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 orgName,
                 managerId,
                 managerName,
-                employee.getEmailCompany()
+                employee.getEmailCompany(),
+                employee.getSalary()
         );
     }
 
@@ -207,8 +208,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     phoneRepository.findByEmployeeId((Long) employee[0]),
                     emailRepository.findByEmployeeId((Long) employee[0]),
                     addressRepository.findByEmployeeId((Long) employee[0]),
-                    emergencyContactRepository.findByEmployeeId((Long) employee[0])
-
+                    emergencyContactRepository.findByEmployeeId((Long) employee[0]),
+                    (int) employee[25]
             )).collect(Collectors.toList()));
         }
         Long orgId = emp.getOrganization().getId();
@@ -261,8 +262,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                     phoneRepository.findByEmployeeId((Long) employee[0]),
                     emailRepository.findByEmployeeId((Long) employee[0]),
                     addressRepository.findByEmployeeId((Long) employee[0]),
-                    emergencyContactRepository.findByEmployeeId((Long) employee[0])
-
+                    emergencyContactRepository.findByEmployeeId((Long) employee[0]),
+                    (int) employee[25]
             )).collect(Collectors.toList()));
 
         } else {
@@ -332,7 +333,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 phoneRepository.findByEmployeeId(employee.get().getId()),
                 emailRepository.findByEmployeeId(employee.get().getId()),
                 addressRepository.findByEmployeeId(employee.get().getId()),
-                emergencyContactRepository.findByEmployeeId(employee.get().getId())
+                emergencyContactRepository.findByEmployeeId(employee.get().getId()),
+                employee.get().getSalary()
                 );
     return Optional.of(detail);
     }
@@ -395,7 +397,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                 phones,
                 emails,
                 addresses,
-                emergencyContacts
+                emergencyContacts,
+                emp.getSalary()
         ));
 
 
@@ -476,8 +479,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         phoneRepository.findByEmployeeId(employee.getId()),
                         emailRepository.findByEmployeeId(employee.getId()),
                         addressRepository.findByEmployeeId(employee.getId()),
-                        emergencyContactRepository.findByEmployeeId(employee.getId())
-
+                        emergencyContactRepository.findByEmployeeId(employee.getId()),
+                        employee.getSalary()
                 ))
                 .collect(Collectors.toList());
 

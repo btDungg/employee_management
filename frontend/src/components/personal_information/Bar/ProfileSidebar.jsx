@@ -7,7 +7,18 @@ import {UserContext} from "../UserProvider.jsx";
 const ProfileSidebar = ({ employee }) => {
     const navigate = useNavigate();
     const employeeId = employee?.id;
-    const { user } = useContext(UserContext);
+    const context = useContext(UserContext);
+    if (!context) {
+        return <div>Error: Context not found</div>;
+    }
+    const { user, loading, error } = context;
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="sidebar sidebar-personal d-flex flex-column justify-content-between">

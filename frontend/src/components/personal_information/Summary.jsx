@@ -10,6 +10,8 @@ const Summary = ({ employee }) => {
     const managerUrl = employee.managerID === user?.id
         ? '/personal-info/summary'
         : `/profile/${employee.managerID}/summary`;
+
+    const personalInfo = location.pathname.includes("personal-info");
     return (
         <div className="p-4">
             <div className="">
@@ -52,39 +54,53 @@ const Summary = ({ employee }) => {
                     <div className="col-md-6 mb-4">
                         <div className="card p-3 shadow-sm">
                             <h6 className="text-muted mb-3">Skills</h6>
-                            <hr />
-                            <a href="#">Edit</a>
+                            {personalInfo && (
+                                <>
+                                    <hr/>
+                                    <a href="#">Edit</a>
+                                </>
+                            )}
                         </div>
                     </div>
                     {/* Internal Project */}
                     <div className="col-md-6 mb-4">
                         <div className="card p-3 shadow-sm">
                             <h6 className="text-muted mb-3">Internal Project</h6>
-                            <hr />
-                            <a href="#">Edit</a>
+                            {personalInfo && (
+                                <>
+                                    <hr/>
+                                    <a href="#">Edit</a>
+                                </>
+                            )}
                         </div>
                     </div>
-                    {/* JobDetail History */}
+                    {/* Job History */}
                     <div className="col-md-6 mb-4">
                         <div className="card p-3 shadow-sm">
-                            <h6 className="text-muted mb-3">Job History</h6>
-                            <hr />
-                            <a href="#">Edit</a>
+                            <h6 className="text-muted">Job History</h6>
+                            {personalInfo && (
+                                <>
+                                    <hr/>
+                                    <a href="#">Edit</a>
+                                </>
+                            )}
                         </div>
                     </div>
                     {/* Education */}
-                    <div className="col-md-6 mb-4">
-                        <div className="card p-3 shadow-sm">
-                            <h6 className="text-muted">Education</h6>
-                            <hr />
-                            <a href="#">Edit</a>
+                    {personalInfo && (
+                        <div className="col-md-6 mb-4">
+                            <div className="card p-3 shadow-sm">
+                                <h6 className="text-muted">Education</h6>
+                                <hr/>
+                                <a href="#">Edit</a>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     {/* Feedback */}
                     <div className="col-md-6 mb-4">
                         <div className="card p-3 shadow-sm">
                             <h6 className="text-muted mb-3">Feedback</h6>
-                            {employee.id !== user.id && (
+                            {!personalInfo && (
                                 <div className="text-muted">
                                     <button className="rounded">Give feedback</button>
                                 </div>

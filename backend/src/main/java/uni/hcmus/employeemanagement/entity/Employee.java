@@ -84,7 +84,8 @@ public class Employee extends MetaData implements UserDetails {
     private String location;
     @Column(name = "hire_date")
     private Date hireDate;
-
+    @Column(name = "salary")
+    private int salary;
     /**
      * The manager ID of the employee.
      */

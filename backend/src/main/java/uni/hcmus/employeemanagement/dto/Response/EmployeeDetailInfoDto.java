@@ -113,6 +113,9 @@ public class EmployeeDetailInfoDto {
     @JsonProperty("managerName")
     private String managerName;
 
+    @JsonProperty("salary")
+    private int salary;
+
     public EmployeeDetailInfoDto(Long id, String name, String type, Long id1,
                                  String avatar, Boolean gender,
                                  Date dateOfBirth, int age, String countryOfBirth,
@@ -122,7 +125,7 @@ public class EmployeeDetailInfoDto {
                                  List<Address> addresses, List<EmergencyContact> emergencyContacts,
                                  String job, String businessTitle, String jobProfile,
                                  String timeType, String location, Date hireDate, String organizationName, Long managerID, String managerName,
-                                 String emailCompany) {
+                                 String emailCompany, int salary) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -153,5 +156,6 @@ public class EmployeeDetailInfoDto {
         this.managerID = managerID;
         this.managerName = managerName;
         this.emailCompany = emailCompany;
+        this.salary = salary;
     }
 }

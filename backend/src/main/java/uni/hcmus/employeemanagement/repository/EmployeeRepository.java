@@ -23,7 +23,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "e.organization_id, e.date_of_birth, e.age, e.gender, " +
             "e.primary_nationality, e.location, e.hire_date,e.religion, e.marital, e.ethnicty, e.avatar, o.name," +
             "e.country_of_birth, e.region_of_birth, e.city_of_birth,  e.citizenship_status,   " +
-            "e.job, e.business_title, e.job_profile, e.time_type " +
+            "e.job, e.business_title, e.job_profile, e.time_type, e.salary " +
             "FROM employee e " +
             "JOIN organization o ON e.organization_id = o.id " +
             "WHERE o.manager_id = :managerId", nativeQuery = true)
@@ -39,7 +39,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "e.organization_id, e.date_of_birth, e.age, e.gender, " +
             "e.primary_nationality, e.location, e.hire_date,e.religion, e.marital, e.ethnicty, e.avatar, o.name," +
             "e.country_of_birth, e.region_of_birth, e.city_of_birth,  e.citizenship_status,   " +
-            "e.job, e.business_title, e.job_profile, e.time_type " +
+            "e.job, e.business_title, e.job_profile, e.time_type, e.salary " +
             "FROM employee e " +
             "JOIN organization o ON e.organization_id = o.id " +
             "WHERE e.organization_id = :id", nativeQuery = true)

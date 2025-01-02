@@ -7,7 +7,6 @@ import TooltipWithClick from "./TooltipWithClick.jsx";
 const PersonalInfoSidebar = ({ employee }) => {
     const navigate = useNavigate();
 
-
     return (
         <div className="sidebar sidebar-personal d-flex flex-column justify-content-between">
             <div className="flex-grow-1">
