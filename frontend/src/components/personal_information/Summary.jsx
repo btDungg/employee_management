@@ -43,9 +43,9 @@ const Summary = ({ employee }) => {
                                 </div>
                                 <div className="col-md-6">
                                     <h6 className="mb-2 text-muted">
-                                        <i className="fas fa-building"></i> Organization
+                                        <i className="fas fa-building"></i> Company
                                     </h6>
-                                    <p>{employee.organizationName || "N/A"}</p>
+                                    <p>Công ty ABC</p>
                                 </div>
                             </div>
                         </div>

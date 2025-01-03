@@ -30,7 +30,7 @@ const Information = (props) => {
                                 <li key={index} className="py-2 border-b border-gray-300">
                                     <div className="row">
                                         <span className="font-bold fw-bold col-2">{item.label} </span>
-                                        <span className="col-1">{item.value}</span>
+                                        <span className="col-3">{item.value}</span>
                                     </div>
                                 </li>
                             )
