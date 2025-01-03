@@ -266,7 +266,13 @@ export const updateActivity = async (activityData) => {
         });
         return response.data;
     } catch (error) {
-        console.error('Error updating activity:', error.response ? error.response.data : error);
-        throw error;
+        // Xử lý lỗi nếu có
+        const errorMessages = error.response?.data || {};
+        const errorMessageString = Object.values(errorMessages).join(', '); // Kết nối các thông báo lỗi thành một chuỗi
+        console.error('Error updating activity:', errorMessageString);
+        
+        // Gửi lại thông báo lỗi để hiển thị
+        throw new Error(errorMessageString);  // Ném lỗi với các thông báo chi tiết
+    
     }
 };

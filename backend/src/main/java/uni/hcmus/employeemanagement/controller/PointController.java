@@ -6,6 +6,7 @@ import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Request.ModifyPointRequest;
 import uni.hcmus.employeemanagement.dto.Response.PointChangeDto;
 import uni.hcmus.employeemanagement.service.interfaceService.IPointService;
+import uni.hcmus.employeemanagement.service.serviceImplement.PointService;
 import uni.hcmus.employeemanagement.utils.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,8 @@ public class PointController {
 //        return pointService.getAllEmployeePoints();
 //    }
 //
-//    @PostMapping("/test/auto-add-points")
-//    public ResponseEntity<String> testAutoAddPoints() {
-//        pointService.autoAddPointsToEmployees();
-//        return ResponseEntity.ok("Points have been added successfully!");
-//    }
+
+
 
     @GetMapping
     public ResponseEntity<?> getMyPoints(Principal principal) {

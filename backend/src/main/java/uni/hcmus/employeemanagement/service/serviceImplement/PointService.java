@@ -1,8 +1,10 @@
 package uni.hcmus.employeemanagement.service.serviceImplement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import uni.hcmus.employeemanagement.dto.Request.ModifyPointRequest;
 import uni.hcmus.employeemanagement.dto.Request.SearchEmployeeRequest;
 import uni.hcmus.employeemanagement.dto.Response.*;
@@ -153,27 +155,27 @@ public class PointService implements IPointService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    @Scheduled(cron = "0 1 0 25 * ?") // Chạy vào lúc 00:01:00 ngày 25 hàng tháng
-//    @Transactional //đảm bảo chạy full data
-//    public void autoAddPointsToEmployees() {
-//        List<Employee> employees = employeeRepository.findAll();
-//        List<Manager> managers = managerRepository.findAll();
-//        for (Employee employee : employees) {
-//            System.out.println("Debug: " + employee.getType());
-//            int point = switch (employee.getType().toUpperCase()) {
-//                case "MANAGER" -> 20;
-//                case "EMPLOYEE", "HR" -> 10;
-//                default -> 1;
-//            };
-//            employee.setPoint(employee.getPoint() + point);
-//        }
-//        for (Manager manager : managers) {
-//            manager.setBonusEmployeePoint(10);
-//        }
-//        employeeRepository.saveAll(employees);
-//        managerRepository.saveAll(managers);
-//    }
+    @Override
+//    @Scheduled(cron = "0 23 15 * * ?") // Chạy vào 15:05:00 mỗi ngày
+    @Scheduled(cron = "0 1 0 25 * ?") // Chạy vào lúc 00:01:00 ngày 25 hàng tháng
+    @Transactional // đảm bảo chạy full data
+    public void autoAddPointsToEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+        List<Manager> managers = managerRepository.findAll();
+        for (Employee employee : employees) {
+            int point = switch (employee.getType().toUpperCase()) {
+                case "MANAGER" -> 20;
+                case "EMPLOYEE", "HR" -> 10;
+                default -> 1;
+            };
+            employee.setPoint(employee.getPoint() + point);
+        }
+        for (Manager manager : managers) {
+            manager.setBonusEmployeePoint(10);
+        }
+        employeeRepository.saveAll(employees);
+        managerRepository.saveAll(managers);
+    }
 
     @Override
     public List<PointChangeDto> ViewMyChangePoint(String email)
