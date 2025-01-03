@@ -17,5 +17,5 @@ public class ApprovedLeaveRequestResponseDto {
 	private String session;
 	private String reason;
 	private String status;
-	private String reasonApprove;
+	private String rejectReason;
 }

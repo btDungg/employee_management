@@ -155,7 +155,7 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
 													</button>
 												</div>
 											)
-											: <div>{entry.reasonApprove}</div>}
+											: <div>{entry.rejectReason}</div>}
 										</div>
 									</td>
 								</tr>

@@ -23,8 +23,9 @@ const ApproveLeaveRequestPage = () => {
                 startDate: formData.startDate,
                 endDate: formData.endDate,
                 status: formData.status,
-                reasonApprove: formData.reasonApprove
+                rejectReason: formData.rejectReason
             };
+            console.log(approveLR);
             await approveLeaveRequest(approveLR);
             setNotificationMessage("Duyệt yêu cầu nghỉ phép thành công");
             setShowNotification(true);
@@ -61,7 +62,7 @@ const ApproveLeaveRequestPage = () => {
                         <p>Số ngày nghỉ: {formData.requestDays}</p>
                         <p>Lý do: {formData.endDate}</p>
                         <p>Trạng thái dự kiến: {formData.status}</p>
-                        <p>Lý do duyệt: {formData.reasonApprove}</p>
+                        <p>Lý do duyệt: {formData.rejectReason}</p>
                         <div className="popup-buttons">
                             <button className="btn" onClick={handleConfirm}>Xác nhận</button>
                             <button className="btn" onClick={handleCancel}>Hủy</button>
