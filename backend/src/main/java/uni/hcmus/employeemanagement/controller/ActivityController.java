@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import uni.hcmus.employeemanagement.dto.Request.ActivityRequestDto;
 import uni.hcmus.employeemanagement.dto.Request.RegisterRequest;
@@ -69,6 +70,12 @@ public class ActivityController {
     public ResponseEntity<ActivityDTO> createActivity(@Valid @RequestBody ActivityRequestDto activityDTO, Principal principal) {
         String email = principal.getName();
         Optional<ActivityDTO> result = activityService.createActivity(activityDTO, email);
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+    @PostMapping("/update")
+    public ResponseEntity<ActivityDTO> updateActivity(@Valid @RequestBody ActivityRequestDto activityDTO, Principal principal) {
+        String email = principal.getName();
+        Optional<ActivityDTO> result = activityService.updateActivity(activityDTO, email);
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 

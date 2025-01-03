@@ -13,4 +13,5 @@ public interface IActivityService {
     Optional<DetailActivityDTO> registerActivity(Long id,String email);
     Optional<DetailActivityDTO> unregisterActivity(Long id, String email);
     Optional<ActivityDTO> createActivity(ActivityRequestDto activityDTO, String email);
+    Optional<ActivityDTO> updateActivity( ActivityRequestDto activityDTO, String email);
 }

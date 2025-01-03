@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActivityRequestDto {
+    Long id;
 
     @NotNull(message = "Activity name cannot be null.")
     @Size(min = 3, max = 255, message = "Activity name must be between 3 and 255 characters.")
@@ -22,7 +23,7 @@ public class ActivityRequestDto {
 
     @NotNull(message = "Activity type cannot be null.")
     @Pattern(regexp = "^(Thể thao|Hội thảo|Khoá học)$", message = "Activity type must be one of: Thể thao, Hội thảo, Khoá học.")
-    private String type;
+        private String type;
     @NotNull(message = "Start date cannot be null.")
     private LocalDate startDate;
 
