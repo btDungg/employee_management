@@ -169,17 +169,17 @@ const ViewActivityDetailAndRegister = () => {
             setIsEditing(false);
             setNotificationMessage('Cập nhật hoạt động thành công.');
             setShowNotification(true);
-        } catch (error) {
-            console.error('Error updating activity:', error);
-            setNotificationMessage('Có lỗi xảy ra khi cập nhật hoạt động.');
-            setShowNotification(true);
-        }
+            }catch (error) {
+                
+                setNotificationMessage(`Lỗi: ${error}`);
+                setShowNotification(true);
+            }
     };
 
-    // Hàm hủy thay đổi
-        const handleCancelEdit = () => {
-            setIsEditing(false);
-        };
+    // // Hàm hủy thay đổi
+    //     const handleCancelEdit = () => {
+    //         setIsEditing(false);
+    //     };
     return (
         
             <div>
