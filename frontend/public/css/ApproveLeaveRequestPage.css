@@ -1,0 +1,91 @@
+.leave-request-info {
+    padding: 20 px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 1400px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.leave-request-info h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+
+.leave-request-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.leave-request-table th,
+.leave-request-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.leave-request-table th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+.leave-request-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.leave-request-table tr:hover {
+    background-color: #f0f8ff;
+    cursor: pointer;
+}
+
+.submit-warning {
+    color: red;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Tạo khoảng cách giữa các nút */
+}
+
+.approve-lr-info {
+    padding: 20 px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.approve-lr-info h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.approve-lr-info textarea {
+    flex: 2;
+    padding: 12px; /* Increase padding */
+    border: 1px solid #86a089;
+    border-radius: 3px;
+    background-color: #d3d3d3; /* Gray background color */
+    color: black;
+    font-size: 16px; /* Increase font size */
+}
+
+.btn {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    background-color: #2d695c;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    height: 40px; /* Đảm bảo chiều cao khớp với thanh tìm kiếm */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }

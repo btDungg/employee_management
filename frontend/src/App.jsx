@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage.jsx';
 import EmployeePage from './pages/EmployeePage.jsx';
@@ -20,7 +20,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { UserProvider } from "./components/personal_information/UserProvider.jsx";
 import ProfileRoutes from "./routes/ProfileRoutes.jsx";
 import PersonalRoutes from "./routes/PersonalRoutes.jsx";
-
+import LeaveRequestManagementPage from './pages/LeaveRequestManagementPage.jsx';
+import NotificationPage from './pages/NotificationPage.jsx';
+import { getListNotifications } from './apis/api';
 
 const App = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,7 +30,9 @@ const App = () => {
     const showTopNavbar = ['/point-info', '/view-other-points', '/point-history', '/change-points'].includes(location.pathname);
     const hideSidebar = location.pathname.includes('/personal-info/') || location.pathname.includes('/profile/');
     const isLoggedIn = !!localStorage.getItem('token');
-    
+    const [notifications, setNotifications] = useState([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -51,10 +55,62 @@ const App = () => {
         }
     }, [isSidebarOpen, location]);
 
+    useEffect(() => {
+        if (localStorage.getItem('selectedNotification'))
+            setTimeout(() => {
+                localStorage.removeItem('selectedNotification');
+              }, 0);
+    })
+    useEffect(() => {
+        const getNotifications = async () => {
+          try {
+            const data = await getListNotifications();
+            const formattedData = data.map((notification) => ({
+              ...notification,
+              isRead: notification.readStatus === 'Đã đọc',
+            }));
+    
+            setNotifications(formattedData);
+    
+            // Đếm số lượng thông báo chưa đọc
+            const unreadNotifications = formattedData.filter(n => !n.isRead);
+            setUnreadCount(unreadNotifications.length);
+          } catch (error) {
+            console.error('Lỗi khi lấy danh sách thông báo: ', error);
+          }
+        };
+        getNotifications();
+        const intervalId = setInterval(() => {
+            getNotifications();
+        }, 5000);
+
+        return () => clearInterval(intervalId); // Hủy interval khi component bị unmount
+      }, []);
+
+
+
+    const updateUnreadCount = (updatedNotifications) => {
+        setNotifications(updatedNotifications);
+        const unread = updatedNotifications.filter((n) => !n.isRead).length;
+        setUnreadCount(unread);
+    };
+
+    const goToNotificationPage = () => {
+        navigate('/notification'); // Điều hướng đến trang thông báo
+        window.location.reload();
+    };
+
     return (
         <div className="app">
             {!hideSidebar && isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
             {showTopNavbar && <TopNavbarPoint />}
+            {/* Nút thông báo góc trên bên phải */}
+            {isLoggedIn && (
+                <button className="notification-bell" onClick={goToNotificationPage}>
+                    <span>🔔</span>
+                    {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+                </button>
+            )}
             {location.pathname.includes('/personal-info/') || location.pathname.includes('/profile/') ? (
                 <div className="overflow-hidden-horizontal overflow-hidden-vertical bg-body-secondary px-3">
                     <Routes>
@@ -77,6 +133,8 @@ const App = () => {
                         <Route path="/personal-info-navigation" element={<PrivateRoute element={InfoNavigationPage} />} />
                         <Route path="/personal-activity" element={<PrivateRoute element={ViewActivities} />} />
                         <Route path="/personal-activity/:activityId" element={<PrivateRoute element={ViewActivityDetailAndRegister} />} />
+                    	<Route path="/leave-request/*" element={<PrivateRoute element={LeaveRequestManagementPage} />} />
+                    	<Route path="/notification" element={<NotificationPage notifications={notifications} updateUnreadCount={updateUnreadCount} />} />
                     </Routes>
                 </div>
             )}

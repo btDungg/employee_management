@@ -5,6 +5,8 @@ const AUTH_URL = 'http://localhost:8080/api/auth';
 const EMPLOYEE_URL = 'http://localhost:8080/api/employees';
 const PROFILE_URL = 'http://localhost:8080/api/profile';
 const ACTIVITY_URL = 'http://localhost:8080/api/activity';
+const LEAVE_REQUEST_URL = 'http://localhost:8080/api/leave-request';
+const NOTIFICATION_URL = 'http://localhost:8080/api/notifications';
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -155,6 +157,19 @@ export const getEmployeeDetailsByEmail = async () => {
     }
 };
 
+export const sendLeaveRequest = async (leaveRequest) => {
+    try {
+        const response = await axios.post(
+            `${LEAVE_REQUEST_URL}/new`, leaveRequest,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error send leave request:', error);
+        throw error;
+    }
+};
+
 export const getTeamMates = async () => {
     try {
         const response = await axios.get(`${PROFILE_URL}/all`, {
@@ -192,6 +207,19 @@ export const searchEmployee = async (params = {}) => {
     }
 };
 
+export const getListDayOffType = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-list-type`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get list day off type:', error);
+        throw error;
+    }
+};
+
 export const getActivities = async (name) => {
     try {
         const url = name
@@ -203,6 +231,19 @@ export const getActivities = async (name) => {
         return response.data;
     } catch (error) {
         console.error('Error get activities:', error);
+        throw error;
+    }
+};
+
+export const getMyDayOff = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-my-day-off`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get my list day off:', error);
         throw error;
     }
 };
@@ -219,6 +260,19 @@ export const getDetailActivity = async (activityId) => {
     }
 };
 
+export const getMyApproveLeaveRequest = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-my-approve-lr`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get my approve leave request:', error);
+        throw error;
+    }
+};
+
 export const register = async (registerRequest) => {
     try {
         const response = await axios.post(`${ACTIVITY_URL}/register`, registerRequest, {
@@ -227,6 +281,19 @@ export const register = async (registerRequest) => {
         return response.data;
     } catch (error) {
         console.error('Error register activity:', error);
+        throw error;
+    }
+};
+
+export const approveLeaveRequest = async (approveLeaveRequest) => {
+    try {
+        const response = await axios.post(
+            `${LEAVE_REQUEST_URL}/approve`, approveLeaveRequest,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error approve leave request:', error);
         throw error;
     }
 };
@@ -245,9 +312,9 @@ export const unregister = async (registerRequest) => {
         console.error('Error unregistering activity:', error);
         throw error;
     }
- };
+};
 
- export const addActivity = async (activityData) => {
+export const addActivity = async (activityData) => {
     try {
         const response = await axios.post(`${ACTIVITY_URL}/create`, activityData, {
             headers: getAuthHeaders(),
@@ -255,6 +322,19 @@ export const unregister = async (registerRequest) => {
         return response.data;
     } catch (error) {
         console.error('Error adding activity:', error);
+        throw error;
+    }
+};
+
+export const approveAllLeaveRequest = async (listApproveLeaveRequest) => {
+    try {
+        const response = await axios.post(
+            `${LEAVE_REQUEST_URL}/approve-all`, listApproveLeaveRequest,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error approve leave request:', error);
         throw error;
     }
 };
@@ -273,6 +353,63 @@ export const updateActivity = async (activityData) => {
         
         // Gửi lại thông báo lỗi để hiển thị
         throw new Error(errorMessageString);  // Ném lỗi với các thông báo chi tiết
-    
+    }
+};
+
+export const getMyLeaveRequest = async () => {
+    try {
+        const response = await axios.get(
+            `${LEAVE_REQUEST_URL}/get-my-leave-request`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get my leave request:', error);
+        throw error;
+    }
+};
+
+export const deleteLeaveRequest = async (leaveRequest) => {
+    try {
+        const response = await axios.delete(
+            `${LEAVE_REQUEST_URL}/delete`, 
+            {
+                headers: {
+                    ...getAuthHeaders(), // Headers xác thực (nếu có)
+                    'Content-Type': 'application/json', // Định nghĩa kiểu dữ liệu
+                },
+                data: leaveRequest,
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error delete leave request:', error);
+        throw error;
+    }
+};
+
+export const getListNotifications = async () => {
+    try {
+        const response = await axios.get(
+            `${NOTIFICATION_URL}`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get my notifications:', error);
+        throw error;
+    }
+};
+
+export const updateReadStatus = async (notification) => {
+    try {
+        const response = await axios.post(
+            `${NOTIFICATION_URL}/update-read-status`, notification,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error update read status:', error);
+        throw error;
     }
 };

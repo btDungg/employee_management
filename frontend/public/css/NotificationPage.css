@@ -1,0 +1,102 @@
+/* Bố cục tổng thể */
+.notification-page {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Phần danh sách thông báo bên trái */
+  .notification-list {
+    width: 30%;
+    background-color: #d3d8d3;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .notification-item {
+    padding: 15px;
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: normal;
+  }
+  
+  .notification-item.unread {
+    font-weight: bold;
+  }
+  
+  .notification-item.active {
+    background-color: #a9b4a9;
+  }
+  
+  /* Phần chi tiết thông báo bên phải */
+  .notification-detail {
+    width: 70%;
+    padding: 20px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .notification-detail h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .notification-detail p {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  /* Nút bấm */
+  .buttons {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .buttons button {
+    padding: 10px 20px;
+    background-color: #334b3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .buttons button:hover {
+    background-color: #29392d;
+  }
+
+/* Nút thông báo ở góc trên bên phải */
+.notification-bell {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #334b3c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .notification-bell:hover {
+    background-color: #29392d;
+  }
+  
+  /* Badge đỏ */
+  .notification-bell .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+  
