@@ -27,5 +27,5 @@ public interface IPointService {
     // lay tat ca diem cua nhan vien
     List<EmployeePointDto> getAllEmployeePoints();
 
-//    void autoAddPointsToEmployees();
+     void autoAddPointsToEmployees();
 }
