@@ -134,18 +134,22 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	@Override
 	public ApprovedLeaveRequestResponseDto approveLeaveRequest(String MyEmail, ApproveLeaveRequest leaveRequest)
 	{
+		System.out.println(leaveRequest.getRejectReason());
 		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
 		LeaveRequest approveLeaveRequest = leaveRequestRepository.findByEmployeeIdAndRequestTime(leaveRequest.getEmployeeId(), leaveRequest.getStartDate(), leaveRequest.getEndDate());
 		if (approveLeaveRequest == null)
 			throw new DataNotFoundException("Không có yêu cầu nghỉ phép từ ngày " + leaveRequest.getStartDate() + " đến ngày " + leaveRequest.getEndDate() + "!");
 		approveLeaveRequest.setStatus(leaveRequest.getStatus());
-		if (approveLeaveRequest.getRejectReason().isBlank())
+		if (leaveRequest.getRejectReason() == null)
+			approveLeaveRequest.setRejectReason(null);
+		else
 			approveLeaveRequest.setRejectReason(leaveRequest.getRejectReason());
+		System.out.println(approveLeaveRequest.getRejectReason());
 		leaveRequestRepository.save(approveLeaveRequest);
 		LocalDate createdDate = LocalDate.now();
         LocalTime createdTime = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String createdTimeFormatted = createdTime.format(formatter);
         NotificationLR notification = new NotificationLR(approveLeaveRequest, "Chưa đọc", createdDate, createdTimeFormatted);
         notificationLRRepository.save(notification);

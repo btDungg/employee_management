@@ -39,7 +39,7 @@ const LeaveRequestPage = () => {
                 endDate: formData.endDate,
                 requestDays: formData.requestDays,
                 dayOffType: formData.dayOffType,
-                rejectReason: formData.reason,
+                reason: formData.reason,
                 session: formData.session
             };
             await sendLeaveRequest(leaveRequest);

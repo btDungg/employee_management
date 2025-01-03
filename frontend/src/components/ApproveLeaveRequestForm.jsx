@@ -7,7 +7,7 @@ const ApproveLeaveRequestForm = ({onCommit}) =>
 {
     const [formData, setFormData] = useState({});
     const [showApprove, setShowApprove] = useState(false);
-    const [reasonApprove, setReasonApprove] = useState('');
+    const [rejectReason, setRejectReason] = useState('');
 
     const handleCommit = (data) => {
         setFormData(data);
@@ -18,7 +18,7 @@ const ApproveLeaveRequestForm = ({onCommit}) =>
         e.preventDefault(); 
         onCommit({
             ...formData,
-            reasonApprove,
+            rejectReason,
         });
     };
 
@@ -46,8 +46,8 @@ const ApproveLeaveRequestForm = ({onCommit}) =>
                         <p><strong><label htmlFor="reason">Lý do từ chối </label></strong></p>
                         <textarea
                             id="reason"
-                            value={reasonApprove}
-                            onChange={(e) => setReasonApprove(e.target.value)}
+                            value={rejectReason}
+                            onChange={(e) => setRejectReason(e.target.value)}
     
                         />
                         </>}
