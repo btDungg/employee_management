@@ -20,7 +20,8 @@ public class LeaveRequest extends MetaData {
     private float requestDays;
     private String reason;
     private String status;
-    private String reasonApprove;
+    private String rejectReason;
+    private String session;
 
     // Liên kết tới bảng EmployeeDayOff
     @ManyToOne

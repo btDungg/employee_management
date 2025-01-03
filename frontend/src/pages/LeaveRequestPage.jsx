@@ -39,7 +39,8 @@ const LeaveRequestPage = () => {
                 endDate: formData.endDate,
                 requestDays: formData.requestDays,
                 dayOffType: formData.dayOffType,
-                reason: formData.reason
+                rejectReason: formData.reason,
+                session: formData.session
             };
             await sendLeaveRequest(leaveRequest);
             setNotificationMessage("Gửi yêu cầu nghỉ phép thành công");
@@ -70,7 +71,6 @@ const LeaveRequestPage = () => {
 
     const handleCloseNotification = () => {
         setShowNotification(false);
-        window.location.reload();
     };
 
     return (
@@ -106,7 +106,7 @@ const LeaveRequestPage = () => {
                         <p>Ngày bắt đầu: {formData.startDate}</p>
                         <p>Ngày kết thúc: {formData.endDate}</p>
                         <p>Loại ngày nghỉ: {formData.dayOffType}</p>
-                        <p></p>
+                        <p>Ca nghỉ: {formData.session}</p>
                         <p>Lý do: {formData.reason}</p>
                         <div className="popup-buttons">
                             <button className="btn" onClick={handleConfirm}>Xác nhận</button>

@@ -12,19 +12,22 @@ const ChangePointsPage = () => {
     const [notificationMessage, setNotificationMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
     const [userRole, setUserRole] = useState('');
+    const [isDenied, setIsDenied] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const profile = await getEmployeeProfile();
+                if (profile.type === 'Employee')
+                    setIsDenied(true);
                 setUserRole(profile.type);
             } catch (error) {
                 console.error('Error fetching user profile:', error);
             }
         };
-
         fetchUserProfile();
+        setIsDenied(false);
     }, []);
 
     const handleCommit = (data) => {
@@ -63,24 +66,33 @@ const ChangePointsPage = () => {
 
     return (
         <div>
-            {userRole === 'Manager' ? <ManagerChangePointsForm onCommit={handleCommit} /> : <HRChangePointsForm onCommit={handleCommit} />}
-            {showConfirmation && (
-                <div className="popup-overlay">
-                    <div className="popup-content">
-                        <h2>Bạn hãy xác nhận lại thông tin dưới đây ?</h2>
-                        <p>Mã nhân viên nhận: {formData.employeeId}</p>
-                        <p>Tên nhân viên nhận: {formData.employeeName}</p>
-                        <p>Số điểm hiện có: {formData.currentPoints}</p>
-                        <p>Số điểm muốn thay đổi: {formData.changePoints}</p>
-                        {userRole === 'Manager' && formData.changeType === 'increase' && (
-                            <p>Số điểm tặng còn lại: {formData.bonusPoints - formData.changePoints}</p>
-                        )}
-                        <div className="popup-buttons">
-                            <button className="btn" onClick={handleConfirm}>Xác nhận</button>
-                            <button className="btn" onClick={handleCancel}>Hủy</button>
+            {isDenied ? (
+				<div className="submit-warning">
+					<h3>Bạn không có quyền thực hiện chức năng này!</h3>
+				</div>
+			)
+            :(
+                <>
+                { userRole === 'Manager' ? <ManagerChangePointsForm onCommit={handleCommit} /> : <HRChangePointsForm onCommit={handleCommit} />}
+                {showConfirmation && (
+                    <div className="popup-overlay">
+                        <div className="popup-content">
+                            <h2>Bạn hãy xác nhận lại thông tin dưới đây ?</h2>
+                            <p>Mã nhân viên nhận: {formData.employeeId}</p>
+                            <p>Tên nhân viên nhận: {formData.employeeName}</p>
+                            <p>Số điểm hiện có: {formData.currentPoints}</p>
+                            <p>Số điểm muốn thay đổi: {formData.changePoints}</p>
+                            {userRole === 'Manager' && formData.changeType === 'increase' && (
+                                <p>Số điểm tặng còn lại: {formData.bonusPoints - formData.changePoints}</p>
+                            )}
+                            <div className="popup-buttons">
+                                <button className="btn" onClick={handleConfirm}>Xác nhận</button>
+                                <button className="btn" onClick={handleCancel}>Hủy</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
+                </>
             )}
             {showNotification && (
                 <NotificationPopup
@@ -88,6 +100,7 @@ const ChangePointsPage = () => {
                     onClose={handleCloseNotification}
                 />
             )}
+        
         </div>
     );
 };

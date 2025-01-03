@@ -8,9 +8,11 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
     const [dayOffType, setDayOffType] = useState('');
     const [reason, setReason] = useState('');
     const [dayOffTypes, setDayOffTypes] = useState([]);
+    const [session, setSession] = useState('Cả ngày');
     const [remainingDays, setRemainingDays] = useState(0);
     const [submitWarning, setSubmitWarning] = useState('');
     const [isEndDateDisabled, setIsEndDateDisabled] = useState(false);
+    const [isSessionEnabled, setIsSessionEnabled] = useState(false);
 
     // Gọi API để lấy danh sách các loại ngày nghỉ
     useEffect(() => {
@@ -61,8 +63,10 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
         
         if (selectedType.toLowerCase().includes('nửa ngày')) {
             setIsEndDateDisabled(true);
+            setIsSessionEnabled(true);
             setEndDate(startDate); // Đặt ngày kết thúc bằng ngày bắt đầu
         } else {
+            setIsSessionEnabled(false);
             setIsEndDateDisabled(false);
         }
     };
@@ -109,6 +113,7 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
             requestDays,
             dayOffType,
             reason,
+            session
         });
     };
 
@@ -163,8 +168,23 @@ const LeaveRequestForm = ({ onCommit, myDayOff }) => {
                     <p>{remainingDays - calculateDayOffRequest(startDate, endDate)}</p>
                 
                 </div>}
+                {isSessionEnabled &&
+                    <div className="form-group">
+                        <label htmlFor="session">Ca nghỉ</label>
+                        <select
+                            id="session"
+                            value={session}
+                            onChange={(e) => setSession(e.target.value)}
+                            required
+                        >
+                            <option value="">Chọn loại</option>
+                            <option value="Sáng">Sáng</option>
+                            <option value="Chiều">Chiều</option>
+                        </select>
+                    </div>
+                }
                 <div className="form-group">
-                    <label htmlFor="reason">Lý do</label>
+                    <label htmlFor="reason">Lý do xin nghỉ</label>
                     <textarea
                         id="reason"
                         value={reason}

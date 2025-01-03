@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { getMyApproveLeaveRequest } from '../apis/api';
+import { getMyApproveLeaveRequest, approveAllLeaveRequest } from '../apis/api';
+import NotificationPopup from '../components/NotificationPopup';
 import '../../public/css/ApproveLeaveRequestPage.css';
+import '../../public/css/Popup.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const ViewMyApproveLRPage = ({ onCommit }) => {
 	const [leaveRequests, setLeaveRequests] = useState([]);
     const [isDenied, setIsDenied] = useState(false);
     const [submitWarning, setSubmitWarning] = useState('');
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [notificationMessage, setNotificationMessage] = useState('');
+	const [showNotification, setShowNotification] = useState(false);
 
 	useEffect(() => {
 	    const getListLeaveRequest = async () => {
@@ -14,8 +19,9 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
 				const data = await getMyApproveLeaveRequest();
 				setLeaveRequests(data);
 	        } catch (error) {
-                setIsDenied(true);
-                setSubmitWarning("Bạn không có quyền thực hiện chức năng này!");
+                if (error.status == '403')
+					setIsDenied(true);
+                	setSubmitWarning("Bạn không có quyền thực hiện chức năng này!");
 				console.error("Lỗi khi lấy danh sách yêu cầu nghỉ phép: ", error);
 			}
 		};
@@ -50,6 +56,44 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
         onCommit({ ...entry, status: "Bị từ chối" });
     };
 
+	const approveAllLR = async () => {
+		setShowConfirmation(false);
+		try	{
+			await approveAllLeaveRequest(leaveRequests);
+			setNotificationMessage("Duyệt tất cả yêu cầu nghỉ phép thành công");
+            setShowNotification(true);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000); // Adjust the delay as needed
+		} catch (error) {
+			if (error.response && error.response.data) {
+                const { errors } = error.response.data; // Truy cập trường "errors"
+                if (errors && errors.length > 0) {
+                    // Hiển thị tất cả các lỗi dưới dạng chuỗi
+                    setNotificationMessage(`Lỗi: ${errors.join(', ')}`);
+                } else {
+                    setNotificationMessage('Đã xảy ra lỗi không xác định.');
+                }
+            } else {
+                // Trường hợp không có phản hồi từ server (lỗi mạng hoặc lỗi khác)
+                setNotificationMessage(`Lỗi: ${error.message}`);
+            }
+            setShowNotification(true);
+		}
+	}
+
+	const handleConfirm = () => {
+        setShowConfirmation(true);
+    };
+
+	const handleCancel = () => {
+        setShowConfirmation(false);
+    };
+
+    const handleCloseNotification = () => {
+        setShowNotification(false);
+    };
+
 	return (
 		<div>
 			{isDenied ? (
@@ -59,6 +103,7 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
 			) : (
 				<div className="leave-request-info">
 					<h2>Yêu cầu nghỉ phép</h2>
+					<button className="btn" type="button" onClick={handleConfirm}>Duyệt tất cả</button>
 					<table className="leave-request-table">
 						<thead>
 							<tr>
@@ -67,8 +112,9 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
 								<th>Ngày bắt đầu</th>
 								<th>Ngày kết thúc</th>
 								<th>Số ngày yêu cầu</th>
-								<th>Lý do xin nghỉ</th>
 								<th>Loại ngày nghỉ</th>
+								<th>Ca nghỉ</th>
+								<th>Lý do xin nghỉ</th>
 								<th>Trạng thái</th>
 								<th>Hành động / Lý do duyệt</th>
 							</tr>
@@ -81,8 +127,9 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
 									<td>{entry.startDate}</td>
 									<td>{entry.endDate}</td>
 									<td>{entry.requestDays}</td>
-									<td>{entry.reason}</td>
 									<td>{entry.dayOffType}</td>
+									<td>{entry.session}</td>
+									<td>{entry.reason}</td>
 									<td>{entry.status}</td>
 									<td>
 										<div>
@@ -117,6 +164,25 @@ const ViewMyApproveLRPage = ({ onCommit }) => {
 					</table>
 				</div>
 			)}
+			{showConfirmation &&
+            (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <h2>Bạn có muốn duyệt tất cả yêu cầu nghỉ phép không?</h2>
+                        <div className="popup-buttons">
+                            <button className="btn" onClick={approveAllLR}>Xác nhận</button>
+                            <button className="btn" onClick={handleCancel}>Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            )
+            }
+			{showNotification && (
+                <NotificationPopup
+                    message={notificationMessage}
+                    onClose={handleCloseNotification}
+                />
+            )}
 		</div>
 	);
 };

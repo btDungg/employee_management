@@ -44,8 +44,9 @@ const ViewMyLeaveRequestPage = ({ onCommit }) => {
 								<th>Ngày bắt đầu</th>
 								<th>Ngày kết thúc</th>
 								<th>Số ngày yêu cầu</th>
-								<th>Lý do xin nghỉ</th>
 								<th>Loại ngày nghỉ</th>
+								<th>Ca nghỉ</th>
+								<th>Lý do xin nghỉ</th>
 								<th>Trạng thái</th>
 								<th>Lý do duyệt</th>
 								<th>Hành động</th>
@@ -58,24 +59,25 @@ const ViewMyLeaveRequestPage = ({ onCommit }) => {
 									<td>{entry.startDate}</td>
 									<td>{entry.endDate}</td>
 									<td>{entry.requestDays}</td>
-									<td>{entry.reason}</td>
 									<td>{entry.dayOffType}</td>
+									<td>{entry.session}</td>
+									<td>{entry.reason}</td>
 									<td>{entry.status}</td>
 									<td>{entry.reasonApprove}</td>
 									<td>
-										<div>
-												<div className="action-buttons">
-													{/* Nút Xóa */}
-													<button
-														className="btn delete-btn"
-														type="button"
-														title="Xóa"
-														onClick={() => handleDelete(entry)}
-													>
-														<FaTrash/>
-													</button>
-												</div>
+										{entry.status == "Đang chờ duyệt" &&
+										<div className="action-buttons">
+										{/* Nút Xóa */}
+										<button
+											className="btn delete-btn"
+											type="button"
+											title="Xóa"
+											onClick={() => handleDelete(entry)}
+										>
+											<FaTrash/>
+										</button>
 										</div>
+										}
 									</td>
 								</tr>
 							))}

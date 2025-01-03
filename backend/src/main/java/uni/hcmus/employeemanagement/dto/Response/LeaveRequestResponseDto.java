@@ -17,7 +17,8 @@ public class LeaveRequestResponseDto {
 	private float requestDays;
 	private String reason;
 	private String status;
-	private String reasonApprove;
+	private String rejectApprove;
 	private String dayOffType;
+	private String session;
 	private Long managerId;
 }

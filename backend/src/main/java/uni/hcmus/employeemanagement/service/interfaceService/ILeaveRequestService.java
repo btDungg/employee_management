@@ -15,4 +15,5 @@ public interface ILeaveRequestService {
 	List<LeaveRequestResponseDto> getMyLeaveRequest (String MyEmail);
 	void deleteLeaveRequest (String MyEmail, LeaveRequestDto leaveRequest);
 	ApprovedLeaveRequestResponseDto approveLeaveRequest(String MyEmail, ApproveLeaveRequest approveRequest);
+	List<ApprovedLeaveRequestResponseDto> approveAllLeaveRequests(String MyEmail, List<ApproveLeaveRequest> listApproveLeaveRequests);
 }

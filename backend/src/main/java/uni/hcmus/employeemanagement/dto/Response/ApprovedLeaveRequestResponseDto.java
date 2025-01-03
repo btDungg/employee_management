@@ -13,8 +13,9 @@ public class ApprovedLeaveRequestResponseDto {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private float requestDays;
-	private String reason;
 	private String dayOffType;
+	private String session;
+	private String reason;
 	private String status;
 	private String reasonApprove;
 }

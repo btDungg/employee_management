@@ -15,4 +15,5 @@ public class LeaveRequestDto {
 	private float requestDays;
 	private String reason;
 	private String dayOffType;
+	private String session;
 }

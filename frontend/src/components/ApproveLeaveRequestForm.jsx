@@ -41,15 +41,16 @@ const ApproveLeaveRequestForm = ({onCommit}) =>
                     <p><strong>Lý do xin nghỉ: </strong> {formData.reason}</p>
                     <p><strong>Loại ngày nghỉ: </strong> {formData.dayOffType}</p>
                     <div className="form-group">
-                        {formData.status == "Đã duyệt" ? 
-                        <p><strong><label htmlFor="reason">Lý do chấp thuận</label></strong></p> :
-                        <p><strong><label htmlFor="reason">Lý do từ chối </label></strong></p>}
+                        {formData.status == "Bị từ chối" && 
+                        <>
+                        <p><strong><label htmlFor="reason">Lý do từ chối </label></strong></p>
                         <textarea
                             id="reason"
                             value={reasonApprove}
                             onChange={(e) => setReasonApprove(e.target.value)}
     
-                    />
+                        />
+                        </>}
                     </div>
     
                 <button className="btn" type="submit">Xác nhận</button>

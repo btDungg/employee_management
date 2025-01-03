@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage.jsx';
 import EmployeePage from './pages/EmployeePage.jsx';
@@ -13,6 +13,8 @@ import ChangePointsPage from './pages/ChangePointsPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import LeaveRequestManagementPage from './pages/LeaveRequestManagementPage.jsx';
+import NotificationPage from './pages/NotificationPage.jsx';
+import { getListNotifications } from './apis/api';
 import '../public/css/app.css';
 
 const App = () => {
@@ -20,6 +22,9 @@ const App = () => {
     const location = useLocation();
     const showTopNavbar = ['/point-info', '/view-other-points', '/point-history', '/change-points'].includes(location.pathname);
     const isLoggedIn = !!localStorage.getItem('token');
+    const [notifications, setNotifications] = useState([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -36,10 +41,62 @@ const App = () => {
         }
     }, [isSidebarOpen, location]);
 
+    useEffect(() => {
+        if (localStorage.getItem('selectedNotification'))
+            setTimeout(() => {
+                localStorage.removeItem('selectedNotification');
+              }, 0);
+    })
+    useEffect(() => {
+        const getNotifications = async () => {
+          try {
+            const data = await getListNotifications();
+            const formattedData = data.map((notification) => ({
+              ...notification,
+              isRead: notification.readStatus === 'Đã đọc',
+            }));
+    
+            setNotifications(formattedData);
+    
+            // Đếm số lượng thông báo chưa đọc
+            const unreadNotifications = formattedData.filter(n => !n.isRead);
+            setUnreadCount(unreadNotifications.length);
+          } catch (error) {
+            console.error('Lỗi khi lấy danh sách thông báo: ', error);
+          }
+        };
+        getNotifications();
+        const intervalId = setInterval(() => {
+            getNotifications();
+        }, 5000);
+
+        return () => clearInterval(intervalId); // Hủy interval khi component bị unmount
+      }, []);
+
+
+
+    const updateUnreadCount = (updatedNotifications) => {
+        setNotifications(updatedNotifications);
+        const unread = updatedNotifications.filter((n) => !n.isRead).length;
+        setUnreadCount(unread);
+    };
+
+    const goToNotificationPage = () => {
+        navigate('/notification'); // Điều hướng đến trang thông báo
+        window.location.reload();
+    };
+
     return (
         <div className="app">
             {isLoggedIn && <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
             {showTopNavbar && <TopNavbarPoint />}
+            {/* Nút thông báo góc trên bên phải */}
+            {isLoggedIn && (
+                <button className="notification-bell" onClick={goToNotificationPage}>
+                    <span>🔔</span>
+                    {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+                </button>
+            )}
             <div className={`content ${isSidebarOpen ? "" : "expanded"}`} style={{ marginTop: showTopNavbar ? '60px' : '0' }}>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
@@ -52,6 +109,7 @@ const App = () => {
                     <Route path="/point-history" element={<PrivateRoute element={PointHistoryPage} />} />
                     <Route path="/change-points" element={<PrivateRoute element={ChangePointsPage} />} />
                     <Route path="/leave-request/*" element={<PrivateRoute element={LeaveRequestManagementPage} />} />
+                    <Route path="/notification" element={<NotificationPage notifications={notifications} updateUnreadCount={updateUnreadCount} />} />
                 </Routes>
             </div>
         </div>

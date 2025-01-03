@@ -17,10 +17,13 @@ import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedExc
 import uni.hcmus.employeemanagement.repository.*;
 import uni.hcmus.employeemanagement.service.interfaceService.ILeaveRequestService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Service
@@ -36,6 +39,9 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 
     @Autowired
     private DayOffTypeRepository dayOffTypeRepository;
+    
+    @Autowired
+    private NotificationLRRepository notificationLRRepository;
     
     @Override
 	public LeaveRequestResponseDto sendLeaveRequest(String MyEmail, LeaveRequestDto leaveRequestDto) {
@@ -70,7 +76,12 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	    leaveRequest.setEndDate(endDate);
 	    leaveRequest.setRequestDays(leaveRequestDto.getRequestDays());
 	    leaveRequest.setReason(leaveRequestDto.getReason());
+	    leaveRequest.setSession(leaveRequestDto.getSession());
 	    leaveRequest.setEmployeeDayOff(employeeDayOff);
+	    if (employeeDayOff.getEmployee().getOrganization().getManager_id() == null)
+	    {
+	    	throw new DataNotFoundException("Bộ phận của nhân viên này chưa có quản lý!");
+	    }
 	    if (employeeDayOff.getEmployee().getOrganization().getManager_id().getEmployeType().equals("Manager"))
 	    {
 	    	Manager manager = (Manager) employeeDayOff.getEmployee().getOrganization().getManager_id();
@@ -95,6 +106,7 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
         		leaveRequest.getStatus(),
         		null,
         		leaveRequest.getEmployeeDayOff().getDay_off_type().getType(),
+        		leaveRequest.getRejectReason(),
         		emp.getOrganization().getManager_id().getId()
         		);
 	}
@@ -128,16 +140,24 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 		if (approveLeaveRequest == null)
 			throw new DataNotFoundException("Không có yêu cầu nghỉ phép từ ngày " + leaveRequest.getStartDate() + " đến ngày " + leaveRequest.getEndDate() + "!");
 		approveLeaveRequest.setStatus(leaveRequest.getStatus());
-		approveLeaveRequest.setReasonApprove(leaveRequest.getReasonApprove());
+		if (approveLeaveRequest.getRejectReason().isBlank())
+			approveLeaveRequest.setRejectReason(leaveRequest.getRejectReason());
 		leaveRequestRepository.save(approveLeaveRequest);
+		LocalDate createdDate = LocalDate.now();
+        LocalTime createdTime = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String createdTimeFormatted = createdTime.format(formatter);
+        NotificationLR notification = new NotificationLR(approveLeaveRequest, "Chưa đọc", createdDate, createdTimeFormatted);
+        notificationLRRepository.save(notification);
 		return new ApprovedLeaveRequestResponseDto(
         		approveLeaveRequest.getStartDate(),
         		approveLeaveRequest.getEndDate(),
         		approveLeaveRequest.getRequestDays(),
-        		approveLeaveRequest.getReason(),
         		approveLeaveRequest.getEmployeeDayOff().getDay_off_type().getType(),
+        		approveLeaveRequest.getSession(),
+        		approveLeaveRequest.getReason(),
         		approveLeaveRequest.getStatus(),
-        		approveLeaveRequest.getReasonApprove()
+        		approveLeaveRequest.getRejectReason()
         		);
 	}
 	
@@ -146,11 +166,16 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	{
 		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
-        if (!"Manager".equals(emp.getEmployeType()))
+	
+        if (!"Manager".equals(emp.getType()))
         {
         	throw new AccessDeniedException("You do not have permission to view employee's leave request!");
         }
-        List<LeaveRequest> myListApproveLeaveRequest = leaveRequestRepository.findByManagerId(emp.getId());
+        List<LeaveRequest> myListApproveLeaveRequest = leaveRequestRepository.findByManagerIdOrderByStartDateDesc(emp.getId());
+        if (myListApproveLeaveRequest.isEmpty())
+        {
+        	throw new DataNotFoundException("Don't find leave request in data!");
+        }
         return myListApproveLeaveRequest.stream()
                 .map(myApproveLeaveRequest -> new LeaveRequestResponseDto(myApproveLeaveRequest.getEmployeeDayOff().getEmployee().getId(),
                 															myApproveLeaveRequest.getEmployeeDayOff().getEmployee().getName(),
@@ -159,8 +184,9 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
                 															myApproveLeaveRequest.getRequestDays(),
                 															myApproveLeaveRequest.getReason(),
                 															myApproveLeaveRequest.getStatus(),
-                															myApproveLeaveRequest.getReasonApprove(),
+                															myApproveLeaveRequest.getRejectReason(),
                 															myApproveLeaveRequest.getEmployeeDayOff().getDay_off_type().getType(),
+                															myApproveLeaveRequest.getSession(),
                 															emp.getId()
                 															))
                 .collect(Collectors.toList()); 
@@ -171,7 +197,7 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	{
 		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
-        List<LeaveRequest> myListApproveLeaveRequest = leaveRequestRepository.findByEmloyeeId(emp.getId());
+        List<LeaveRequest> myListApproveLeaveRequest = leaveRequestRepository.findByEmloyeeIdOrderByStartDateDesc(emp.getId());
         return myListApproveLeaveRequest.stream()
                 .map(myApproveLeaveRequest -> new LeaveRequestResponseDto(myApproveLeaveRequest.getEmployeeDayOff().getEmployee().getId(),
                 															myApproveLeaveRequest.getEmployeeDayOff().getEmployee().getName(),
@@ -180,8 +206,9 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
                 															myApproveLeaveRequest.getRequestDays(),
                 															myApproveLeaveRequest.getReason(),
                 															myApproveLeaveRequest.getStatus(),
-                															myApproveLeaveRequest.getReasonApprove(),
+                															myApproveLeaveRequest.getRejectReason(),
                 															myApproveLeaveRequest.getEmployeeDayOff().getDay_off_type().getType(),
+                															myApproveLeaveRequest.getSession(),
                 															emp.getId()
                 															))
                 .collect(Collectors.toList()); 
@@ -197,5 +224,52 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 		if (deleteLeaveRequest == null)
 			throw new DataNotFoundException("Không có yêu cầu nghỉ phép từ ngày " + leaveRequest.getStartDate() + " đến ngày " + leaveRequest.getEndDate() + "!");
 		leaveRequestRepository.deleteById(deleteLeaveRequest.getId());
+	}
+	
+	@Override
+	public List<ApprovedLeaveRequestResponseDto> approveAllLeaveRequests(String MyEmail, List<ApproveLeaveRequest> listApproveLeaveRequests)
+	{
+		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
+                .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
+	
+        if (!"Manager".equals(emp.getType()))
+        {
+        	throw new AccessDeniedException("You do not have permission to view employee's leave request!");
+        }
+        if (listApproveLeaveRequests.isEmpty())
+        {
+        	throw new DataNotFoundException("Don't find leave request in data!");
+        }
+        List<ApprovedLeaveRequestResponseDto> approvedList = new ArrayList<>(); 
+        listApproveLeaveRequests.forEach(approveLeaveRequest -> {
+        	if (!"Đang chờ duyệt".equals(approveLeaveRequest.getStatus()))
+        	{
+        		return;
+        	}
+        	LeaveRequest leaveRequest = leaveRequestRepository.findByEmployeeIdAndRequestTime(approveLeaveRequest.getEmployeeId(), approveLeaveRequest.getStartDate(), approveLeaveRequest.getEndDate());
+            // Thực hiện xử lý với từng LeaveRequest
+            leaveRequest.setStatus("Đã duyệt");
+            leaveRequestRepository.save(leaveRequest);
+            LocalDate createdDate = LocalDate.now();
+            LocalTime createdTime = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            String createdTimeFormatted = createdTime.format(formatter);
+            NotificationLR notification = new NotificationLR(leaveRequest, "Chưa đọc", createdDate, createdTimeFormatted);
+            notificationLRRepository.save(notification);
+            
+            ApprovedLeaveRequestResponseDto approvedLRDto = new ApprovedLeaveRequestResponseDto(
+            		leaveRequest.getStartDate(),
+            		leaveRequest.getEndDate(),
+            		leaveRequest.getRequestDays(),
+            		leaveRequest.getEmployeeDayOff().getDay_off_type().getType(),
+            		leaveRequest.getSession(),
+            		leaveRequest.getReason(),
+            		leaveRequest.getStatus(),
+            		leaveRequest.getRejectReason()
+            );
+            
+            approvedList.add(approvedLRDto);
+        });
+        return approvedList;
 	}
 }

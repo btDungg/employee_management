@@ -80,6 +80,19 @@ public class LeaveRequestController {
         }
     }
     
+    @PostMapping("/approve-all")
+    public ResponseEntity<List<ApprovedLeaveRequestResponseDto>> approveAllLeaveRequest(Principal principal, @RequestBody List<ApproveLeaveRequest> listLeaveRequest) {
+        String email = principal.getName();
+        List<ApprovedLeaveRequestResponseDto> result = leaveRequestService.approveAllLeaveRequests(email, listLeaveRequest);
+
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+    
     @GetMapping("/get-my-approve-lr")
     public ResponseEntity<List<LeaveRequestResponseDto>> getMyListApproveLeaveRequest(Principal principal) {
         String email = principal.getName();

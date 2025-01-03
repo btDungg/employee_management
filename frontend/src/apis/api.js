@@ -4,6 +4,7 @@ const BASE_URL = 'http://localhost:8080/api/points';
 const AUTH_URL = 'http://localhost:8080/api/auth';
 const EMPLOYEE_URL = 'http://localhost:8080/api/employees';
 const LEAVE_REQUEST_URL = 'http://localhost:8080/api/leave-request';
+const NOTIFICATION_URL = 'http://localhost:8080/api/notifications';
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
@@ -207,6 +208,19 @@ export const approveLeaveRequest = async (approveLeaveRequest) => {
     }
 };
 
+export const approveAllLeaveRequest = async (listApproveLeaveRequest) => {
+    try {
+        const response = await axios.post(
+            `${LEAVE_REQUEST_URL}/approve-all`, listApproveLeaveRequest,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error approve leave request:', error);
+        throw error;
+    }
+};
+
 export const getMyLeaveRequest = async () => {
     try {
         const response = await axios.get(
@@ -235,6 +249,32 @@ export const deleteLeaveRequest = async (leaveRequest) => {
         return response.data;
     } catch (error) {
         console.error('Error delete leave request:', error);
+        throw error;
+    }
+};
+
+export const getListNotifications = async () => {
+    try {
+        const response = await axios.get(
+            `${NOTIFICATION_URL}`,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error get my notifications:', error);
+        throw error;
+    }
+};
+
+export const updateReadStatus = async (notification) => {
+    try {
+        const response = await axios.post(
+            `${NOTIFICATION_URL}/update-read-status`, notification,
+            { headers: getAuthHeaders() }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error update read status:', error);
         throw error;
     }
 };
