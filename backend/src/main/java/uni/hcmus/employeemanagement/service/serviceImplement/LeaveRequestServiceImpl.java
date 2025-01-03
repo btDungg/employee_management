@@ -82,7 +82,7 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	    {
 	    	throw new DataNotFoundException("Bộ phận của nhân viên này chưa có quản lý!");
 	    }
-	    if (employeeDayOff.getEmployee().getOrganization().getManager_id().getEmployeType().equals("Manager"))
+	    if (employeeDayOff.getEmployee().getOrganization().getManager_id().getTimeType().equals("Manager"))
 	    {
 	    	Manager manager = (Manager) employeeDayOff.getEmployee().getOrganization().getManager_id();
 	    	leaveRequest.setManager(manager);

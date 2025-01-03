@@ -11,7 +11,6 @@ import uni.hcmus.employeemanagement.dto.Response.DayOffTypeDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDayOffDto;
 import uni.hcmus.employeemanagement.dto.Response.EmployeeDto;
 import uni.hcmus.employeemanagement.dto.Response.LeaveRequestResponseDto;
-import uni.hcmus.employeemanagement.dto.Response.ModifyPointRequest;
 import uni.hcmus.employeemanagement.entity.*;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
 import uni.hcmus.employeemanagement.service.interfaceService.IEmployeeService;
