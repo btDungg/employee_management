@@ -12,6 +12,7 @@ import uni.hcmus.employeemanagement.entity.Employee;
 import uni.hcmus.employeemanagement.entity.Manager;
 import uni.hcmus.employeemanagement.entity.Organization;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.AccessDeniedException;
+import uni.hcmus.employeemanagement.exception_handler.exceptions.CanModifyPointToYourselfException;
 import uni.hcmus.employeemanagement.exception_handler.exceptions.DataNotFoundException;
 import uni.hcmus.employeemanagement.repository.EmployeeRepository;
 import uni.hcmus.employeemanagement.repository.ManagerRepository;
@@ -218,11 +219,15 @@ public class PointService implements IPointService {
 
         // Trường hợp HR: Được phép lấy tất cả thông tin
         if ("HR".equals(myInfo.getType())) {
+            if (myInfo.getId() == emp.getId())
+            	throw new CanModifyPointToYourselfException("You can't modify your own point.");
             return new EmployeeDto(emp.getId(), emp.getName(), emp.getPoint(), emp.getType(), emp.getOrganization().getId());
         }
 
         // Trường hợp Manager: Kiểm tra emp thuộc organization do manager quản lý
         if ("Manager".equals(myInfo.getType())) {
+        	if (myInfo.getId() == emp.getId())
+            	throw new CanModifyPointToYourselfException("You can't modify your own point");
             // Kiểm tra Manager có quản lý tổ chức của Employee hay không
             Organization organization = organizationRepository.findById(emp.getOrganization().getId())
                     .orElseThrow(() -> new DataNotFoundException("Organization not found with ID = " + emp.getOrganization().getId()));
@@ -240,6 +245,7 @@ public class PointService implements IPointService {
             }
             return new EmployeeDto(myInfo.getId(), myInfo.getName(), myInfo.getPoint(), myInfo.getType(), myInfo.getOrganization().getId());
         }
+        
 
         // Nếu không thuộc loại nào, trả về ngoại lệ
         throw new AccessDeniedException("Your role is not authorized to access this information.");
