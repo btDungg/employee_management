@@ -82,7 +82,7 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	    {
 	    	throw new DataNotFoundException("Bộ phận của nhân viên này chưa có quản lý!");
 	    }
-	    if (employeeDayOff.getEmployee().getOrganization().getManager_id().getTimeType().equals("Manager"))
+	    if (employeeDayOff.getEmployee().getOrganization().getManager_id().getType().equals("Manager"))
 	    {
 	    	Manager manager = (Manager) employeeDayOff.getEmployee().getOrganization().getManager_id();
 	    	leaveRequest.setManager(manager);
@@ -134,7 +134,6 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 	@Override
 	public ApprovedLeaveRequestResponseDto approveLeaveRequest(String MyEmail, ApproveLeaveRequest leaveRequest)
 	{
-		System.out.println(leaveRequest.getRejectReason());
 		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
 		LeaveRequest approveLeaveRequest = leaveRequestRepository.findByEmployeeIdAndRequestTime(leaveRequest.getEmployeeId(), leaveRequest.getStartDate(), leaveRequest.getEndDate());
@@ -145,7 +144,6 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 			approveLeaveRequest.setRejectReason(null);
 		else
 			approveLeaveRequest.setRejectReason(leaveRequest.getRejectReason());
-		System.out.println(approveLeaveRequest.getRejectReason());
 		leaveRequestRepository.save(approveLeaveRequest);
 		LocalDate createdDate = LocalDate.now();
         LocalTime createdTime = LocalTime.now();
@@ -224,7 +222,6 @@ public class LeaveRequestServiceImpl implements ILeaveRequestService {
 		Employee emp = employeeRepository.findByEmailCompany(MyEmail)
                 .orElseThrow(() -> new DataNotFoundException("Employee not found with email = " + MyEmail));
 		LeaveRequest deleteLeaveRequest = leaveRequestRepository.findByEmployeeIdAndRequestTime(emp.getId(), leaveRequest.getStartDate(), leaveRequest.getEndDate());
-		System.out.println(deleteLeaveRequest.getRequestDays());
 		if (deleteLeaveRequest == null)
 			throw new DataNotFoundException("Không có yêu cầu nghỉ phép từ ngày " + leaveRequest.getStartDate() + " đến ngày " + leaveRequest.getEndDate() + "!");
 		leaveRequestRepository.deleteById(deleteLeaveRequest.getId());

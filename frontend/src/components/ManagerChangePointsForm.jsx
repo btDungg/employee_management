@@ -33,6 +33,8 @@ const ManagerChangePointsForm = ({ onCommit }) => {
 							setSearchWarning('Bạn không có quyền xem điểm nhân viên này.');
 						} else if (error.response && error.response.status === 404) {
 							setSearchWarning('Nhân viên không tồn tại.');
+						} else if (error.response && error.response.status === 400) {
+							setSearchWarning('Bạn không thể thay đổi điểm cho chính mình.')
 						}
         }
     };
